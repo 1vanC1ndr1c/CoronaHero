@@ -28,7 +28,8 @@ class Enemy(Sprite):
         self._frame_counter = 0
 
     def animate(self):
-        self.image = self._images_L[self._frame_counter]
+        self.image_L = self._images_L[self._frame_counter]
         self._frame_counter = self._frame_counter + 1
         if self._frame_counter == 6:
             self._frame_counter = 0
+        # TODO Save the previous coordinates and based on the new values change the animation direction.
