@@ -1,7 +1,16 @@
 import pygame
+from corona_hero_app.sprites.main_character import MainCharacter
+from corona_hero_app.sprites.enemy import Enemy
 
 
-def start_game(main_character):
+def start_game():
+    """
+    Testing environment to see if the animations work.
+    TODO Replace it with actual movement later on.
+    """
+    # character = MainCharacter()  # Check the main character animation
+    character = Enemy()  # ... or check the virus animation.
+
     window_x_size = 960
     window_y_size = 640
 
@@ -11,11 +20,11 @@ def start_game(main_character):
 
     pygame.display.set_caption("Testing environment.")
 
-    pos_change = 1
+    pos_change = 5
     run = True
 
     while run:
-        pygame.time.delay(10)
+        pygame.time.delay(50)
 
         for event in pygame.event.get():
 
@@ -23,23 +32,23 @@ def start_game(main_character):
                 run = False
         keys = pygame.key.get_pressed()
 
-        if keys[pygame.K_LEFT] and main_character.x_pos > 0:
-            main_character.x_pos -= pos_change
+        if keys[pygame.K_LEFT] and character.x_pos > 0:
+            character.x_pos -= pos_change
 
-        if keys[pygame.K_RIGHT] and main_character.x_pos < window_x_size - main_character.width:
-            main_character.x_pos += pos_change
+        if keys[pygame.K_RIGHT] and character.x_pos < window_x_size - character.width:
+            character.x_pos += pos_change
 
-        if keys[pygame.K_UP] and main_character.y_pos > 0:
-            main_character.y_pos -= pos_change
+        if keys[pygame.K_UP] and character.y_pos > 0:
+            character.y_pos -= pos_change
 
-        if keys[pygame.K_DOWN] and main_character.y_pos < window_y_size - main_character.height:
-            main_character.y_pos += pos_change
+        if keys[pygame.K_DOWN] and character.y_pos < window_y_size - character.height:
+            character.y_pos += pos_change
 
         win.fill((0, 0, 0))
 
-        win.blit(main_character.image, (main_character.x_pos, main_character.y_pos))
+        win.blit(character.image, (character.x_pos, character.y_pos))
 
-        main_character.animate()
+        character.animate()
 
         pygame.display.update()
 
