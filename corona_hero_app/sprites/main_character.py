@@ -1,7 +1,6 @@
 import os
 from pathlib import Path
 
-import pygame
 from PIL import Image
 from pygame.sprite import Sprite
 from pygame.transform import smoothscale
@@ -15,40 +14,39 @@ class MainCharacter(Sprite):
     def __init__(self):
         Sprite.__init__(self)
 
-        # Path to the resources.
         self._resources_path = os.path.abspath(os.path.join(str(Path(__file__).parent.parent.parent)))
         self._resources_path = os.path.join(self._resources_path, "resources", "sprites")
 
         # Get the player animation for standing still.
-        self._gif_still = Image.open(str(os.path.join(self._resources_path, 'Hero-still.gif')))
+        self._gif_still = Image.open(str(os.path.join(self._resources_path, 'Hero_Standing_Still.gif')))
         self._images_still = split_animated_gif(self._gif_still)
         self._image_still = self._images_still[0]
 
         # Get the player animation for moving left.
-        self._gif_move_L = Image.open(str(os.path.join(self._resources_path, 'Hero-moving-left.gif')))
+        self._gif_move_L = Image.open(str(os.path.join(self._resources_path, 'Hero_Move_Left.gif')))
         self._images_move_L = split_animated_gif(self._gif_move_L)
         self._image_move_L = self._images_move_L[0]
 
         # Get the player animation for moving right.
-        self._gif_move_R = Image.open(str(os.path.join(self._resources_path, 'Hero-moving-right.gif')))
+        self._gif_move_R = Image.open(str(os.path.join(self._resources_path, 'Hero_Move_Right.gif')))
         self._images_move_R = split_animated_gif(self._gif_move_R)
         self._image_move_R = self._images_move_R[0]
 
         # Get the player animation for jumping.
-        self._image_jump = Image.open(str(os.path.join(self._resources_path, 'Hero-jump.png'))).convert("RGBA")
+        self._image_jump = Image.open(str(os.path.join(self._resources_path, 'Hero_Jump.png'))).convert("RGBA")
         self._image_jump = transform_into_surface(self._image_jump)
 
         # Get the player animation for shooting.
-        self._image_shoot = Image.open(str(os.path.join(self._resources_path, 'Hero-shoot.png'))).convert("RGBA")
+        self._image_shoot = Image.open(str(os.path.join(self._resources_path, 'Hero_Shoot.png'))).convert("RGBA")
         self._image_shoot = transform_into_surface(self._image_shoot)
 
-        # Main image.
+        # Main image (changes to whatever the main character is currenly doing).
         self.current_animation = self._image_still
 
         # Player dimensions.
         self.width = 50
         self.height = 100
-        self.set_player_dimensions(self.width, self.height)  # Set the dimensions of all the images.
+        self.set_dimensions(self.width, self.height)  # Set the dimensions of all the images.
 
         # Current player position.
         self.x_pos = 0
@@ -59,7 +57,7 @@ class MainCharacter(Sprite):
         self._move_L_frame_counter = 0
         self._move_R_frame_counter = 0
 
-    def set_player_dimensions(self, w, h):
+    def set_dimensions(self, w, h):
         self.width = w
         self.height = h
         # Set animation dimensions.
