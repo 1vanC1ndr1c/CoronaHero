@@ -8,8 +8,8 @@ def start_game():
     Testing environment to see if the animations work.
     TODO Replace it with actual movement later on.
     """
-    # character = MainCharacter()  # Check the main character animation
-    character = Enemy()  # ... or check the virus animation.
+    character = MainCharacter()  # Check the main character animation
+    # character = Enemy()  # ... or check the virus animation.
 
     window_x_size = 960
     window_y_size = 640
@@ -34,9 +34,11 @@ def start_game():
 
         if keys[pygame.K_LEFT] and character.x_pos > 0:
             character.x_pos -= pos_change
+            character.move_left()
 
         if keys[pygame.K_RIGHT] and character.x_pos < window_x_size - character.width:
             character.x_pos += pos_change
+            character.move_right()
 
         if keys[pygame.K_UP] and character.y_pos > 0:
             character.y_pos -= pos_change
@@ -46,9 +48,18 @@ def start_game():
 
         win.fill((0, 0, 0))
 
-        win.blit(character.image, (character.x_pos, character.y_pos))
+        # Character
+        if keys[pygame.K_SPACE] and character.y_pos < window_y_size - character.height:
+            character.jump()
+        if keys[pygame.K_F1]:
+            character.shoot()
 
-        character.animate()
+        win.blit(character.current_animation, (character.x_pos, character.y_pos))
+        character.animate_standing_still()
+
+        # Virus
+        # character.animate()
+        # win.blit(character.image, (character.x_pos, character.y_pos))
 
         pygame.display.update()
 

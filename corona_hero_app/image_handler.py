@@ -14,3 +14,12 @@ def split_animated_gif(gif):
         pygame_image = pygame.image.fromstring(frame_rgba.tobytes(), frame_rgba.size, frame_rgba.mode)
         images.append(pygame_image)
     return images
+
+
+def transform_into_surface(img):
+    """
+    Transforms PIL.Image into pygame.image.
+    :param img: Input PIL.Image
+    :return: pygame.image
+    """
+    return pygame.image.fromstring(img.tobytes(), img.size, img.mode)

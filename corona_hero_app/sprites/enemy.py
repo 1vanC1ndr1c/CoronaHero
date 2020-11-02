@@ -3,7 +3,9 @@ from pathlib import Path
 
 from PIL import Image
 from pygame.sprite import Sprite
-from corona_hero_app.gif_splitter import split_animated_gif
+from pygame.transform import smoothscale
+
+from corona_hero_app.image_handler import split_animated_gif
 
 
 class Enemy(Sprite):
@@ -24,7 +26,8 @@ class Enemy(Sprite):
 
         # Virus dimensions.
         self.width = 50
-        self.height = 100
+        self.height = 50
+        self.set_virus_dimensions(self.width, self.height)
 
         # Current virus position.
         self.x_pos = 0
@@ -38,6 +41,12 @@ class Enemy(Sprite):
 
         # Gif frame counter.
         self._frame_counter = 0
+
+    def set_virus_dimensions(self, width, height):
+        self.width = width
+        self.height = height
+        for index in range(len(self._images)):  # Change the scale dimensions of every frame
+            self._images[index] = smoothscale(self._images[index], (width, height))
 
     def animate(self):
         """
@@ -69,3 +78,7 @@ class Enemy(Sprite):
 
         # Record the current position into self._x_pos_OLD.
         self._x_pos_OLD = self.x_pos
+
+    def death_animation(self):
+        # TODO
+        pass
