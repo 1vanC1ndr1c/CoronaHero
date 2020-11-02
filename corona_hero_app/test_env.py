@@ -11,6 +11,7 @@ from sprites.mask import Mask
 from sprites.sink import Sink
 from sprites.wall import Wall
 
+
 def start_game():
     """
     Testing environment to see if the animations work.
@@ -115,7 +116,7 @@ def start_game():
                 if jumpCount < 0:
                     neg = -1
 
-                character.y_pos -= (jumpCount**2) * 0.5 * neg
+                character.y_pos -= (jumpCount ** 2) * 0.5 * neg
                 jumpCount -= 1
             else:
                 character.isJump = False

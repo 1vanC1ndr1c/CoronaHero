@@ -33,14 +33,16 @@ class MainCharacter(Sprite):
         self._image_move_R = self._images_move_R[0]
 
         # Get the player animation for jumping.
-        self._image_jump = Image.open(str(os.path.join(self._resources_path, 'Hero_Jump.png'))).convert("RGBA")
-        self._image_jump = transform_into_surface(self._image_jump)
+        self._image_jump_R = Image.open(str(os.path.join(self._resources_path, 'Hero_Jump_Right.png'))).convert("RGBA")
+        self._image_jump_R = transform_into_surface(self._image_jump_R)
+        self._image_jump_L = Image.open(str(os.path.join(self._resources_path, 'Hero_Jump_Left.png'))).convert("RGBA")
+        self._image_jump_L = transform_into_surface(self._image_jump_L)
 
         # Get the player animation for shooting.
         self._image_shoot = Image.open(str(os.path.join(self._resources_path, 'Hero_Shoot.png'))).convert("RGBA")
         self._image_shoot = transform_into_surface(self._image_shoot)
 
-        # Main image (changes to whatever the main character is currenly doing).
+        # Main image (changes to whatever the main character is currently doing).
         self.current_animation = self._image_still
 
         # Player dimensions.
@@ -58,6 +60,7 @@ class MainCharacter(Sprite):
         self._move_R_frame_counter = 0
 
         self.isJump = False
+        self.movement_direction = "Left."
 
     def set_dimensions(self, w, h):
         self.width = w
@@ -66,7 +69,8 @@ class MainCharacter(Sprite):
         self._images_still = [smoothscale(self._images_still[i], (w, h)) for i in range(len(self._images_still))]
         self._images_move_L = [smoothscale(self._images_move_L[i], (w, h)) for i in range(len(self._images_move_L))]
         self._images_move_R = [smoothscale(self._images_move_R[i], (w, h)) for i in range(len(self._images_move_R))]
-        self._image_jump = smoothscale(self._image_jump, (w, h))
+        self._image_jump_R = smoothscale(self._image_jump_R, (w, h))
+        self._image_jump_L = smoothscale(self._image_jump_L, (w, h))
         self._image_shoot = smoothscale(self._image_shoot, (w, h))
         self.current_animation = smoothscale(self.current_animation, (w, h))
 
@@ -75,29 +79,33 @@ class MainCharacter(Sprite):
         self._still_frame_counter = self._still_frame_counter + 1
         if self._still_frame_counter >= len(self._images_still):  # Reset after the maximum number of frames.
             self._still_frame_counter = 0
-        self.current_animation = self._image_still  # Set the current animation to standing still.
+        self.set_current_animation(self._image_still)  # Set the current animation to standing still.
 
     def jump(self):
-
-        self.current_animation = self._image_jump
+        if self.movement_direction == "Left.":
+            self.current_animation = self._image_jump_L
+        else:
+            self.current_animation = self._image_jump_R
         self.isJump = True
 
     def shoot(self):
-        self.current_animation = self._image_shoot
+        self.set_current_animation(self._image_shoot)
 
     def move_left(self):
+        self.movement_direction = "Left."
         self._image_move_L = self._images_move_L[self._move_L_frame_counter]  # Get the next image.
         self._move_L_frame_counter = self._move_L_frame_counter + 1
         if self._move_L_frame_counter >= len(self._images_move_L):  # Reset after the maximum number of frames.
             self._move_L_frame_counter = 0
-        self.current_animation = self._image_move_L  # Set the current animation to standing still.
+        self.set_current_animation(self._image_move_L)  # Set the current animation to standing still.
 
     def move_right(self):
+        self.movement_direction = "Right."
         self._image_move_R = self._images_move_R[self._move_R_frame_counter]  # Get the next image.
         self._move_R_frame_counter = self._move_R_frame_counter + 1
         if self._move_R_frame_counter >= len(self._images_move_R):  # Reset after the maximum number of frames.
             self._move_R_frame_counter = 0
-        self.current_animation = self._image_move_R  # Set the current animation to standing still.
+        self.set_current_animation(self._image_move_R)  # Set the current animation to standing still.
 
     def die(self):
         # TODO
@@ -106,3 +114,12 @@ class MainCharacter(Sprite):
     def wash_hands(self):
         # TODO
         pass
+
+    def set_current_animation(self, current_animation):
+        if self.isJump is False:
+            self.current_animation = current_animation
+        else:
+            if self.movement_direction == "Left.":
+                self.current_animation = self._image_jump_L
+            else:
+                self.current_animation = self._image_jump_R
