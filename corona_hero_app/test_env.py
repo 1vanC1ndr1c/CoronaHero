@@ -1,16 +1,15 @@
 import pygame
-from corona_hero_app.sprites.main_character import MainCharacter
-from corona_hero_app.sprites.enemy import Enemy
-from corona_hero_app.sprites.platform import Platform
-from corona_hero_app.sprites.box import Box
-from corona_hero_app.sprites.bullet import Bullet
-from corona_hero_app.sprites.disinfectant import Disinfectant
-from corona_hero_app.sprites.gloves import Gloves
-from corona_hero_app.sprites.infected_person import InfectedPerson
-from corona_hero_app.sprites.mask import Mask
-from corona_hero_app.sprites.sink import Sink
-from corona_hero_app.sprites.wall import Wall
-
+from sprites.main_character import MainCharacter
+from sprites.enemy import Enemy
+from sprites.platform import Platform
+from sprites.box import Box
+from sprites.bullet import Bullet
+from sprites.disinfectant import Disinfectant
+from sprites.gloves import Gloves
+from sprites.infected_person import InfectedPerson
+from sprites.mask import Mask
+from sprites.sink import Sink
+from sprites.wall import Wall
 
 def start_game():
     """
@@ -76,7 +75,9 @@ def start_game():
     pygame.display.set_caption("Testing environment.")
 
     pos_change = 5
+    jump_pos_change = 10
     run = True
+    jumpCount = 10
 
     while run:
 
@@ -96,14 +97,29 @@ def start_game():
             character.x_pos += pos_change
             character.move_right()
 
-        if keys[pygame.K_UP] and character.y_pos > 0:
-            character.y_pos -= pos_change
+        if not character.isJump:
+            if keys[pygame.K_UP] and character.y_pos > 0:
+                character.y_pos -= pos_change
 
-        if keys[pygame.K_DOWN] and character.y_pos < window_y_size - character.height:
-            character.y_pos += pos_change
+            if keys[pygame.K_DOWN] and character.y_pos < window_y_size - character.height:
+                character.y_pos += pos_change
 
-        if keys[pygame.K_SPACE] and character.y_pos < window_y_size - character.height:
-            character.jump()
+            if keys[pygame.K_SPACE] and character.y_pos < window_y_size - character.height:
+                character.jump()
+                if character.y_pos > 0:
+                    character.y_pos -= jump_pos_change
+                character.x_pos += pos_change
+        else:
+            if jumpCount >= -10:
+                neg = 1
+                if jumpCount < 0:
+                    neg = -1
+
+                character.y_pos -= (jumpCount**2) * 0.5 * neg
+                jumpCount -= 1
+            else:
+                character.isJump = False
+                jumpCount = 10
         if keys[pygame.K_F1]:  # Nije mi se dalo shvatiti kako staviti shoot na mouse, pa je na F1 :D
             character.shoot()
 

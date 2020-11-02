@@ -1,6 +1,6 @@
 import sys
 
-from corona_hero_app import test_env
+import test_env
 
 
 def main():

@@ -5,8 +5,8 @@ from PIL import Image
 from pygame.sprite import Sprite
 from pygame.transform import smoothscale
 
-from corona_hero_app.image_handler import split_animated_gif
-from corona_hero_app.image_handler import transform_into_surface
+from image_handler import split_animated_gif
+from image_handler import transform_into_surface
 
 
 class MainCharacter(Sprite):
@@ -57,6 +57,8 @@ class MainCharacter(Sprite):
         self._move_L_frame_counter = 0
         self._move_R_frame_counter = 0
 
+        self.isJump = False
+
     def set_dimensions(self, w, h):
         self.width = w
         self.height = h
@@ -76,7 +78,9 @@ class MainCharacter(Sprite):
         self.current_animation = self._image_still  # Set the current animation to standing still.
 
     def jump(self):
+
         self.current_animation = self._image_jump
+        self.isJump = True
 
     def shoot(self):
         self.current_animation = self._image_shoot

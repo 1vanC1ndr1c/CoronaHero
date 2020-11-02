@@ -5,7 +5,7 @@ from PIL import Image
 from pygame.sprite import Sprite
 from pygame.transform import smoothscale
 
-from corona_hero_app.image_handler import split_animated_gif
+from image_handler import split_animated_gif
 
 
 class Enemy(Sprite):
