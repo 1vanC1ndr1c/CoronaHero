@@ -1,4 +1,5 @@
 import pygame
+import random
 from sprites.main_character import MainCharacter
 from sprites.enemy import Enemy
 from sprites.platform import Platform
@@ -11,32 +12,49 @@ from sprites.mask import Mask
 from sprites.sink import Sink
 from sprites.wall import Wall
 
+floors = []
+platforms = []
+
+def setFloor(x,y):
+    floors.append( Wall())
+    floors[len(floors) -1].set_dimensions(100,30) 
+    floors[len(floors) -1].y_pos = y
+    floors[len(floors) -1].x_pos = x
+
+def setPlatform(x,y,size):
+    for i in range(size):
+        platforms.append( Platform())
+        platforms[len(platforms)-1].set_dimensions(50, 50) 
+        platforms[len(platforms)-1].x_pos = x+i*50
+        platforms[len(platforms)-1].y_pos = y
+
 def level_1(test):
 
     
-    floors = []
-    platforms = []
-    for i in range(60):
+
+    for i in range(40):
         #set floors
-        floors.append( Wall())
-        floors[i].set_dimensions(100,30) 
-        floors[i].y_pos = 610
-        floors[i].x_pos = i*100
-        #set platforms             
-        if i % 3 == 0 or i % 7 == 0 or i%17 ==0:
-            platforms.append( Platform())
-            platforms[len(platforms)-1].set_dimensions(i%13*10+50, 30) 
-            platforms[len(platforms)-1].x_pos = i*100
-            platforms[len(platforms)-1].y_pos = 500 - (i%7)*50
+        setFloor(i*100,610 )
+     
+    for i in range(80):
+        if i%9 == 0:
+            #set platforms
+            random.seed()
+            size= random.randint(3,8) 
+            height = random.randint(160,520)
+            height = height-(height % 20)
+            setPlatform(i*50, height, size)
+        
 
     #fill level surface
     level = pygame.Surface((6000, 640))
     count = 0
-    for i in range(60):
+    for i in range(40):
         level.blit(floors[i].image_wall_darker, (floors[i].x_pos,floors[i].y_pos ))
-        if i % 3 == 0 or i % 7 == 0 or i%17 ==0:
-            level.blit(platforms[count].image_grass, (platforms[count].x_pos,platforms[count].y_pos ))
-            count +=1
+
+    for i in range(len(platforms)):
+        level.blit(platforms[i].image_grass, (platforms[i].x_pos,platforms[i].y_pos ))
+        count +=1
 
     #---for testing only
     if test:
@@ -60,7 +78,7 @@ def level_1(test):
          pygame.quit()
     #if not for testing return level surface
     else : 
-         return level;
+         return level
 
 if __name__ == '__main__':
     level_1(True)
