@@ -5,10 +5,10 @@ from PIL import Image
 from pygame.sprite import Sprite
 from pygame.transform import smoothscale
 
-from image_handler import split_animated_gif
+from corona_hero_app.image_handler import split_animated_gif
 
 
-class Enemy(Sprite):
+class Virus(Sprite):
 
     def __init__(self):
         Sprite.__init__(self)
@@ -72,3 +72,13 @@ class Enemy(Sprite):
     def death_animation(self):
         # TODO
         pass
+    
+    def is_hit(self, bullet):
+        bullet_range_x = range(bullet.x_pos, bullet.x_pos + bullet.width)
+        bullet_range_y = range(bullet.y_pos, bullet.y_pos + bullet.height)
+
+        self_range_x = range(self.x_pos, self.x_pos + self.width)
+        self_range_y = range(self.y_pos, self.y_pos + self.height)
+
+        if bool(set(bullet_range_x) & set(self_range_x)) is True:
+            return bool(set(bullet_range_y) & set(self_range_y))

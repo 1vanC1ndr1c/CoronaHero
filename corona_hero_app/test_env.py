@@ -1,15 +1,15 @@
 import pygame
-from sprites.main_character import MainCharacter
-from sprites.enemy import Enemy
-from sprites.platform import Platform
-from sprites.box import Box
-from sprites.bullet import Bullet
-from sprites.disinfectant import Disinfectant
-from sprites.gloves import Gloves
-from sprites.infected_person import InfectedPerson
-from sprites.mask import Mask
-from sprites.sink import Sink
-from sprites.wall import Wall
+from corona_hero_app.sprites.main_character import MainCharacter
+from corona_hero_app.sprites.virus import Virus
+from corona_hero_app.sprites.platform import Platform
+from corona_hero_app.sprites.box import Box
+from corona_hero_app.sprites.disinfectant import Disinfectant
+from corona_hero_app.sprites.gloves import Gloves
+from corona_hero_app.sprites.mask import Mask
+from corona_hero_app.sprites.sink import Sink
+from corona_hero_app.sprites.wall import Wall
+from corona_hero_app.sprites.virus import Virus
+from corona_hero_app.sprites.infected_person import InfectedPerson
 
 
 def start_game():
@@ -17,8 +17,11 @@ def start_game():
     Testing environment to see if the animations work.
     TODO Replace it with actual movement later on.
     """
+
+    shootable_objects = []
+
     character = MainCharacter()  # Check the main character animation
-    enemy = Enemy()  # ... or check the virus animation.
+    virus = Virus()  # ... or check the virus animation.
 
     window_x_size = 960
     window_y_size = 640
@@ -26,24 +29,24 @@ def start_game():
     platform1 = Platform()
     platform1.set_dimensions(100, 10)
     platform1.y_pos = 600
+    shootable_objects.append(platform1)
 
     platform2 = Platform()
     platform2.set_dimensions(100, 10)
     platform2.y_pos = 600
     platform2.x_pos = 100
+    shootable_objects.append(platform2)
 
     platform3 = Platform()
     platform3.set_dimensions(100, 10)
     platform3.y_pos = 600
     platform3.x_pos = 200
+    shootable_objects.append(platform3)
 
     box1 = Box()
-    box1.y_pos = 570
-    box1.x_pos = 30
-
-    bullet1 = Bullet()
-    bullet1.y_pos = 570
-    bullet1.x_pos = 60
+    box1.y_pos = 370
+    box1.x_pos = 600
+    shootable_objects.append(box1)
 
     dis1 = Disinfectant()
     dis1.y_pos = 570
@@ -56,6 +59,7 @@ def start_game():
     inf_per = InfectedPerson()
     inf_per.y_pos = 460
     inf_per.x_pos = 170
+    shootable_objects.append(inf_per)
 
     mask = Mask()
     mask.y_pos = 570
@@ -78,7 +82,7 @@ def start_game():
     pos_change = 5
     jump_pos_change = 10
     run = True
-    jumpCount = 10
+    jump_count = 10
 
     while run:
 
@@ -111,16 +115,16 @@ def start_game():
                     character.y_pos -= jump_pos_change
                 character.x_pos += pos_change
         else:
-            if jumpCount >= -10:
+            if jump_count >= -10:
                 neg = 1
-                if jumpCount < 0:
+                if jump_count < 0:
                     neg = -1
 
-                character.y_pos -= (jumpCount ** 2) * 0.5 * neg
-                jumpCount -= 1
+                character.y_pos -= (jump_count ** 2) * 0.5 * neg
+                jump_count -= 1
             else:
                 character.isJump = False
-                jumpCount = 10
+                jump_count = 10
         if keys[pygame.K_F1]:  # Nije mi se dalo shvatiti kako staviti shoot na mouse, pa je na F1 :D
             character.shoot()
 
@@ -129,23 +133,29 @@ def start_game():
         win.blit(wall2.image_wall_darker, (wall2.x_pos, wall2.y_pos))
 
         win.blit(character.current_animation, (character.x_pos, character.y_pos))
-        character.animate_standing_still()
+        character.animate()
+
+        # Bullet collision.
+        for index, bullet in enumerate(character.bullet_list):
+            win.blit(bullet.image_bullet, (bullet.x_pos, bullet.y_pos))
+            for o in shootable_objects:
+                if o.is_hit(bullet):
+                    character.bullet_hit(index)
 
         # Virus follows the main character (for testing purposes).
-        enemy.x_pos = character.x_pos + 60
-        enemy.y_pos = character.y_pos
-        win.blit(enemy.image, (enemy.x_pos, enemy.y_pos))
-        enemy.animate()
+        virus.x_pos = character.x_pos + 60
+        virus.y_pos = character.y_pos
+        win.blit(virus.image, (virus.x_pos, virus.y_pos))
+        virus.animate()
 
         win.blit(platform1.image_grass, (platform1.x_pos, platform1.y_pos))
         win.blit(platform2.image_soil, (platform2.x_pos, platform2.y_pos))
         win.blit(platform3.image_concrete, (platform3.x_pos, platform3.y_pos))
         win.blit(box1.image_box, (box1.x_pos, box1.y_pos))
-        win.blit(bullet1.image_bullet, (bullet1.x_pos, bullet1.y_pos))
         win.blit(dis1.image_disinfectant, (dis1.x_pos, dis1.y_pos))
         win.blit(gloves.image_gloves, (gloves.x_pos, gloves.y_pos))
         win.blit(inf_per.image_infected_person, (inf_per.x_pos, inf_per.y_pos))
-        win.blit(mask.image_mask, (mask.x_pos, mask.y_pos))
+        win.blit(mask.image_mask_1, (mask.x_pos, mask.y_pos))
         win.blit(sink.image_sink, (sink.x_pos, sink.y_pos))
         pygame.display.update()
 

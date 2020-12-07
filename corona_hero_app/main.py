@@ -1,10 +1,10 @@
 import sys
 
-import test_env
+from corona_hero_app.test_env import start_game
 
 
 def main():
-    test_env.start_game()  # Start the testing environment.
+    start_game()  # Start the testing environment.
 
 
 if __name__ == '__main__':

@@ -5,7 +5,7 @@ from PIL import Image
 from pygame.sprite import Sprite
 from pygame.transform import smoothscale
 
-from image_handler import transform_into_surface
+from corona_hero_app.image_handler import transform_into_surface
 
 
 class Gloves(Sprite):

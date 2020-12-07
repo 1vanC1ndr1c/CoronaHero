@@ -5,8 +5,10 @@ from PIL import Image
 from pygame.sprite import Sprite
 from pygame.transform import smoothscale
 
-from image_handler import split_animated_gif
-from image_handler import transform_into_surface
+from corona_hero_app.image_handler import split_animated_gif
+from corona_hero_app.image_handler import transform_into_surface
+
+from corona_hero_app.sprites.bullet import Bullet
 
 
 class MainCharacter(Sprite):
@@ -41,6 +43,8 @@ class MainCharacter(Sprite):
         # Get the player animation for shooting.
         self._image_shoot = Image.open(str(os.path.join(self._resources_path, 'Hero_Shoot.png'))).convert("RGBA")
         self._image_shoot = transform_into_surface(self._image_shoot)
+        self.bullet_count = 30
+        self.bullet_list = []
 
         # Main image (changes to whatever the main character is currently doing).
         self.current_animation = self._image_still
@@ -74,12 +78,20 @@ class MainCharacter(Sprite):
         self._image_shoot = smoothscale(self._image_shoot, (w, h))
         self.current_animation = smoothscale(self.current_animation, (w, h))
 
-    def animate_standing_still(self):
+    def animate(self):
         self._image_still = self._images_still[self._still_frame_counter]  # Get the next image.
         self._still_frame_counter = self._still_frame_counter + 1
         if self._still_frame_counter >= len(self._images_still):  # Reset after the maximum number of frames.
             self._still_frame_counter = 0
         self.set_current_animation(self._image_still)  # Set the current animation to standing still.
+
+        # BUllets logic.
+        index_done = []
+        for index, bullet in enumerate(self.bullet_list):
+            bullet.bullet_travel()
+            if bullet.x_pos < 0 or bullet.x_pos > 2000:
+                index_done.append(index)
+        self.bullet_list = [bullet for index, bullet in enumerate(self.bullet_list) if index not in index_done]
 
     def jump(self):
         if self.movement_direction == "Left.":
@@ -89,7 +101,15 @@ class MainCharacter(Sprite):
         self.isJump = True
 
     def shoot(self):
-        self.set_current_animation(self._image_shoot)
+        if self.bullet_count > 0:
+            self.bullet_list.append(Bullet(self.movement_direction, self.x_pos, self.y_pos))
+            self.set_current_animation(self._image_shoot)
+            self.bullet_count = self.bullet_count - 1
+        else:
+            self.bullet_count = 0
+
+    def bullet_hit(self, bullet_index):
+        del self.bullet_list[bullet_index]
 
     def move_left(self):
         self.movement_direction = "Left."
