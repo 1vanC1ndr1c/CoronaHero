@@ -64,7 +64,9 @@ class MainCharacter(Sprite):
         self._move_R_frame_counter = 0
 
         self.isJump = False
-        self.movement_direction = "Left."
+        self.x_movement_direction = "Left."  # Or "Right."
+        self.y_movement_direction = "Up."  # Or "Down."
+        self.current_movement_direction = "Left."  # "Left.", "Right", "Up.", "Down".
 
     def set_dimensions(self, w, h):
         self.width = w
@@ -85,7 +87,7 @@ class MainCharacter(Sprite):
             self._still_frame_counter = 0
         self.set_current_animation(self._image_still)  # Set the current animation to standing still.
 
-        # BUllets logic.
+        # Bullets logic.
         index_done = []
         for index, bullet in enumerate(self.bullet_list):
             bullet.bullet_travel()
@@ -94,7 +96,7 @@ class MainCharacter(Sprite):
         self.bullet_list = [bullet for index, bullet in enumerate(self.bullet_list) if index not in index_done]
 
     def jump(self):
-        if self.movement_direction == "Left.":
+        if self.x_movement_direction == "Left.":
             self.current_animation = self._image_jump_L
         else:
             self.current_animation = self._image_jump_R
@@ -102,7 +104,7 @@ class MainCharacter(Sprite):
 
     def shoot(self):
         if self.bullet_count > 0:
-            self.bullet_list.append(Bullet(self.movement_direction, self.x_pos, self.y_pos))
+            self.bullet_list.append(Bullet(self.current_movement_direction, self.x_pos, self.y_pos))
             self.set_current_animation(self._image_shoot)
             self.bullet_count = self.bullet_count - 1
         else:
@@ -111,21 +113,37 @@ class MainCharacter(Sprite):
     def bullet_hit(self, bullet_index):
         del self.bullet_list[bullet_index]
 
-    def move_left(self):
-        self.movement_direction = "Left."
+    def move_left(self, x_pos_change):
+        self.x_pos = self.x_pos + x_pos_change
+        self.x_movement_direction = "Left."
+        self.current_movement_direction = "Left."
+
         self._image_move_L = self._images_move_L[self._move_L_frame_counter]  # Get the next image.
         self._move_L_frame_counter = self._move_L_frame_counter + 1
         if self._move_L_frame_counter >= len(self._images_move_L):  # Reset after the maximum number of frames.
             self._move_L_frame_counter = 0
         self.set_current_animation(self._image_move_L)  # Set the current animation to standing still.
 
-    def move_right(self):
-        self.movement_direction = "Right."
+    def move_right(self, x_pos_change):
+        self.x_pos = self.x_pos + x_pos_change
+        self.x_movement_direction = "Right."
+        self.current_movement_direction = "Right."
+
         self._image_move_R = self._images_move_R[self._move_R_frame_counter]  # Get the next image.
         self._move_R_frame_counter = self._move_R_frame_counter + 1
         if self._move_R_frame_counter >= len(self._images_move_R):  # Reset after the maximum number of frames.
             self._move_R_frame_counter = 0
         self.set_current_animation(self._image_move_R)  # Set the current animation to standing still.
+
+    def move_up(self, y_pos_change):
+        self.y_pos = self.y_pos + y_pos_change
+        self.y_movement_direction = "Up."
+        self.current_movement_direction = "Up."
+
+    def move_down(self, y_pos_change):
+        self.y_pos = self.y_pos + y_pos_change
+        self.y_movement_direction = "Down."
+        self.current_movement_direction = "Down."
 
     def die(self):
         # TODO
@@ -139,7 +157,7 @@ class MainCharacter(Sprite):
         if self.isJump is False:
             self.current_animation = current_animation
         else:
-            if self.movement_direction == "Left.":
+            if self.x_movement_direction == "Left.":
                 self.current_animation = self._image_jump_L
             else:
                 self.current_animation = self._image_jump_R

@@ -83,6 +83,7 @@ def start_game():
     jump_pos_change = 10
     run = True
     jump_count = 10
+    shooting_delay = 0
 
     while run:
 
@@ -95,19 +96,17 @@ def start_game():
         keys = pygame.key.get_pressed()
 
         if keys[pygame.K_LEFT] and character.x_pos > 0:
-            character.x_pos -= pos_change
-            character.move_left()
+            character.move_left(-pos_change)
 
         if keys[pygame.K_RIGHT] and character.x_pos < window_x_size - character.width:
-            character.x_pos += pos_change
-            character.move_right()
+            character.move_right(pos_change)
 
         if not character.isJump:
             if keys[pygame.K_UP] and character.y_pos > 0:
-                character.y_pos -= pos_change
+                character.move_up(-pos_change)
 
             if keys[pygame.K_DOWN] and character.y_pos < window_y_size - character.height:
-                character.y_pos += pos_change
+                character.move_down(pos_change)
 
             if keys[pygame.K_SPACE] and character.y_pos < window_y_size - character.height:
                 character.jump()
@@ -125,6 +124,7 @@ def start_game():
             else:
                 character.isJump = False
                 jump_count = 10
+
         if keys[pygame.K_F1]:  # Nije mi se dalo shvatiti kako staviti shoot na mouse, pa je na F1 :D
             character.shoot()
 

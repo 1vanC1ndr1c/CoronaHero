@@ -25,14 +25,17 @@ class Bullet(Sprite):
         self.x_pos = start_pos_x
         self.y_pos = start_pos_y
 
-        self.direction = direction  # Or self.direction = "Right.
+        self._direction = direction  # "Right.", "Left.", "Up.", "Down".
 
     def set_dimensions(self, w, h):
         self.image_bullet = smoothscale(self.image_bullet, (w, h))
 
     def bullet_travel(self):
-        # TODO Limits based on a level size.
-        if self.direction == "Left.":
+        if self._direction == "Left.":
             self.x_pos = self.x_pos - 10
-        elif self.direction == "Right.":
+        elif self._direction == "Right.":
             self.x_pos = self.x_pos + 10
+        elif self._direction == "Up.":
+            self.y_pos = self.y_pos - 10
+        elif self._direction == "Down.":
+            self.y_pos = self.y_pos + 10
