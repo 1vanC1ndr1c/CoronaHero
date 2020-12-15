@@ -22,6 +22,9 @@ def start_game():
 
     character = MainCharacter()  # Check the main character animation
     virus = Virus()  # ... or check the virus animation.
+    virus.x_pos = 500
+    virus.y_pos = 500
+    shootable_objects.append(virus)
 
     window_x_size = 960
     window_y_size = 640
@@ -83,7 +86,6 @@ def start_game():
     jump_pos_change = 10
     run = True
     jump_count = 10
-    shooting_delay = 0
 
     while run:
 
@@ -135,18 +137,15 @@ def start_game():
         win.blit(character.current_animation, (character.x_pos, character.y_pos))
         character.animate()
 
+        # Virus follows the main character (for testing purposes).
+
         # Bullet collision.
         for index, bullet in enumerate(character.bullet_list):
             win.blit(bullet.image_bullet, (bullet.x_pos, bullet.y_pos))
             for o in shootable_objects:
-                if o.is_hit(bullet):
+                if o.check_if_hit(bullet):
                     character.bullet_hit(index)
-
-        # Virus follows the main character (for testing purposes).
-        virus.x_pos = character.x_pos + 60
-        virus.y_pos = character.y_pos
-        win.blit(virus.image, (virus.x_pos, virus.y_pos))
-        virus.animate()
+            shootable_objects = [s for s in shootable_objects if s.is_dead is False]
 
         win.blit(platform1.image_grass, (platform1.x_pos, platform1.y_pos))
         win.blit(platform2.image_soil, (platform2.x_pos, platform2.y_pos))
@@ -157,6 +156,13 @@ def start_game():
         win.blit(inf_per.image_infected_person, (inf_per.x_pos, inf_per.y_pos))
         win.blit(mask.image_mask_1, (mask.x_pos, mask.y_pos))
         win.blit(sink.image_sink, (sink.x_pos, sink.y_pos))
+
+        if virus.dead_animation_done is False:
+            virus.animate()
+            win.blit(virus.image, (virus.x_pos, virus.y_pos))
+        else:
+            virus.kill()
+
         pygame.display.update()
 
     pygame.quit()

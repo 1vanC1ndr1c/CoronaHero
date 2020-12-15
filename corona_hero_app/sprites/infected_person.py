@@ -25,10 +25,12 @@ class InfectedPerson(Sprite):
         self.x_pos = 0
         self.y_pos = 0
 
+        self.is_dead = False
+
     def set_dimensions(self, w, h):
         self.image_infected_person = smoothscale(self.image_infected_person, (w, h))
 
-    def is_hit(self, bullet):
+    def check_if_hit(self, bullet):
         bullet_range_x = range(bullet.x_pos, bullet.x_pos + bullet.width)
         bullet_range_y = range(bullet.y_pos, bullet.y_pos + bullet.height)
 

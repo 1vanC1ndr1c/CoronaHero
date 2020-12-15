@@ -68,6 +68,8 @@ class MainCharacter(Sprite):
         self.y_movement_direction = "Up."  # Or "Down."
         self.current_movement_direction = "Left."  # "Left.", "Right", "Up.", "Down".
 
+        self.is_dead = False
+
     def set_dimensions(self, w, h):
         self.width = w
         self.height = h
@@ -93,6 +95,8 @@ class MainCharacter(Sprite):
             bullet.bullet_travel()
             if bullet.x_pos < 0 or bullet.x_pos > 2000:
                 index_done.append(index)
+            else:
+                bullet.kill()
         self.bullet_list = [bullet for index, bullet in enumerate(self.bullet_list) if index not in index_done]
 
     def jump(self):

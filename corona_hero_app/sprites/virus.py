@@ -17,9 +17,13 @@ class Virus(Sprite):
         self._resources_path = os.path.join(self._resources_path, "resources", "sprites")
 
         # Get the virus skin.
-        self._gif = Image.open(str(os.path.join(self._resources_path, 'Virus.gif')))
-        self._images = split_animated_gif(self._gif)
+        self._moving_gif = Image.open(str(os.path.join(self._resources_path, 'Virus.gif')))
+        self._images = split_animated_gif(self._moving_gif)
         self.image = self._images[0]
+
+        # Get the virus death animation.
+        self._death_animation = Image.open(str(os.path.join(self._resources_path, 'Virus_death.gif')))
+        self._death_animation = split_animated_gif(self._death_animation)
 
         # Virus dimensions.
         self.width = 50
@@ -38,42 +42,51 @@ class Virus(Sprite):
         # Gif frame counter.
         self._frame_counter = 0
 
+        self.is_dead = False
+        self.dead_animation_done = False
+
     def set_dimensions(self, width, height):
         self.width = width
         self.height = height
         for index in range(len(self._images)):  # Change the scale dimensions of every frame
             self._images[index] = smoothscale(self._images[index], (width, height))
+        for index in range(len(self._death_animation)):  # Change the scale dimensions of every frame
+            self._death_animation[index] = smoothscale(self._death_animation[index], (width, height))
 
     def animate(self):
-        self.image = self._images[self._frame_counter]  # Get the next image based on the frame counter.
 
-        # Check the new position.
-        if self.x_pos > self._x_pos_OLD:  # If it is going right.
-            self._frame_counter = self._frame_counter + 1  # Get the next gif frame.
-            self._direction = "Right."  # Indicate the rotation direction.
-        elif self.x_pos < self._x_pos_OLD:  # If it is going left.
-            self._frame_counter = self._frame_counter - 1  # Get the previous frame.
-            self._direction = "Left."  # Indicate the rotation direction.
+        if self.is_dead is True:
+            self.image = self._death_animation[self._frame_counter]
+            self._frame_counter = self._frame_counter + 1
+            if self._frame_counter >= len(self._death_animation):
+                self._frame_counter = 0
+                self.dead_animation_done = True
+                self.kill()
+        else:
+            self.image = self._images[self._frame_counter]  # Get the next image based on the frame counter.
+            # Check the new position.
+            if self.x_pos > self._x_pos_OLD:  # If it is going right.
+                self._frame_counter = self._frame_counter + 1  # Get the next gif frame.
+                self._direction = "Right."  # Indicate the rotation direction.
+            elif self.x_pos < self._x_pos_OLD:  # If it is going left.
+                self._frame_counter = self._frame_counter - 1  # Get the previous frame.
+                self._direction = "Left."  # Indicate the rotation direction.
 
-        elif self.x_pos == self._x_pos_OLD:  # If the virus is standing still.
-            if self._direction == "Right.":  # If it used to go right before stopping.
-                self._frame_counter = self._frame_counter + 1  # Get the next frame (rotate right).
-            elif self._direction == "Left.":  # If it used to go left before stopping.
-                self._frame_counter = self._frame_counter - 1  # Get the previous frame (rotate left).
+            elif self.x_pos == self._x_pos_OLD:  # If the virus is standing still.
+                if self._direction == "Right.":  # If it used to go right before stopping.
+                    self._frame_counter = self._frame_counter + 1  # Get the next frame (rotate right).
+                elif self._direction == "Left.":  # If it used to go left before stopping.
+                    self._frame_counter = self._frame_counter - 1  # Get the previous frame (rotate left).
 
-        # Reset the frame counter after the maximum number or minimum number of frames.
-        if self._frame_counter >= len(self._images):
-            self._frame_counter = 0
-        elif self._frame_counter < 0:
-            self._frame_counter = len(self._images) - 1
+            # Reset the frame counter after the maximum number or minimum number of frames.
+            if self._frame_counter >= len(self._images):
+                self._frame_counter = 0
+            elif self._frame_counter < 0:
+                self._frame_counter = len(self._images) - 1
 
         self._x_pos_OLD = self.x_pos  # Record the current position into self._x_pos_OLD.
 
-    def death_animation(self):
-        # TODO
-        pass
-    
-    def is_hit(self, bullet):
+    def check_if_hit(self, bullet):
         bullet_range_x = range(bullet.x_pos, bullet.x_pos + bullet.width)
         bullet_range_y = range(bullet.y_pos, bullet.y_pos + bullet.height)
 
@@ -81,4 +94,8 @@ class Virus(Sprite):
         self_range_y = range(self.y_pos, self.y_pos + self.height)
 
         if bool(set(bullet_range_x) & set(self_range_x)) is True:
-            return bool(set(bullet_range_y) & set(self_range_y))
+            if bool(set(bullet_range_y) & set(self_range_y)):
+                self._frame_counter = 0
+                self.is_dead = True
+                return True
+        return False
