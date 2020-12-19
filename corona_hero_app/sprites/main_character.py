@@ -41,8 +41,12 @@ class MainCharacter(Sprite):
         self._image_jump_L = transform_into_surface(self._image_jump_L)
 
         # Get the player animation for shooting.
-        self._image_shoot = Image.open(str(os.path.join(self._resources_path, 'Hero_Shoot.png'))).convert("RGBA")
-        self._image_shoot = transform_into_surface(self._image_shoot)
+        self._image_shoot_left = Image.open(
+            str(os.path.join(self._resources_path, 'Hero_Shoot_Left.png'))).convert("RGBA")
+        self._image_shoot_left = transform_into_surface(self._image_shoot_left)
+        self._image_shoot_right = Image.open(
+            str(os.path.join(self._resources_path, 'Hero_Shoot_Right.png'))).convert("RGBA")
+        self._image_shoot_right = transform_into_surface(self._image_shoot_right)
         self.bullet_count = 30
         self.bullet_list = []
 
@@ -79,10 +83,12 @@ class MainCharacter(Sprite):
         self._images_move_R = [smoothscale(self._images_move_R[i], (w, h)) for i in range(len(self._images_move_R))]
         self._image_jump_R = smoothscale(self._image_jump_R, (w, h))
         self._image_jump_L = smoothscale(self._image_jump_L, (w, h))
-        self._image_shoot = smoothscale(self._image_shoot, (w, h))
+        self._image_shoot_left = smoothscale(self._image_shoot_left, (w, h))
+        self._image_shoot_right = smoothscale(self._image_shoot_right, (w, h))
         self.current_animation = smoothscale(self.current_animation, (w, h))
 
     def animate(self):
+
         self._image_still = self._images_still[self._still_frame_counter]  # Get the next image.
         self._still_frame_counter = self._still_frame_counter + 1
         if self._still_frame_counter >= len(self._images_still):  # Reset after the maximum number of frames.
@@ -107,9 +113,13 @@ class MainCharacter(Sprite):
         self.isJump = True
 
     def shoot(self):
+
         if self.bullet_count > 0:
             self.bullet_list.append(Bullet(self.current_movement_direction, self.x_pos, self.y_pos))
-            self.set_current_animation(self._image_shoot)
+            if self.current_movement_direction == "Left.":
+                self.set_current_animation(self._image_shoot_left)
+            else:
+                self.set_current_animation(self._image_shoot_right)
             self.bullet_count = self.bullet_count - 1
         else:
             self.bullet_count = 0

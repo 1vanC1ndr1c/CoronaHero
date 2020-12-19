@@ -14,13 +14,6 @@ from corona_hero_app.engine.engine import start_game
 
 
 def start_test_level():
-    """
-    Testing environment to see if the animations work.
-    TODO Replace it with actual movement later on.
-    """
-
-    shootable_objects = []
-
     character = MainCharacter()  # Check the main character animation
 
     virus = Virus()  # ... or check the virus animation.
