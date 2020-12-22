@@ -29,21 +29,18 @@ def start_test_level():
 
     platform1 = Platform()
     platform1.set_dimensions(100, 10)
-    platform1.y_pos = 600
+    platform1.set_position(0, 600)
 
     platform2 = Platform()
     platform2.set_dimensions(100, 10)
-    platform2.y_pos = 600
-    platform2.x_pos = 100
+    platform2.set_position(100, 600)
 
     platform3 = Platform()
     platform3.set_dimensions(100, 10)
-    platform3.y_pos = 600
-    platform3.x_pos = 200
+    platform3.set_position(200, 600)
 
     box1 = Box()
-    box1.y_pos = 370
-    box1.x_pos = 600
+    box1.set_position(370, 600)
 
     dis1 = Disinfectant()
     dis1.y_pos = 570
@@ -78,4 +75,6 @@ def start_test_level():
                masks=[mask],
                sinks=[sink],
                walls=[wall1],
-               viruses=[virus])
+               viruses=[virus],
+               rects=[platform1, platform2, platform3, box1]
+               )

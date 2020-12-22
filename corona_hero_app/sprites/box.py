@@ -18,18 +18,29 @@ class Box(Sprite):
         self.image_box = Image.open(str(os.path.join(self._resources_path, 'Box.png')))
         self.image_box = transform_into_surface(self.image_box)
 
+        self.rect = self.image_box.get_rect()
+
         self.width = 30
         self.height = 30
         self.set_dimensions(self.width, self.height)
 
-        self.x_pos = 0
-        self.y_pos = 0
+        self.rect.x = 150
+        self.rect.y = 150
+
+        self.rect.width = 30
+        self.rect.height = 30
 
         self.is_dead = False
 
 
     def set_dimensions(self, w, h):
+        self.rect.width = w
+        self.rect.height = h
         self.image_box = smoothscale(self.image_box, (w, h))
+
+    def set_position(self, x, y):
+        self.rect.x = x
+        self.rect.y = y
 
     def check_if_hit(self, bullet):
         bullet_range_x = range(bullet.x_pos, bullet.x_pos + bullet.width)
@@ -40,3 +51,6 @@ class Box(Sprite):
 
         if bool(set(bullet_range_x) & set(self_range_x)) is True:
             return bool(set(bullet_range_y) & set(self_range_y))
+
+    def get_rect(self):
+        return self.rect
