@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 
+import pygame
 from PIL import Image
 from pygame.sprite import Sprite
 from pygame.transform import smoothscale
@@ -74,6 +75,13 @@ class MainCharacter(Sprite):
 
         self.is_dead = False
 
+        self.rect = self._image_still.get_rect()
+
+        self.rect.width = 50
+        self.rect.height = 100
+        self.rect.x = 0
+        self.rect.y = 0
+
     def set_dimensions(self, w, h):
         self.width = w
         self.height = h
@@ -129,6 +137,7 @@ class MainCharacter(Sprite):
 
     def move_left(self, x_pos_change):
         self.x_pos = self.x_pos + x_pos_change
+        self.rect.x += x_pos_change
         self.x_movement_direction = "Left."
         self.current_movement_direction = "Left."
 
@@ -140,6 +149,7 @@ class MainCharacter(Sprite):
 
     def move_right(self, x_pos_change):
         self.x_pos = self.x_pos + x_pos_change
+        self.rect.x += x_pos_change
         self.x_movement_direction = "Right."
         self.current_movement_direction = "Right."
 
@@ -151,11 +161,13 @@ class MainCharacter(Sprite):
 
     def move_up(self, y_pos_change):
         self.y_pos = self.y_pos + y_pos_change
+        self.rect.y += y_pos_change
         self.y_movement_direction = "Up."
         self.current_movement_direction = "Up."
 
     def move_down(self, y_pos_change):
         self.y_pos = self.y_pos + y_pos_change
+        self.rect.y += y_pos_change
         self.y_movement_direction = "Down."
         self.current_movement_direction = "Down."
 
@@ -175,3 +187,12 @@ class MainCharacter(Sprite):
                 self.current_animation = self._image_jump_L
             else:
                 self.current_animation = self._image_jump_R
+
+    def collide(self, rect):
+        return self.rect.colliderect(rect)
+
+    def set_rect_x(self, x_pos_change):
+        self.rect.x += x_pos_change
+
+    def set_rect_y(self, y_pos_change):
+        self.rect.y += y_pos_change
