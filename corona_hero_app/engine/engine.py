@@ -13,13 +13,17 @@ from corona_hero_app.sprites.infected_person import InfectedPerson
 
 import time
 
-
-def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, walls, viruses):
+def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, walls, viruses, rects):
     shootable_objects = []
     shootable_objects.extend(boxes)
     shootable_objects.extend(inf_per)
     shootable_objects.extend(platforms)
     shootable_objects.extend(viruses)
+
+    boxesGroup = pygame.sprite.Group()
+
+    for box in boxes:
+        boxesGroup.add(box)
 
     window_x_size = 960
     window_y_size = 640
@@ -44,15 +48,23 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
         if not character.isJump:
             if keys[pygame.K_UP] and character.y_pos > 0:
                 character.move_up(-pos_change)
+                for rect in rects:
+                    if character.collide(rect):
+                        character.move_up(pos_change)
 
             if keys[pygame.K_DOWN] and character.y_pos < window_y_size - character.height:
                 character.move_down(pos_change)
+                for rect in rects:
+                    if character.collide(rect):
+                        character.move_down(-pos_change)
 
             if keys[pygame.K_SPACE] and character.y_pos < window_y_size - character.height:
                 character.jump()
                 if character.y_pos > 0:
                     character.y_pos -= jump_pos_change
+                    character.set_rect_y(-jump_pos_change)
                 character.x_pos += pos_change
+                character.set_rect_x(pos_change)
         else:
             if jump_count >= -10:
                 neg = 1
@@ -60,6 +72,7 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
                     neg = -1
 
                 character.y_pos -= int((jump_count ** 2) * 0.5 * neg)
+                character.set_rect_y(int((jump_count ** 2) * 0.5 * neg))
                 jump_count -= 1
             else:
                 character.isJump = False
@@ -67,9 +80,15 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
 
         if keys[pygame.K_LEFT] and character.x_pos > 0:
             character.move_left(-pos_change)
+            for rect in rects:
+                if character.collide(rect):
+                    character.move_left(pos_change)
 
         if keys[pygame.K_RIGHT] and character.x_pos < window_x_size - character.width:
             character.move_right(pos_change)
+            for rect in rects:
+                if character.collide(rect):
+                    character.move_right(-pos_change)
 
         if pygame.mouse.get_pressed(3)[0] is True:
             current_shoot = time.time()
@@ -102,7 +121,7 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
         for platform in platforms:
             win.blit(platform.image_grass, (platform.x_pos, platform.y_pos))
         for box in boxes:
-            win.blit(box.image_box, (box.x_pos, box.y_pos))
+            win.blit(box.image_box, box.get_rect())
         for d in dis:
             win.blit(d.image_disinfectant, (d.x_pos, d.y_pos))
         for g in gloves:
