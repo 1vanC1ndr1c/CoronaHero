@@ -13,6 +13,7 @@ from corona_hero_app.sprites.infected_person import InfectedPerson
 
 import time
 
+
 def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, walls, viruses, rects):
     shootable_objects = []
     shootable_objects.extend(boxes)
@@ -35,8 +36,9 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
     run = True
     jump_count = 10
     last_shoot = current_shoot = time.time()
-    while run:
+    mask_timer_start = mask_timer_end = -1
 
+    while run:
         pygame.time.delay(50)
 
         for event in pygame.event.get():
@@ -45,56 +47,57 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
                 run = False
         keys = pygame.key.get_pressed()
 
-        if not character.isJump:
-            if keys[pygame.K_UP] and character.y_pos > 0:
-                character.move_up(-pos_change)
-                for rect in rects:
-                    if character.collide(rect):
-                        character.move_up(pos_change)
+        if character.is_dead is False:
+            if not character.isJump:
+                if keys[pygame.K_UP] and character.y_pos > 0:
+                    character.move_up(-pos_change)
+                    for rect in rects:
+                        if character.collide(rect):
+                            character.move_up(pos_change)
 
-            if keys[pygame.K_DOWN] and character.y_pos < window_y_size - character.height:
-                character.move_down(pos_change)
-                for rect in rects:
-                    if character.collide(rect):
-                        character.move_down(-pos_change)
+                if keys[pygame.K_DOWN] and character.y_pos < window_y_size - character.height:
+                    character.move_down(pos_change)
+                    for rect in rects:
+                        if character.collide(rect):
+                            character.move_down(-pos_change)
 
-            if keys[pygame.K_SPACE] and character.y_pos < window_y_size - character.height:
-                character.jump()
-                if character.y_pos > 0:
-                    character.y_pos -= jump_pos_change
-                    character.set_rect_y(-jump_pos_change)
-                character.x_pos += pos_change
-                character.set_rect_x(pos_change)
-        else:
-            if jump_count >= -10:
-                neg = 1
-                if jump_count < 0:
-                    neg = -1
-
-                character.y_pos -= int((jump_count ** 2) * 0.5 * neg)
-                character.set_rect_y(int((jump_count ** 2) * 0.5 * neg))
-                jump_count -= 1
+                if keys[pygame.K_SPACE] and character.y_pos < window_y_size - character.height:
+                    character.jump()
+                    if character.y_pos > 0:
+                        character.y_pos -= jump_pos_change
+                        character.set_rect_y(-jump_pos_change)
+                    character.x_pos += pos_change
+                    character.set_rect_x(pos_change)
             else:
-                character.isJump = False
-                jump_count = 10
+                if jump_count >= -10:
+                    neg = 1
+                    if jump_count < 0:
+                        neg = -1
 
-        if keys[pygame.K_LEFT] and character.x_pos > 0:
-            character.move_left(-pos_change)
-            for rect in rects:
-                if character.collide(rect):
-                    character.move_left(pos_change)
+                    character.y_pos -= int((jump_count ** 2) * 0.5 * neg)
+                    character.set_rect_y(-int((jump_count ** 2) * 0.5 * neg))
+                    jump_count -= 1
+                else:
+                    character.isJump = False
+                    jump_count = 10
 
-        if keys[pygame.K_RIGHT] and character.x_pos < window_x_size - character.width:
-            character.move_right(pos_change)
-            for rect in rects:
-                if character.collide(rect):
-                    character.move_right(-pos_change)
+            if keys[pygame.K_LEFT] and character.x_pos > 0:
+                character.move_left(-pos_change)
+                for rect in rects:
+                    if character.collide(rect):
+                        character.move_left(pos_change)
 
-        if pygame.mouse.get_pressed(3)[0] is True:
-            current_shoot = time.time()
-            if current_shoot - last_shoot > 0.3:
-                character.shoot()
-            last_shoot = current_shoot
+            if keys[pygame.K_RIGHT] and character.x_pos < window_x_size - character.width:
+                character.move_right(pos_change)
+                for rect in rects:
+                    if character.collide(rect):
+                        character.move_right(-pos_change)
+
+            if pygame.mouse.get_pressed(3)[0] is True:
+                current_shoot = time.time()
+                if current_shoot - last_shoot > 0.1:
+                    character.shoot()
+                last_shoot = current_shoot
 
         win.fill((0, 0, 0))
 
@@ -122,14 +125,38 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
             win.blit(platform.image_grass, (platform.x_pos, platform.y_pos))
         for box in boxes:
             win.blit(box.image_box, box.get_rect())
+
         for d in dis:
+            d.animate()
             win.blit(d.image_disinfectant, (d.x_pos, d.y_pos))
+            if d.check_if_collected(character) is True:
+                character.disinfectant_pick_up()
+        dis = [d for d in dis if d.collected is False]
+
         for g in gloves:
+            g.animate()
             win.blit(g.image_gloves, (g.x_pos, g.y_pos))
+            if g.check_if_collected(character) is True:
+                character.gloves_pick_up()
+        gloves = [g for g in gloves if g.collected is False]
+
         for i in inf_per:
             win.blit(i.image_infected_person, (i.x_pos, i.y_pos))
+
         for mask in masks:
-            win.blit(mask.image_mask_1, (mask.x_pos, mask.y_pos))
+            mask.animate()
+            win.blit(mask.image_mask, (mask.x_pos, mask.y_pos))
+            if mask.check_if_collected(character) is True:
+                character.mask_pick_up()
+                mask_timer_start = time.time()
+        masks = [m for m in masks if m.collected is False]
+
+        if mask_timer_start != -1:
+            mask_timer_end = time.time()
+            if mask_timer_end - mask_timer_start > 30:
+                mask_timer_end = mask_timer_start = -1
+                character.mask_depleted()
+
         for sink in sinks:
             win.blit(sink.image_sink, (sink.x_pos, sink.y_pos))
 
