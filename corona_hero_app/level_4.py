@@ -17,6 +17,7 @@ from sprites.background import Background
 
 floors = []
 platforms = []
+platformImages = []
 boxes = []
 sinks = []
 masks = []
@@ -31,12 +32,13 @@ def setWall(x,y):
     floors[len(floors) -1].y_pos = y
     floors[len(floors) -1].x_pos = x
 
-def setPlatform(x,y,size):
+def setPlatform(x,y,size, image):
     for i in range(size):
         platforms.append( Platform())
         platforms[len(platforms)-1].set_dimensions(50, 50) 
         platforms[len(platforms)-1].x_pos = x+i*50
         platforms[len(platforms)-1].y_pos = y
+        platformImages.append(image)
 
 def setBox(x,y):
     boxes.append( Box())
@@ -78,26 +80,62 @@ def setDoors(x,y):
 
 
 
-def level_1(test):
+def level_4(test):
 
     for i in range(26):
        #set floors
-       setPlatform(i*50,670,1)
+       if i > 3 and i < 22:
+           setPlatform(i*50,670,1, 1)
+       else : 
+           setPlatform(i*50,670,1, 0)
+
+    for i in range(18):
+       if i > 0 and i <17:
+           setPlatform(200 + i*50,620,1, 1)
+       else : 
+           setPlatform(200 + i*50,620,1, 0)
+
+    for i in range(16):
+       if i > 1 and i <14:
+           setPlatform(250 + i*50,570,1, 1)
+       else : 
+           setPlatform(250 + i*50,570,1, 0)
+
+    for i in range(12):
+       if i > 0 and i <11:
+           setPlatform(350 + i*50,520,1, 1)
+       else : 
+           setPlatform(350 + i*50,520,1, 0)
+
+    for i in range(10):
+       if i > 1 and i <8:
+           setPlatform(400 + i*50,470,1, 1)
+       else : 
+           setPlatform(400 + i*50,470,1, 0)
+
+    for i in range(6):
+       if i > 0 and i <5:
+           setPlatform(500 + i*50,420,1, 1)
+       else : 
+           setPlatform(500 + i*50,420,1, 0)
+
+    for i in range(4):
+       setPlatform(550 + i*50,370,1, 0)
+    
+    setPlatform(100,400,3, 0)
 
     #border
     for i in range(12):
         setWall(0, 720-100-50*i)
         setWall(1230, 720-100-50*i)
 
-    setPlatform(630, 470, 5)
-    #setPlatform(500, 350, 3)
-    #setPlatform(300, 100, 2)
-    setPlatform(500,620,2)
-    #setSink(600, 540)
-    #setMask(310, 70)
-    #setDisinfect(180, 405)
+
+    setDisinfect(110, 355)
+
+  
     setDoors(60,570)
     setDoors(1140,570)
+    
 
     #fill level surface
     level = pygame.Surface((1280, 720))#960, 640
@@ -108,13 +146,14 @@ def level_1(test):
     level.blit(background.image_cave, (0,0))
 
     for i in range (len(floors)):
+        
         level.blit(floors[i].image_wall_darker, (floors[i].x_pos,floors[i].y_pos ))
 
     for i in range (len(platforms)):
-        if i == 11 or i == 10:
+        if platformImages[i] == 1:
             level.blit(platforms[i].image_soil, (platforms[i].x_pos,platforms[i].y_pos ))
-            continue
-        level.blit(platforms[i].image_grass, (platforms[i].x_pos,platforms[i].y_pos ))
+        else : 
+            level.blit(platforms[i].image_grass, (platforms[i].x_pos,platforms[i].y_pos ))
 
 
     for i in range (len(sinks)):
@@ -122,6 +161,9 @@ def level_1(test):
 
     for i in range (len(disinfectants)):
         level.blit(disinfectants[i].image_disinfectant, (disinfectants[i].x_pos,disinfectants[i].y_pos ))
+
+    for i in range (len(boxes)):
+        level.blit(boxes[i].image_box, (boxes[i].x_pos,boxes[i].y_pos ))
 
     level.blit(doors[0].image_entrance, (doors[0].x_pos,doors[0].y_pos ))
     level.blit(doors[1].image_exit, (doors[1].x_pos,doors[1].y_pos ))
@@ -157,4 +199,4 @@ def level_1(test):
 
 
 if __name__ == '__main__':
-    level_1(True)
+    level_4(True)

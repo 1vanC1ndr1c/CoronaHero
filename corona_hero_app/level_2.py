@@ -78,7 +78,7 @@ def setDoors(x,y):
 
 
 
-def level_1(test):
+def level_2(test):
 
     for i in range(26):
        #set floors
@@ -89,15 +89,18 @@ def level_1(test):
         setWall(0, 720-100-50*i)
         setWall(1230, 720-100-50*i)
 
-    setPlatform(630, 470, 5)
-    #setPlatform(500, 350, 3)
-    #setPlatform(300, 100, 2)
-    setPlatform(500,620,2)
-    #setSink(600, 540)
+    setPlatform(680, 420,2)
+    setPlatform(200, 300, 6)
+    setPlatform(200,250,1)
+    setBox(340, 570)
+    setBox(930, 620)
+    setPlatform(300,620,8)
+    setSink(250, 250)
     #setMask(310, 70)
     #setDisinfect(180, 405)
     setDoors(60,570)
     setDoors(1140,570)
+    
 
     #fill level surface
     level = pygame.Surface((1280, 720))#960, 640
@@ -111,7 +114,7 @@ def level_1(test):
         level.blit(floors[i].image_wall_darker, (floors[i].x_pos,floors[i].y_pos ))
 
     for i in range (len(platforms)):
-        if i == 11 or i == 10:
+        if (i >5 and i < 14) or i == 28:
             level.blit(platforms[i].image_soil, (platforms[i].x_pos,platforms[i].y_pos ))
             continue
         level.blit(platforms[i].image_grass, (platforms[i].x_pos,platforms[i].y_pos ))
@@ -122,6 +125,9 @@ def level_1(test):
 
     for i in range (len(disinfectants)):
         level.blit(disinfectants[i].image_disinfectant, (disinfectants[i].x_pos,disinfectants[i].y_pos ))
+
+    for i in range (len(boxes)):
+        level.blit(boxes[i].image_box, (boxes[i].x_pos,boxes[i].y_pos ))
 
     level.blit(doors[0].image_entrance, (doors[0].x_pos,doors[0].y_pos ))
     level.blit(doors[1].image_exit, (doors[1].x_pos,doors[1].y_pos ))
@@ -157,4 +163,4 @@ def level_1(test):
 
 
 if __name__ == '__main__':
-    level_1(True)
+    level_2(True)

@@ -78,7 +78,7 @@ def setDoors(x,y):
 
 
 
-def level_1(test):
+def level_3(test):
 
     for i in range(26):
        #set floors
@@ -89,15 +89,33 @@ def level_1(test):
         setWall(0, 720-100-50*i)
         setWall(1230, 720-100-50*i)
 
-    setPlatform(630, 470, 5)
-    #setPlatform(500, 350, 3)
-    #setPlatform(300, 100, 2)
-    setPlatform(500,620,2)
-    #setSink(600, 540)
-    #setMask(310, 70)
-    #setDisinfect(180, 405)
+    #set middle wall
+    for i in range(10):
+       setPlatform(600,620-50*i,1)
+    setPlatform(350,120,6)   
+
+    #set door wall
+    for i in range(6):
+       setPlatform(1050,620-50*i,1)
+
+    setPlatform(70,470,3)
+    setPlatform(550,530,1)
+    setPlatform(360,370,4)
+    setPlatform(120,250,2)
+    setPlatform(720,550,5)
+    setPlatform(500,70,1)
+
+    setSink(550, 70)
+    setBox(450, 620)
+    setBox(410,320)
+    setBox(750, 500)
+
+
+
+  
     setDoors(60,570)
     setDoors(1140,570)
+    
 
     #fill level surface
     level = pygame.Surface((1280, 720))#960, 640
@@ -108,10 +126,11 @@ def level_1(test):
     level.blit(background.image_cave, (0,0))
 
     for i in range (len(floors)):
+        
         level.blit(floors[i].image_wall_darker, (floors[i].x_pos,floors[i].y_pos ))
 
     for i in range (len(platforms)):
-        if i == 11 or i == 10:
+        if (i >25 and i < 36) or i == 39 or i == 12 or(i >41 and i < 47) or i == 21:
             level.blit(platforms[i].image_soil, (platforms[i].x_pos,platforms[i].y_pos ))
             continue
         level.blit(platforms[i].image_grass, (platforms[i].x_pos,platforms[i].y_pos ))
@@ -122,6 +141,9 @@ def level_1(test):
 
     for i in range (len(disinfectants)):
         level.blit(disinfectants[i].image_disinfectant, (disinfectants[i].x_pos,disinfectants[i].y_pos ))
+
+    for i in range (len(boxes)):
+        level.blit(boxes[i].image_box, (boxes[i].x_pos,boxes[i].y_pos ))
 
     level.blit(doors[0].image_entrance, (doors[0].x_pos,doors[0].y_pos ))
     level.blit(doors[1].image_exit, (doors[1].x_pos,doors[1].y_pos ))
@@ -157,4 +179,4 @@ def level_1(test):
 
 
 if __name__ == '__main__':
-    level_1(True)
+    level_3(True)
