@@ -177,11 +177,6 @@ class MainCharacter(Sprite):
         self.rect.x = x
         self.rect.y = y
 
-        print('Character X: ', self.x_pos)
-        print('Character Y: ', self.y_pos)
-        print('Character rect X: ', self.rect.x)
-        print('Character rect Y: ', self.rect.y)
-
     def set_dimensions(self, w, h):
         self.width = w
         self.height = h

@@ -16,7 +16,8 @@ def start_test_level():
     character = MainCharacter()  # Check the main character animation
     character.set_position(0, 500)
 
-    energy_time = EnergyTime(0, 0)
+    energy_time1 = EnergyTime(0, 0)
+    energy_time2 = EnergyTime(0, 50)
 
     virus = Virus()  # ... or check the virus animation.
     virus.x_pos = 500
@@ -37,7 +38,8 @@ def start_test_level():
     platform3.set_position(200, 600)
 
     box1 = Box()
-    box1.set_position(370, 600)
+    box1.set_dimensions(100, 100)
+    box1.set_position(150, 500)
 
     dis1 = Disinfectant()
     dis1.y_pos = 570
@@ -76,5 +78,6 @@ def start_test_level():
                walls=[wall1],
                viruses=[virus],
                rects=[platform1, platform2, platform3, box1],
-               energy_time=energy_time
+               energy_time1=energy_time1,
+               energy_time2=energy_time2
                )
