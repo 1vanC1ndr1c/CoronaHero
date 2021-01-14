@@ -9,15 +9,13 @@ from corona_hero_app.sprites.platform import Platform
 from corona_hero_app.sprites.sink import Sink
 from corona_hero_app.sprites.virus import Virus
 from corona_hero_app.sprites.wall import Wall
+from corona_hero_app.sprites.door import Door
 from corona_hero_app.sprites.energy_time import EnergyTime
 
 
 def start_test_level():
     character = MainCharacter()  # Check the main character animation
     character.set_position(0, 500)
-
-    energy_time1 = EnergyTime(0, 0)
-    energy_time2 = EnergyTime(0, 50)
 
     virus = Virus()  # ... or check the virus animation.
     virus.x_pos = 500
@@ -67,6 +65,10 @@ def start_test_level():
     wall2 = Wall()
     wall2.x_pos = 300
 
+    door = Door()
+    door.y_pos = 570
+    door.x_pos = 260
+
     start_game(character=character,
                platforms=[platform1, platform2, platform3],
                boxes=[box1],
@@ -78,6 +80,4 @@ def start_test_level():
                walls=[wall1],
                viruses=[virus],
                rects=[platform1, platform2, platform3, box1],
-               energy_time1=energy_time1,
-               energy_time2=energy_time2
-               )
+               doors=[door])

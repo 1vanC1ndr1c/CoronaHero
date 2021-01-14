@@ -24,8 +24,6 @@ class EnergyTime(Sprite):
         self.height = 30
         self.set_dimensions(self.width, self.height)
 
-        print(len(self._image_energy_time_gif))
-
         self.x_pos = start_pos_x
         self.y_pos = start_pos_y
 

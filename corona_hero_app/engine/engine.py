@@ -3,10 +3,15 @@ import time
 import pygame
 
 
-def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, walls, viruses, rects, energy_time1, energy_time2):
+from corona_hero_app.sprites.energy_time import EnergyTime
+
+
+def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, walls, viruses, rects, doors):
+    energy_time1 = EnergyTime(0, 0)
+    energy_time2 = EnergyTime(0, 50)
+
     shootable_objects = []
     shootable_objects.extend(boxes)
-    shootable_objects.extend(inf_per)
     shootable_objects.extend(platforms)
     shootable_objects.extend(viruses)
 
@@ -189,9 +194,6 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
                     energy_time_start_gloves = time.time()
         #gloves = [g for g in gloves if g.collected is False]
 
-        for i in inf_per:
-            win.blit(i.image_infected_person, (i.x_pos, i.y_pos))
-
         for mask in masks:
             mask.animate()
             win.blit(mask.image_mask, (mask.x_pos, mask.y_pos))
@@ -218,6 +220,9 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
                 character.wash_hands()
 
             win.blit(sink.image_sink, (sink.x_pos, sink.y_pos))
+
+        for door in doors:
+            win.blit(door.door_entrance, (door.x_pos, door.y_pos))
 
         for virus in viruses:
             if virus.dead_animation_done is False:
