@@ -45,8 +45,8 @@ class Box(Sprite):
     def set_position(self, x, y):
         self.rect.x = x
         self.rect.y = y
-        self.x_pos = self.rect.x
-        self.y_pos = self.rect.y
+        self.x_pos = x
+        self.y_pos = y
 
     def check_if_hit(self, bullet):
         bullet_range_x = range(bullet.x_pos, bullet.x_pos + bullet.width)
