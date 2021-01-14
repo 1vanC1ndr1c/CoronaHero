@@ -29,6 +29,7 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
     jump_count = 10
     last_shoot = current_shoot = time.time()
     mask_timer_start = mask_timer_end = -1
+    death_timer_end = 0
 
     for rect in rects:
         print(rect)
@@ -41,6 +42,11 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
             if event.type == pygame.QUIT:
                 run = False
         keys = pygame.key.get_pressed()
+
+        if character.death_countdown is True:
+            death_timer_end = time.time()
+            if death_timer_end - character.death_timer_start >= 10:
+                character.is_dead = True
 
         if character.is_dead is False:
             if not character.isJump:
@@ -108,8 +114,13 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
 
         for platform in platforms:
             win.blit(platform.image_grass, (platform.x_pos, platform.y_pos))
+
         for box in boxes:
             win.blit(box.image_box, box.get_rect())
+            if character.check_if_near_box(box):
+                if character.has_gloves is False:
+                    character.start_death_countdown()
+                box.move(pos_change, character)
 
         for d in dis:
             d.animate()
@@ -143,10 +154,14 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
                 character.mask_depleted()
 
         for sink in sinks:
+            if character.check_if_collided(sink):
+                character.wash_hands()
+
             win.blit(sink.image_sink, (sink.x_pos, sink.y_pos))
 
         for virus in viruses:
             if virus.dead_animation_done is False:
+                character.check_if_hit(virus)
                 virus.animate()
                 win.blit(virus.image, (virus.x_pos, virus.y_pos))
             else:
