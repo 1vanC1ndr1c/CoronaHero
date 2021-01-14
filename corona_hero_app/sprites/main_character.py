@@ -146,8 +146,16 @@ class MainCharacter(Sprite):
         self.x_pos = 0
         self.y_pos = 0
 
-        self.rect.x = self.x_pos
-        self.rect.y = self.y_pos
+    def set_position(self, x, y):
+        self.x_pos = x
+        self.y_pos = y
+        self.rect.x = x
+        self.rect.y = y
+
+        print('Character X: ', self.x_pos)
+        print('Character Y: ', self.y_pos)
+        print('Character rect X: ', self.rect.x)
+        print('Character rect Y: ', self.rect.y)
 
     def set_dimensions(self, w, h):
         self.width = w
@@ -313,10 +321,10 @@ class MainCharacter(Sprite):
                     self._jump_counter = 0
 
     def set_rect_x(self, x_pos_change):
-        self.rect = self.rect.move(x_pos_change, self.rect.y)
+        self.rect = self.rect.move(x_pos_change, 0)
 
     def set_rect_y(self, y_pos_change):
-        self.rect = self.rect.move(self.rect.x, y_pos_change)
+        self.rect = self.rect.move(0, y_pos_change)
 
     def start_death_countdown(self):
         if self.death_countdown is False:

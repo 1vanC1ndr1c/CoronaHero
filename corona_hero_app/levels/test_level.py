@@ -13,10 +13,7 @@ from corona_hero_app.sprites.wall import Wall
 
 def start_test_level():
     character = MainCharacter()  # Check the main character animation
-    character.x_pos = 0
-    character.y_pos = 500
-    character.rect.x = 0
-    character.rect.y = 500
+    character.set_position(0, 500)
 
     virus = Virus()  # ... or check the virus animation.
     virus.x_pos = 500

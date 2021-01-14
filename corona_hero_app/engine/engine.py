@@ -24,7 +24,6 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
     win = pygame.display.set_mode((window_x_size, window_y_size))
     pygame.display.set_caption("Testing environment.")
     pos_change = 5
-    jump_pos_change = 5
     run = True
     jump_count = 10
     last_shoot = current_shoot = time.time()
@@ -63,9 +62,20 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
 
                     character.y_pos -= int((jump_count ** 2) * 0.5 * neg)
                     character.set_rect_y(-int((jump_count ** 2) * 0.5 * neg))
+                    print('X: ', character.x_pos)
+                    print('Rect X: ', character.rect.x)
+                    print('Y: ', character.y_pos)
+                    print('Rect Y: ', character.rect.y)
                     jump_count -= 1
                 else:
+                    print(check_collide[0].rect.y)
+                    character.y_pos -= int((jump_count ** 2) * 0.5) - 5
+                    character.set_rect_y(-int((jump_count ** 2) * 0.5) - 5)
                     character.isJump = False
+                    print('X: ', character.x_pos)
+                    print('Rect X: ', character.rect.x)
+                    print('Y: ', character.y_pos)
+                    print('Rect Y: ', character.rect.y)
                     jump_count = 10
 
             if keys[pygame.K_LEFT] and character.x_pos > 0:
