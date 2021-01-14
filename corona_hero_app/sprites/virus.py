@@ -25,6 +25,8 @@ class Virus(Sprite):
         self._death_animation = Image.open(str(os.path.join(self._resources_path, 'Virus_death.gif')))
         self._death_animation = split_animated_gif(self._death_animation)
 
+        self.rect = self.image.get_rect()
+
         # Virus dimensions.
         self.width = 50
         self.height = 50
@@ -33,6 +35,11 @@ class Virus(Sprite):
         # Current virus position.
         self.x_pos = 0
         self.y_pos = 0
+
+        self.rect.x = 0
+        self.rect.y = 0
+        self.rect.width = 50
+        self.rect.height = 50
 
         # Previous virus position (used to determine the rotation direction.)
         self._x_pos_OLD = 0
@@ -84,6 +91,7 @@ class Virus(Sprite):
             elif self._frame_counter < 0:
                 self._frame_counter = len(self._images) - 1
 
+        self.rect.x = self.x_pos
         self._x_pos_OLD = self.x_pos  # Record the current position into self._x_pos_OLD.
 
     def check_if_hit(self, bullet):
@@ -99,3 +107,6 @@ class Virus(Sprite):
                 self.is_dead = True
                 return True
         return False
+
+    def get_rect(self):
+        return self.rect
