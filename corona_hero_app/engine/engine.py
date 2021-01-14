@@ -69,8 +69,8 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
                     jump_count -= 1
                 else:
                     print(check_collide[0].rect.y)
-                    character.y_pos -= int((jump_count ** 2) * 0.5) - 5
-                    character.set_rect_y(-int((jump_count ** 2) * 0.5) - 5)
+                    character.y_pos -= int(((jump_count + 1) ** 2) * 0.5)
+                    character.set_rect_y(-int(((jump_count + 1) ** 2) * 0.5))
                     character.isJump = False
                     print('X: ', character.x_pos)
                     print('Rect X: ', character.rect.x)
