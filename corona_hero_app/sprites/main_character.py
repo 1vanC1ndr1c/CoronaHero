@@ -11,6 +11,8 @@ from corona_hero_app.image_handler import transform_into_surface
 
 from corona_hero_app.sprites.bullet import Bullet
 
+import time
+
 
 class MainCharacter(Sprite):
 
@@ -90,7 +92,7 @@ class MainCharacter(Sprite):
             str(os.path.join(self._resources_path, 'Hero_Shoot_Right_Mask.png'))).convert("RGBA")
         self._image_shoot_right_MASK = transform_into_surface(self._image_shoot_right_MASK)
 
-        self.bullet_count = 30
+        self.bullet_count = 0
         self.bullet_list = []
 
         # Get the dying animation.
@@ -115,6 +117,10 @@ class MainCharacter(Sprite):
         self.isJump = False
         self.is_dead = False
         self.is_masked = False
+
+        self.toggle_death_countdown = False
+        self.death_counter = 0
+        self.death_timer_start = -1
 
         self.rect = self._image_still.get_rect()
 
@@ -291,12 +297,11 @@ class MainCharacter(Sprite):
             self._image_shoot_right = self._default_animations[8]
 
     def wash_hands(self):
-        # TODO
-        pass
+        self.toggle_death_countdown = False
+        self.death_timer_start = -1
 
     def disinfectant_pick_up(self):
-        # TODO
-        pass
+        self.bullet_count = self.bullet_count + 30
 
     def gloves_pick_up(self):
         # TODO
@@ -327,3 +332,28 @@ class MainCharacter(Sprite):
 
     def set_rect_y(self, y_pos_change):
         self.rect.y += y_pos_change
+
+    def check_if_hit(self, virus):
+        if self.toggle_death_countdown is False and self.is_masked is False:
+            virus_range_x = range(virus.x_pos, virus.x_pos + virus.width)
+            virus_range_y = range(virus.y_pos, virus.y_pos + virus.height)
+
+            self_range_x = range(self.x_pos, self.x_pos + self.width)
+            self_range_y = range(self.y_pos, self.y_pos + self.height)
+
+            if bool(set(virus_range_x) & set(self_range_x)) is True:
+                if bool(set(virus_range_y) & set(self_range_y)):
+                    self.death_timer_start = time.time()
+                    self.toggle_death_countdown = True
+
+    def check_if_collided(self, collided_object):
+        collided_object_range_x = range(collided_object.x_pos, collided_object.x_pos + collided_object.width)
+        collided_object_range_y = range(collided_object.y_pos, collided_object.y_pos + collided_object.height)
+
+        self_range_x = range(self.x_pos, self.x_pos + self.width)
+        self_range_y = range(self.y_pos, self.y_pos + self.height)
+
+        if bool(set(collided_object_range_x) & set(self_range_x)) is True:
+            if bool(set(collided_object_range_y) & set(self_range_y)):
+                return True
+        return False

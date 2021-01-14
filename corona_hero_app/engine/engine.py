@@ -37,6 +37,7 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
     jump_count = 10
     last_shoot = current_shoot = time.time()
     mask_timer_start = mask_timer_end = -1
+    death_timer_end = 0
 
     while run:
         pygame.time.delay(50)
@@ -46,6 +47,11 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
             if event.type == pygame.QUIT:
                 run = False
         keys = pygame.key.get_pressed()
+
+        if character.toggle_death_countdown is True:
+            death_timer_end = time.time()
+            if death_timer_end - character.death_timer_start >= 10:
+                character.is_dead = True
 
         if character.is_dead is False:
             if not character.isJump:
@@ -158,10 +164,14 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
                 character.mask_depleted()
 
         for sink in sinks:
+            if character.check_if_collided(sink):
+                character.wash_hands()
+
             win.blit(sink.image_sink, (sink.x_pos, sink.y_pos))
 
         for virus in viruses:
             if virus.dead_animation_done is False:
+                character.check_if_hit(virus)
                 virus.animate()
                 win.blit(virus.image, (virus.x_pos, virus.y_pos))
             else:
