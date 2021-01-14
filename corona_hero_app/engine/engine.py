@@ -3,7 +3,7 @@ import time
 import pygame
 
 
-def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, walls, viruses, rects, energy_time):
+def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, walls, viruses, rects, energy_time1, energy_time2):
     shootable_objects = []
     shootable_objects.extend(boxes)
     shootable_objects.extend(inf_per)
@@ -29,7 +29,8 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
     last_shoot = current_shoot = time.time()
     mask_timer_start = mask_timer_end = -1
     energy_time_start = -1
-    animate_start = True
+    animate_start_gloves = True
+    animate_start_mask = True
     death_timer_end = 0
     glove_counter_start = glove_counter_end = -1
 
@@ -130,31 +131,31 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
 
         if character.has_gloves:
             current_time = time.time()
-            win.blit(energy_time.image_energy_time, (energy_time.x_pos, energy_time.y_pos))
-            if animate_start:
-                energy_time.animate_start()
-                animate_start = False
+            win.blit(energy_time1.image_energy_time, (energy_time1.x_pos, energy_time1.y_pos))
+            if animate_start_gloves:
+                energy_time1.animate_start()
+                animate_start_gloves = False
             if (current_time - energy_time_start) >= 1:
                 energy_time_start = time.time()
-                energy_time.animate()
+                energy_time1.animate()
         else:
-            energy_time._frame_counter = 0
-            energy_time.animate_start()
-            animate_start = True
+            energy_time1._frame_counter = 0
+            energy_time1.animate_start()
+            animate_start_gloves = True
 
         if character.is_masked:
             current_time = time.time()
-            win.blit(energy_time.image_energy_time, (energy_time.x_pos, energy_time.y_pos))
-            if animate_start:
-                energy_time.animate_start()
-                animate_start = False
+            win.blit(energy_time2.image_energy_time, (energy_time2.x_pos, energy_time2.y_pos))
+            if animate_start_mask:
+                energy_time2.animate_start()
+                animate_start_mask = False
             if (current_time - energy_time_start) >= 1:
                 energy_time_start = time.time()
-                energy_time.animate()
+                energy_time2.animate()
         else:
-            energy_time._frame_counter = 0
-            energy_time.animate_start()
-            animate_start = True
+            energy_time2._frame_counter = 0
+            energy_time2.animate_start()
+            animate_start_mask = True
 
         for box in boxes:
             win.blit(box.image_box, box.get_rect())
