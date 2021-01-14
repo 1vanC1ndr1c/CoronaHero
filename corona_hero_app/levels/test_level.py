@@ -19,6 +19,8 @@ def start_test_level():
     virus = Virus()  # ... or check the virus animation.
     virus.x_pos = 500
     virus.y_pos = 500
+    virus.get_rect().x = 500
+    virus.get_rect().y = 500
 
     platform1 = Platform()
     platform1.set_dimensions(100, 10)
@@ -54,6 +56,8 @@ def start_test_level():
     sink = Sink()
     sink.y_pos = 570
     sink.x_pos = 260
+    sink.get_rect().x = 570
+    sink.get_rect().y = 260
 
     wall1 = Wall()
     wall2 = Wall()
