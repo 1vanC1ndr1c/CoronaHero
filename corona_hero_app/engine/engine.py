@@ -1,17 +1,6 @@
-import pygame
-from corona_hero_app.sprites.main_character import MainCharacter
-from corona_hero_app.sprites.virus import Virus
-from corona_hero_app.sprites.platform import Platform
-from corona_hero_app.sprites.box import Box
-from corona_hero_app.sprites.disinfectant import Disinfectant
-from corona_hero_app.sprites.gloves import Gloves
-from corona_hero_app.sprites.mask import Mask
-from corona_hero_app.sprites.sink import Sink
-from corona_hero_app.sprites.wall import Wall
-from corona_hero_app.sprites.virus import Virus
-from corona_hero_app.sprites.infected_person import InfectedPerson
-
 import time
+
+import pygame
 
 
 def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, walls, viruses, rects):
@@ -21,10 +10,13 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
     shootable_objects.extend(platforms)
     shootable_objects.extend(viruses)
 
-    boxesGroup = pygame.sprite.Group()
+    spritesGroup = pygame.sprite.Group()
 
     for box in boxes:
-        boxesGroup.add(box)
+        spritesGroup.add(box)
+
+    for platform in platforms:
+        spritesGroup.add(platform)
 
     window_x_size = 960
     window_y_size = 640
@@ -32,11 +24,14 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
     win = pygame.display.set_mode((window_x_size, window_y_size))
     pygame.display.set_caption("Testing environment.")
     pos_change = 5
-    jump_pos_change = 10
+    jump_pos_change = 5
     run = True
     jump_count = 10
     last_shoot = current_shoot = time.time()
     mask_timer_start = mask_timer_end = -1
+
+    for rect in rects:
+        print(rect)
 
     while run:
         pygame.time.delay(50)
@@ -49,27 +44,13 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
 
         if character.is_dead is False:
             if not character.isJump:
-                if keys[pygame.K_UP] and character.y_pos > 0:
-                    character.move_up(-pos_change)
-                    for rect in rects:
-                        if character.collide(rect):
-                            character.move_up(pos_change)
-
-                if keys[pygame.K_DOWN] and character.y_pos < window_y_size - character.height:
-                    character.move_down(pos_change)
-                    for rect in rects:
-                        if character.collide(rect):
-                            character.move_down(-pos_change)
 
                 if keys[pygame.K_SPACE] and character.y_pos < window_y_size - character.height:
                     character.jump()
-                    if character.y_pos > 0:
-                        character.y_pos -= jump_pos_change
-                        character.set_rect_y(-jump_pos_change)
-                    character.x_pos += pos_change
-                    character.set_rect_x(pos_change)
             else:
-                if jump_count >= -10:
+                check_collide = pygame.sprite.spritecollide(character, spritesGroup, False)
+                print(check_collide)
+                if len(check_collide) == 0:
                     neg = 1
                     if jump_count < 0:
                         neg = -1
@@ -83,15 +64,19 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
 
             if keys[pygame.K_LEFT] and character.x_pos > 0:
                 character.move_left(-pos_change)
-                for rect in rects:
-                    if character.collide(rect):
-                        character.move_left(pos_change)
+                print('X: ', character.x_pos)
+                print('Rect X: ', character.rect.x)
+                hit = pygame.sprite.spritecollide(character, spritesGroup, False)
+                if len(hit) > 0:
+                    character.move_left(pos_change)
 
             if keys[pygame.K_RIGHT] and character.x_pos < window_x_size - character.width:
                 character.move_right(pos_change)
-                for rect in rects:
-                    if character.collide(rect):
-                        character.move_right(-pos_change)
+                hit = pygame.sprite.spritecollide(character, spritesGroup, False)
+                print('X: ', character.x_pos)
+                print('Rect X: ', character.rect.x)
+                if len(hit) > 0:
+                    character.move_right(-pos_change)
 
             if pygame.mouse.get_pressed(3)[0] is True:
                 current_shoot = time.time()

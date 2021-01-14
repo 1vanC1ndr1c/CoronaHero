@@ -1,20 +1,22 @@
-import pygame
-from corona_hero_app.sprites.main_character import MainCharacter
-from corona_hero_app.sprites.virus import Virus
-from corona_hero_app.sprites.platform import Platform
+from corona_hero_app.engine.engine import start_game
 from corona_hero_app.sprites.box import Box
 from corona_hero_app.sprites.disinfectant import Disinfectant
 from corona_hero_app.sprites.gloves import Gloves
-from corona_hero_app.sprites.mask import Mask
-from corona_hero_app.sprites.sink import Sink
-from corona_hero_app.sprites.wall import Wall
-from corona_hero_app.sprites.virus import Virus
 from corona_hero_app.sprites.infected_person import InfectedPerson
-from corona_hero_app.engine.engine import start_game
+from corona_hero_app.sprites.main_character import MainCharacter
+from corona_hero_app.sprites.mask import Mask
+from corona_hero_app.sprites.platform import Platform
+from corona_hero_app.sprites.sink import Sink
+from corona_hero_app.sprites.virus import Virus
+from corona_hero_app.sprites.wall import Wall
 
 
 def start_test_level():
     character = MainCharacter()  # Check the main character animation
+    character.x_pos = 0
+    character.y_pos = 500
+    character.rect.x = 0
+    character.rect.y = 500
 
     virus = Virus()  # ... or check the virus animation.
     virus.x_pos = 500
