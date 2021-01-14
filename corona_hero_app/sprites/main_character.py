@@ -117,8 +117,9 @@ class MainCharacter(Sprite):
         self.isJump = False
         self.is_dead = False
         self.is_masked = False
+        self.has_gloves = False
 
-        self.toggle_death_countdown = False
+        self.death_countdown = False
         self.death_counter = 0
         self.death_timer_start = -1
 
@@ -297,15 +298,14 @@ class MainCharacter(Sprite):
             self._image_shoot_right = self._default_animations[8]
 
     def wash_hands(self):
-        self.toggle_death_countdown = False
+        self.death_countdown = False
         self.death_timer_start = -1
 
     def disinfectant_pick_up(self):
         self.bullet_count = self.bullet_count + 30
 
     def gloves_pick_up(self):
-        # TODO
-        pass
+        self.has_gloves = True
 
     def set_current_animation(self, current_animation):
         if self.isJump is False:
@@ -333,8 +333,13 @@ class MainCharacter(Sprite):
     def set_rect_y(self, y_pos_change):
         self.rect.y += y_pos_change
 
+    def start_death_countdown(self):
+        if self.death_countdown is False:
+            self.death_timer_start = time.time()
+            self.death_countdown = True
+
     def check_if_hit(self, virus):
-        if self.toggle_death_countdown is False and self.is_masked is False:
+        if self.death_countdown is False and self.is_masked is False:
             virus_range_x = range(virus.x_pos, virus.x_pos + virus.width)
             virus_range_y = range(virus.y_pos, virus.y_pos + virus.height)
 
@@ -344,7 +349,7 @@ class MainCharacter(Sprite):
             if bool(set(virus_range_x) & set(self_range_x)) is True:
                 if bool(set(virus_range_y) & set(self_range_y)):
                     self.death_timer_start = time.time()
-                    self.toggle_death_countdown = True
+                    self.death_countdown = True
 
     def check_if_collided(self, collided_object):
         collided_object_range_x = range(collided_object.x_pos, collided_object.x_pos + collided_object.width)
@@ -355,5 +360,17 @@ class MainCharacter(Sprite):
 
         if bool(set(collided_object_range_x) & set(self_range_x)) is True:
             if bool(set(collided_object_range_y) & set(self_range_y)):
+                return True
+        return False
+
+    def check_if_near_box(self, box):
+        box_range_x = range(box.x_pos, box.x_pos + box.width)
+        box_range_y = range(box.y_pos, box.y_pos + box.height)
+
+        self_range_x = range(self.x_pos - 5, self.x_pos + self.width + 10)
+        self_range_y = range(self.y_pos, self.y_pos + self.height)
+
+        if bool(set(box_range_x) & set(self_range_x)) is True:
+            if bool(set(box_range_y) & set(self_range_y)):
                 return True
         return False

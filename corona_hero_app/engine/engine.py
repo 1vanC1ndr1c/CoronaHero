@@ -48,7 +48,7 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
                 run = False
         keys = pygame.key.get_pressed()
 
-        if character.toggle_death_countdown is True:
+        if character.death_countdown is True:
             death_timer_end = time.time()
             if death_timer_end - character.death_timer_start >= 10:
                 character.is_dead = True
@@ -129,8 +129,13 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
 
         for platform in platforms:
             win.blit(platform.image_grass, (platform.x_pos, platform.y_pos))
+
         for box in boxes:
             win.blit(box.image_box, box.get_rect())
+            if character.check_if_near_box(box):
+                if character.has_gloves is False:
+                    character.start_death_countdown()
+                box.move(pos_change, character)
 
         for d in dis:
             d.animate()
