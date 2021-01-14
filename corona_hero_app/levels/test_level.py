@@ -38,7 +38,8 @@ def start_test_level():
     platform3.set_position(200, 600)
 
     box1 = Box()
-    box1.set_position(370, 600)
+    box1.set_dimensions(100, 100)
+    box1.set_position(150, 500)
 
     dis1 = Disinfectant()
     dis1.y_pos = 570

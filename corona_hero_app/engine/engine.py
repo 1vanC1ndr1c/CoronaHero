@@ -2,6 +2,7 @@ import time
 
 import pygame
 
+import cv2
 
 def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, walls, viruses, rects, energy_time1, energy_time2):
     shootable_objects = []
@@ -9,14 +10,6 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
     shootable_objects.extend(inf_per)
     shootable_objects.extend(platforms)
     shootable_objects.extend(viruses)
-
-    spritesGroup = pygame.sprite.Group()
-
-    for box in boxes:
-        spritesGroup.add(box)
-
-    for platform in platforms:
-        spritesGroup.add(platform)
 
     window_x_size = 960
     window_y_size = 640
@@ -33,11 +26,10 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
     animate_start_mask = True
     death_timer_end = 0
     glove_counter_start = glove_counter_end = -1
-
-    for rect in rects:
-        print(rect)
+    freefall_count = 1
 
     while run:
+        floor_found = False
         pygame.time.delay(50)
 
         for event in pygame.event.get():
@@ -52,51 +44,64 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
                 character.is_dead = True
 
         if character.is_dead is False:
-            if not character.isJump:
 
+            for el in boxes:
+                el_range_x = range(el.x_pos, el.x_pos + el.width)
+                el_range_y = range(el.y_pos - el.height, el.y_pos)
+
+                character_range_x = range(character.x_pos, character.x_pos + character.width)
+                character_range_y = range(character.y_pos - character.height - 5, character.y_pos + 5)
+
+                if bool(set(el_range_x) & set(character_range_x)) is True:
+                    if bool(set(el_range_y) & set(character_range_y)) is True:
+                        floor_found = True
+                        character.y_pos = el.y_pos - el.height
+                        character.rect.y = character.y_pos
+                        break
+
+            for el in platforms:
+                el_range_x = range(el.x_pos, el.x_pos + el.width)
+                el_range_y = range(el.y_pos - el.height, el.y_pos)
+
+                character_range_x = range(character.x_pos, character.x_pos + character.width)
+                character_range_y = range(character.y_pos - character.height - 5, character.y_pos + 5)
+
+                if bool(set(el_range_x) & set(character_range_x)) is True:
+                    if bool(set(el_range_y) & set(character_range_y)) is True:
+                        floor_found = True
+                        character.y_pos = el.y_pos - el.height
+                        character.rect.y = character.y_pos
+                        break
+
+            if floor_found is False and character.isJump is False:
+                character.y_pos -= int((freefall_count ** 2) * 0.5 * -1)
+                character.rect.y = character.y_pos
+                freefall_count += 1
+
+            if floor_found is True:
+                freefall_count = 1
+
+            if not character.isJump:
                 if keys[pygame.K_SPACE] and character.y_pos < window_y_size - character.height:
                     character.jump()
-            else:
-                check_collide = pygame.sprite.spritecollide(character, spritesGroup, False)
-                print(check_collide)
-                if len(check_collide) == 0:
+            if character.isJump is True:
+                if jump_count >= -10:
                     neg = 1
                     if jump_count < 0:
                         neg = -1
-
                     character.y_pos -= int((jump_count ** 2) * 0.5 * neg)
                     character.set_rect_y(-int((jump_count ** 2) * 0.5 * neg))
-                    print('X: ', character.x_pos)
-                    print('Rect X: ', character.rect.x)
-                    print('Y: ', character.y_pos)
-                    print('Rect Y: ', character.rect.y)
                     jump_count -= 1
+                    floor_found = False
                 else:
-                    print(check_collide[0].rect.y)
-                    character.y_pos -= int(((jump_count + 1) ** 2) * 0.5)
-                    character.set_rect_y(-int(((jump_count + 1) ** 2) * 0.5))
                     character.isJump = False
-                    print('X: ', character.x_pos)
-                    print('Rect X: ', character.rect.x)
-                    print('Y: ', character.y_pos)
-                    print('Rect Y: ', character.rect.y)
                     jump_count = 10
 
             if keys[pygame.K_LEFT] and character.x_pos > 0:
                 character.move_left(-pos_change)
-                print('X: ', character.x_pos)
-                print('Rect X: ', character.rect.x)
-                hit = pygame.sprite.spritecollide(character, spritesGroup, False)
-                if len(hit) > 0:
-                    character.move_left(pos_change)
 
             if keys[pygame.K_RIGHT] and character.x_pos < window_x_size - character.width:
                 character.move_right(pos_change)
-                hit = pygame.sprite.spritecollide(character, spritesGroup, False)
-                print('X: ', character.x_pos)
-                print('Rect X: ', character.rect.x)
-                if len(hit) > 0:
-                    character.move_right(-pos_change)
 
             if pygame.mouse.get_pressed(3)[0] is True:
                 current_shoot = time.time()
