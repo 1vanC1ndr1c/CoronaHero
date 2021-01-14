@@ -92,6 +92,28 @@ class MainCharacter(Sprite):
             str(os.path.join(self._resources_path, 'Hero_Shoot_Right_Mask.png'))).convert("RGBA")
         self._image_shoot_right_MASK = transform_into_surface(self._image_shoot_right_MASK)
 
+        # Get the player animation for box moving (without gloves).
+        self._image_move_box_R_gif = Image.open(
+            str(os.path.join(self._resources_path, 'Hero-Guranje-Desno.gif')))
+        self._image_move_box_R_gif = split_animated_gif(self._image_move_box_R_gif)
+        self._image_move_box_R = self._image_move_box_R_gif[0]
+
+        self._image_move_box_L_gif = Image.open(
+            str(os.path.join(self._resources_path, 'Hero-Guranje-Lijevo.gif')))
+        self._image_move_box_L_gif = split_animated_gif(self._image_move_box_L_gif)
+        self._image_move_box_L = self._image_move_box_L_gif[0]
+
+        # Get the player animation for box moving (with gloves).
+        self._image_move_box_R_gif_GLOVES = Image.open(
+            str(os.path.join(self._resources_path, 'Hero-Guranje-Desno-Rukavice.gif')))
+        self._image_move_box_R_gif_GLOVES = split_animated_gif(self._image_move_box_R_gif_GLOVES)
+        self._image_move_box_R_GLOVES = self._image_move_box_R_gif_GLOVES[0]
+
+        self._image_move_box_L_gif_GLOVES = Image.open(
+            str(os.path.join(self._resources_path, 'Hero-Guranje-Lijevo-Rukavice.gif')))
+        self._image_move_box_L_gif_GLOVES = split_animated_gif(self._image_move_box_L_gif_GLOVES)
+        self._image_move_box_L_GLOVES = self._image_move_box_L_gif_GLOVES[0]
+
         self.bullet_count = 0
         self.bullet_list = []
 
@@ -109,6 +131,8 @@ class MainCharacter(Sprite):
         self._move_R_frame_counter = 0
         self._die_animation_counter = 0
         self._jump_counter = 0
+        self._move_box_counter = 0
+        self._move_box_counter_GLOVES = 0
 
         self.x_movement_direction = "Left."  # Or "Right."
         self.y_movement_direction = "Up."  # Or "Down."
@@ -118,6 +142,7 @@ class MainCharacter(Sprite):
         self.is_dead = False
         self.is_masked = False
         self.has_gloves = False
+        self.is_moving_box = False
 
         self.death_countdown = False
         self.death_counter = 0
@@ -175,6 +200,23 @@ class MainCharacter(Sprite):
                                        range(len(self._image_jump_R_gif_MASK))]
         self._image_jump_L_gif_MASK = [smoothscale(self._image_jump_L_gif_MASK[i], (w, h)) for i in
                                        range(len(self._image_jump_L_gif_MASK))]
+
+        self._image_move_box_R_gif = [smoothscale(self._image_move_box_R_gif[i], (w, h)) for i in
+                                      range(len(self._image_move_box_R_gif))]
+        self._image_move_box_L_gif = [smoothscale(self._image_move_box_L_gif[i], (w, h)) for i in
+                                      range(len(self._image_move_box_L_gif))]
+
+        self._image_move_box_R_gif_GLOVES = [smoothscale(self._image_move_box_R_gif_GLOVES[i], (w, h)) for i in
+                                             range(len(self._image_move_box_R_gif_GLOVES))]
+        self._image_move_box_L_gif_GLOVES = [smoothscale(self._image_move_box_L_gif_GLOVES[i], (w, h)) for i in
+                                             range(len(self._image_move_box_L_gif_GLOVES))]
+
+        self._image_move_box_R = smoothscale(self._image_move_box_R, (w, h))
+        self._image_move_box_L = smoothscale(self._image_move_box_L, (w, h))
+
+        self._image_move_box_R_GLOVES = smoothscale(self._image_move_box_R_GLOVES, (w, h))
+        self._image_move_box_L_GLOVES = smoothscale(self._image_move_box_L_GLOVES, (w, h))
+
         self._image_jump_R_MASK = smoothscale(self._image_jump_R_MASK, (w, h))
         self._image_jump_L_MASK = smoothscale(self._image_jump_L_MASK, (w, h))
         self._image_shoot_left_MASK = smoothscale(self._image_shoot_left_MASK, (w, h))
@@ -215,6 +257,18 @@ class MainCharacter(Sprite):
         else:
             self.current_animation = self._image_jump_R
         self.isJump = True
+
+    def move_box(self):
+        if self.x_movement_direction == "Left.":
+            if self.has_gloves:
+                self.current_animation = self._image_move_box_L_GLOVES
+            else:
+                self.current_animation = self._image_move_box_L
+        else:
+            if self.has_gloves:
+                self.current_animation = self._image_move_box_R_GLOVES
+            else:
+                self.current_animation = self._image_move_box_R
 
     def shoot(self):
 
@@ -308,9 +362,10 @@ class MainCharacter(Sprite):
         self.has_gloves = True
 
     def set_current_animation(self, current_animation):
-        if self.isJump is False:
+        if self.isJump is False and self.is_moving_box is False:
             self.current_animation = current_animation
-        else:
+
+        if self.isJump is True:
             if self.x_movement_direction == "Left.":
                 self.current_animation = self._image_jump_L
                 self._image_jump_L = self._image_jump_L_gif[self._jump_counter]
@@ -323,6 +378,33 @@ class MainCharacter(Sprite):
                 self._jump_counter = self._jump_counter + 1
                 if self._jump_counter >= len(self._image_jump_L_gif):
                     self._jump_counter = 0
+        if self.is_moving_box is True:
+            if self.x_movement_direction == "Left.":
+                if self.has_gloves:
+                    self.current_animation = self._image_move_box_L_GLOVES
+                    self._image_move_box_L_GLOVES = self._image_move_box_L_gif_GLOVES[self._move_box_counter_GLOVES]
+                    self._move_box_counter_GLOVES = self._move_box_counter_GLOVES + 1
+                    if self._move_box_counter_GLOVES >= len(self._image_move_box_L_gif_GLOVES):
+                        self._move_box_counter_GLOVES = 0
+                else:
+                    self.current_animation = self._image_move_box_L
+                    self._image_move_box_L = self._image_move_box_L_gif[self._move_box_counter]
+                    self._move_box_counter = self._move_box_counter + 1
+                    if self._move_box_counter >= len(self._image_move_box_L_gif):
+                        self._move_box_counter = 0
+            else:
+                if self.has_gloves:
+                    self.current_animation = self._image_move_box_R_GLOVES
+                    self._image_move_box_R_GLOVES = self._image_move_box_R_gif_GLOVES[self._move_box_counter_GLOVES]
+                    self._move_box_counter_GLOVES = self._move_box_counter_GLOVES + 1
+                    if self._move_box_counter_GLOVES >= len(self._image_move_box_R_gif_GLOVES):
+                        self._move_box_counter_GLOVES = 0
+                else:
+                    self.current_animation = self._image_move_box_R
+                    self._image_move_box_R = self._image_move_box_R_gif[self._move_box_counter]
+                    self._move_box_counter = self._move_box_counter + 1
+                    if self._move_box_counter >= len(self._image_move_box_R_gif):
+                        self._move_box_counter = 0
 
     def collide(self, rect):
         return self.rect.colliderect(rect)
@@ -367,8 +449,8 @@ class MainCharacter(Sprite):
         box_range_x = range(box.x_pos, box.x_pos + box.width)
         box_range_y = range(box.y_pos, box.y_pos + box.height)
 
-        self_range_x = range(self.x_pos - 5, self.x_pos + self.width + 10)
-        self_range_y = range(self.y_pos, self.y_pos + self.height)
+        self_range_x = range(self.x_pos - 5, self.x_pos + self.width + 5)
+        self_range_y = range(self.y_pos + 15, self.y_pos + self.height - 15)
 
         if bool(set(box_range_x) & set(self_range_x)) is True:
             if bool(set(box_range_y) & set(self_range_y)):

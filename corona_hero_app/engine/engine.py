@@ -38,6 +38,7 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
     last_shoot = current_shoot = time.time()
     mask_timer_start = mask_timer_end = -1
     death_timer_end = 0
+    glove_counter_start = glove_counter_end = -1
 
     while run:
         pygame.time.delay(50)
@@ -136,6 +137,9 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
                 if character.has_gloves is False:
                     character.start_death_countdown()
                 box.move(pos_change, character)
+                character.is_moving_box = True
+            else:
+                character.is_moving_box = False
 
         for d in dis:
             d.animate()
@@ -145,11 +149,13 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
         dis = [d for d in dis if d.collected is False]
 
         for g in gloves:
-            g.animate()
-            win.blit(g.image_gloves, (g.x_pos, g.y_pos))
-            if g.check_if_collected(character) is True:
-                character.gloves_pick_up()
-        gloves = [g for g in gloves if g.collected is False]
+            if character.has_gloves is False:
+                g.animate()
+                win.blit(g.image_gloves, (g.x_pos, g.y_pos))
+                if g.check_if_collected(character) is True:
+                    character.gloves_pick_up()
+                    glove_counter_start = time.time()
+        #gloves = [g for g in gloves if g.collected is False]
 
         for i in inf_per:
             win.blit(i.image_infected_person, (i.x_pos, i.y_pos))
@@ -167,6 +173,12 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
             if mask_timer_end - mask_timer_start > 30:
                 mask_timer_end = mask_timer_start = -1
                 character.mask_depleted()
+
+        if glove_counter_start != -1:
+            glove_counter_end = time.time()
+            if glove_counter_end - glove_counter_start > 30:
+                glove_counter_end = glove_counter_start = -1
+                character.has_gloves = False
 
         for sink in sinks:
             if character.check_if_collided(sink):
