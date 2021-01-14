@@ -18,12 +18,22 @@ class Sink(Sprite):
         self.image_sink = Image.open(str(os.path.join(self._resources_path, 'Sink.png')))
         self.image_sink = transform_into_surface(self.image_sink)
 
+        self.rect = self.image_sink.get_rect()
+
         self.width = 30
         self.height = 30
         self.set_dimensions(self.width, self.height)
+
+        self.rect.x = 0
+        self.rect.y = 0
 
         self.x_pos = 0
         self.y_pos = 0
 
     def set_dimensions(self, w, h):
         self.image_sink = smoothscale(self.image_sink, (w, h))
+        self.rect.width = 30
+        self.rect.height = 30
+
+    def get_rect(self):
+        return self.rect
