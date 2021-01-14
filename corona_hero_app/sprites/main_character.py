@@ -171,14 +171,22 @@ class MainCharacter(Sprite):
         self.x_pos = 0
         self.y_pos = 0
 
-        self.rect.width = 50
-        self.rect.height = 100
-        self.rect.x = 0
-        self.rect.y = 0
+    def set_position(self, x, y):
+        self.x_pos = x
+        self.y_pos = y
+        self.rect.x = x
+        self.rect.y = y
+
+        print('Character X: ', self.x_pos)
+        print('Character Y: ', self.y_pos)
+        print('Character rect X: ', self.rect.x)
+        print('Character rect Y: ', self.rect.y)
 
     def set_dimensions(self, w, h):
         self.width = w
         self.height = h
+        self.rect.width = w
+        self.rect.height = h
         self._images_still = [smoothscale(self._images_still[i], (w, h)) for i in range(len(self._images_still))]
         self._images_move_L = [smoothscale(self._images_move_L[i], (w, h)) for i in range(len(self._images_move_L))]
         self._images_move_R = [smoothscale(self._images_move_R[i], (w, h)) for i in range(len(self._images_move_R))]
@@ -284,7 +292,7 @@ class MainCharacter(Sprite):
 
     def move_left(self, x_pos_change):
         self.x_pos = self.x_pos + x_pos_change
-        self.rect.x += x_pos_change
+        self.set_rect_x(x_pos_change)
         self.x_movement_direction = "Left."
         self.current_movement_direction = "Left."
 
@@ -296,7 +304,7 @@ class MainCharacter(Sprite):
 
     def move_right(self, x_pos_change):
         self.x_pos = self.x_pos + x_pos_change
-        self.rect.x += x_pos_change
+        self.set_rect_x(x_pos_change)
         self.x_movement_direction = "Right."
         self.current_movement_direction = "Right."
 
@@ -305,18 +313,6 @@ class MainCharacter(Sprite):
         if self._move_R_frame_counter >= len(self._images_move_R):  # Reset after the maximum number of frames.
             self._move_R_frame_counter = 0
         self.set_current_animation(self._image_move_R)  # Set the current animation to standing still.
-
-    def move_up(self, y_pos_change):
-        self.y_pos = self.y_pos + y_pos_change
-        self.rect.y += y_pos_change
-        self.y_movement_direction = "Up."
-        self.current_movement_direction = "Up."
-
-    def move_down(self, y_pos_change):
-        self.y_pos = self.y_pos + y_pos_change
-        self.rect.y += y_pos_change
-        self.y_movement_direction = "Down."
-        self.current_movement_direction = "Down."
 
     def die(self):
         self.is_dead = True
@@ -406,14 +402,11 @@ class MainCharacter(Sprite):
                     if self._move_box_counter >= len(self._image_move_box_R_gif):
                         self._move_box_counter = 0
 
-    def collide(self, rect):
-        return self.rect.colliderect(rect)
-
     def set_rect_x(self, x_pos_change):
-        self.rect.x += x_pos_change
+        self.rect = self.rect.move(x_pos_change, 0)
 
     def set_rect_y(self, y_pos_change):
-        self.rect.y += y_pos_change
+        self.rect = self.rect.move(0, y_pos_change)
 
     def start_death_countdown(self):
         if self.death_countdown is False:
