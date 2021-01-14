@@ -5,7 +5,7 @@ from PIL import Image
 from pygame.sprite import Sprite
 from pygame.transform import smoothscale
 
-from image_handler import transform_into_surface
+from corona_hero_app.image_handler import transform_into_surface
 
 
 class Door(Sprite):
@@ -16,19 +16,27 @@ class Door(Sprite):
         self._resources_path = os.path.abspath(os.path.join(str(Path(__file__).parent.parent.parent)))
         self._resources_path = os.path.join(self._resources_path, "resources", "sprites")
 
-        self.image_entrance = Image.open(str(os.path.join(self._resources_path, 'Door-Entrance.png')))
-        self.image_entrance = transform_into_surface(self.image_entrance)
+        self.door_entrance = Image.open(str(os.path.join(self._resources_path, 'Door-Entrance.png')))
+        self.door_entrance = transform_into_surface(self.door_entrance)
 
-        self.image_exit = Image.open(str(os.path.join(self._resources_path, 'Door-Exit.png')))
-        self.image_exit = transform_into_surface(self.image_exit)
+        self.door_entrance_1 = Image.open(str(os.path.join(self._resources_path, 'Door-Entrance-1.png')))
+        self.door_entrance_1 = transform_into_surface(self.door_entrance_1)
 
-        self.width = 40
-        self.height = 100
+        self.door_exit = Image.open(str(os.path.join(self._resources_path, 'Door-Exit.png')))
+        self.door_exit = transform_into_surface(self.door_exit)
+
+        self.door_exit_1 = Image.open(str(os.path.join(self._resources_path, 'Door-Exit-1.png')))
+        self.door_exit_1 = transform_into_surface(self.door_exit_1)
+
+        self.width = self.door_entrance.get_width()
+        self.height = self.door_entrance.get_height()
         self.set_dimensions(self.width, self.height)
 
         self.x_pos = 0
         self.y_pos = 0
 
     def set_dimensions(self, w, h):
-        self.image_entrance = smoothscale(self.image_entrance, (w, h))
-        self.image_exit = smoothscale(self.image_exit, (w, h))
+        self.door_entrance = smoothscale(self.door_entrance, (w, h))
+        self.door_entrance_1 = smoothscale(self.door_entrance_1, (w, h))
+        self.door_exit = smoothscale(self.door_exit, (w, h))
+        self.door_exit_1 = smoothscale(self.door_exit_1, (w, h))
