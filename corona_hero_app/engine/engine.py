@@ -3,7 +3,7 @@ import time
 import pygame
 
 
-def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, walls, viruses, rects):
+def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, walls, viruses, rects, energy_time):
     shootable_objects = []
     shootable_objects.extend(boxes)
     shootable_objects.extend(inf_per)
@@ -28,6 +28,8 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
     jump_count = 10
     last_shoot = current_shoot = time.time()
     mask_timer_start = mask_timer_end = -1
+    energy_time_start = -1
+    animate_start = True
     death_timer_end = 0
     glove_counter_start = glove_counter_end = -1
 
@@ -126,6 +128,34 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
         for platform in platforms:
             win.blit(platform.image_grass, (platform.x_pos, platform.y_pos))
 
+        if character.has_gloves:
+            current_time = time.time()
+            win.blit(energy_time.image_energy_time, (energy_time.x_pos, energy_time.y_pos))
+            if animate_start:
+                energy_time.animate_start()
+                animate_start = False
+            if (current_time - energy_time_start) >= 1:
+                energy_time_start = time.time()
+                energy_time.animate()
+        else:
+            energy_time._frame_counter = 0
+            energy_time.animate_start()
+            animate_start = True
+
+        if character.is_masked:
+            current_time = time.time()
+            win.blit(energy_time.image_energy_time, (energy_time.x_pos, energy_time.y_pos))
+            if animate_start:
+                energy_time.animate_start()
+                animate_start = False
+            if (current_time - energy_time_start) >= 1:
+                energy_time_start = time.time()
+                energy_time.animate()
+        else:
+            energy_time._frame_counter = 0
+            energy_time.animate_start()
+            animate_start = True
+
         for box in boxes:
             win.blit(box.image_box, box.get_rect())
             if character.check_if_near_box(box):
@@ -150,6 +180,7 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
                 if g.check_if_collected(character) is True:
                     character.gloves_pick_up()
                     glove_counter_start = time.time()
+                    energy_time_start = time.time()
         #gloves = [g for g in gloves if g.collected is False]
 
         for i in inf_per:
@@ -161,6 +192,7 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
             if mask.check_if_collected(character) is True:
                 character.mask_pick_up()
                 mask_timer_start = time.time()
+                energy_time_start = time.time()
         masks = [m for m in masks if m.collected is False]
 
         if mask_timer_start != -1:
