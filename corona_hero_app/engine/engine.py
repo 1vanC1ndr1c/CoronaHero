@@ -2,7 +2,6 @@ import time
 
 import pygame
 
-
 from corona_hero_app.sprites.energy_time import EnergyTime
 
 
@@ -82,6 +81,8 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
                 character.y_pos -= int((freefall_count ** 2) * 0.5 * -1)
                 character.rect.y = character.y_pos
                 freefall_count += 1
+                if character.y_pos == 3000:
+                    character.is_dead
 
             if floor_found is True:
                 freefall_count = 1
@@ -192,7 +193,7 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
                     character.gloves_pick_up()
                     glove_counter_start = time.time()
                     energy_time_start_gloves = time.time()
-        #gloves = [g for g in gloves if g.collected is False]
+        # gloves = [g for g in gloves if g.collected is False]
 
         for mask in masks:
             mask.animate()
