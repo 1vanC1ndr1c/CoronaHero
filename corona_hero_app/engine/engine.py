@@ -2,7 +2,6 @@ import time
 
 import pygame
 
-import cv2
 
 from corona_hero_app.sprites.energy_time import EnergyTime
 
@@ -26,7 +25,8 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
     jump_count = 10
     last_shoot = current_shoot = time.time()
     mask_timer_start = mask_timer_end = -1
-    energy_time_start = -1
+    energy_time_start_gloves = -1
+    energy_time_start_masks = -1
     animate_start_gloves = True
     animate_start_mask = True
     death_timer_end = 0
@@ -145,8 +145,8 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
             if animate_start_gloves:
                 energy_time1.animate_start()
                 animate_start_gloves = False
-            if (current_time - energy_time_start) >= 1:
-                energy_time_start = time.time()
+            if (current_time - energy_time_start_gloves) >= 1:
+                energy_time_start_gloves = time.time()
                 energy_time1.animate()
         else:
             energy_time1._frame_counter = 0
@@ -159,8 +159,8 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
             if animate_start_mask:
                 energy_time2.animate_start()
                 animate_start_mask = False
-            if (current_time - energy_time_start) >= 1:
-                energy_time_start = time.time()
+            if (current_time - energy_time_start_masks) >= 1:
+                energy_time_start_masks = time.time()
                 energy_time2.animate()
         else:
             energy_time2._frame_counter = 0
@@ -191,8 +191,8 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
                 if g.check_if_collected(character) is True:
                     character.gloves_pick_up()
                     glove_counter_start = time.time()
-                    energy_time_start = time.time()
-        # gloves = [g for g in gloves if g.collected is False]
+                    energy_time_start_gloves = time.time()
+        #gloves = [g for g in gloves if g.collected is False]
 
         for mask in masks:
             mask.animate()
@@ -200,7 +200,7 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
             if mask.check_if_collected(character) is True:
                 character.mask_pick_up()
                 mask_timer_start = time.time()
-                energy_time_start = time.time()
+                energy_time_start_masks = time.time()
         masks = [m for m in masks if m.collected is False]
 
         if mask_timer_start != -1:
