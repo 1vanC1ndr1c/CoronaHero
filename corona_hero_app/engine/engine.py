@@ -24,7 +24,7 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
     pygame.display.set_caption("Testing environment.")
     pos_change = 5
     run = True
-    jump_count = 10
+    jump_count = 8
     last_shoot = current_shoot = time.time()
     mask_timer_start = mask_timer_end = -1
     energy_time_start_gloves = -1
@@ -52,6 +52,9 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
             if death_timer_end - character.death_timer_start >= 10:
                 character.is_dead = True
 
+        if character.is_dead is True:
+            return False
+
         if character.is_dead is False:
 
             collision = pygame.sprite.spritecollideany(character, r)
@@ -69,7 +72,7 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
                 # print('Character: ', character.y_pos)
 
             if not character.isJump:
-                if keys[pygame.K_SPACE] and collision is not None:
+                if keys[pygame.K_SPACE] and collision is not None and character.isJump is False:
                     character.jump()
             if character.isJump is True:
                 if jump_count >= 0:
@@ -78,7 +81,7 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
                     jump_count -= 1
                 else:
                     character.isJump = False
-                    jump_count = 10
+                    jump_count = 8
 
             if keys[pygame.K_LEFT] and character.x_pos > 0:
                 character.move_left(-pos_change)
@@ -113,21 +116,20 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
         shootable_objects = [s for s in shootable_objects if s.is_dead is False]
 
         for platform in platforms:
-            # TODO OVO
-            # if character.isJump is False:
-            #     char_range_x = range(character.x_pos, character.x_pos + character.width)
-            #     char_range_y = range(character.y_pos, character.y_pos + character.height)
-            #
-            #     platform_range_x = range(platform.x_pos, platform.x_pos + platform.width)
-            #     platform_range_y = range(platform.y_pos, platform.y_pos + platform.height + 30)
-            #
-            #     if bool(set(platform_range_x) & set(char_range_x)) is True:
-            #         if bool(set(char_range_y) & set(platform_range_y)) is True:
-            #             if character.x_pos < platform.x_pos:
-            #                 character.x_pos = platform.x_pos - character.width
-            #             elif character.x_pos
+            if character.isJump is False:
+                char_range_y = range(character.y_pos, character.y_pos + character.height)
+                platform_range_y = range(platform.y_pos, platform.y_pos + platform.height - 5)
+
+                # plz work
+                if bool(set(char_range_y) & set(platform_range_y)) is True:
+                    if character.x_pos + character.width in range(platform.x_pos, platform.x_pos + 10):
+                        character.set_position(platform.x_pos - character.width, character.y_pos)
+                    elif character.x_pos in range(platform.x_pos + platform.width - 10,
+                                                  platform.x_pos + platform.width):
+                        character.set_position(platform.x_pos + platform.width, character.y_pos)
 
 
+        for platform in platforms:
             win.blit(platform.image_grass, (platform.x_pos, platform.y_pos))
 
         if character.has_gloves:

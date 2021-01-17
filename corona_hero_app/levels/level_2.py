@@ -21,8 +21,17 @@ masks = []
 disinfectants = []
 gloves = []
 doors = []
+##dodaj set
 inf_pers = []
 viruses = []
+backgrounds = []
+
+
+def setBackground(x, y):
+    backgrounds.append(Background())
+    backgrounds[len(backgrounds) - 1].set_dimensions(1280, 720)
+    backgrounds[len(backgrounds) - 1].y_pos = y
+    backgrounds[len(backgrounds) - 1].x_pos = x
 
 
 def setWall(x, y):
@@ -30,18 +39,23 @@ def setWall(x, y):
     floors[len(floors) - 1].set_dimensions(50, 50)
     floors[len(floors) - 1].y_pos = y
     floors[len(floors) - 1].x_pos = x
+    floors[len(floors) - 1].set_position(x, y)
 
 
 def setPlatform(x, y, size):
     for i in range(size):
         platforms.append(Platform())
         platforms[len(platforms) - 1].set_dimensions(50, 50)
+        platforms[len(platforms) - 1].x_pos = x + i * 50
+        platforms[len(platforms) - 1].y_pos = y
         platforms[len(platforms) - 1].set_position(x + i * 50, y)
+
 
 def setBox(x, y):
     boxes.append(Box())
     boxes[len(boxes) - 1].set_dimensions(50, 50)
     boxes[len(boxes) - 1].set_position(x, y)
+
 
 def setSink(x, y):
     sinks.append(Sink())
@@ -95,7 +109,8 @@ def start_level_2():
                walls=floors,
                viruses=viruses,
                rects=platforms + boxes + floors,
-               doors=doors
+               doors=doors,
+               backgrounds=backgrounds
                )
 
 
@@ -128,6 +143,7 @@ def level_2(test):
     background = Background()
     background.set_dimensions(1280, 720)
     level.blit(background.image_cave, (0, 0))
+    setBackground(0, 0)
 
     for i in range(len(floors)):
         level.blit(floors[i].image_wall_darker, (floors[i].x_pos, floors[i].y_pos))
