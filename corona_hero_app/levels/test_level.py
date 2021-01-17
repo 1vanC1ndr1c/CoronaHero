@@ -1,6 +1,7 @@
 from corona_hero_app.engine.engine import start_game
 from corona_hero_app.sprites.box import Box
 from corona_hero_app.sprites.disinfectant import Disinfectant
+from corona_hero_app.sprites.door import Door
 from corona_hero_app.sprites.gloves import Gloves
 from corona_hero_app.sprites.infected_person import InfectedPerson
 from corona_hero_app.sprites.main_character import MainCharacter
@@ -9,8 +10,6 @@ from corona_hero_app.sprites.platform import Platform
 from corona_hero_app.sprites.sink import Sink
 from corona_hero_app.sprites.virus import Virus
 from corona_hero_app.sprites.wall import Wall
-from corona_hero_app.sprites.door import Door
-from corona_hero_app.sprites.energy_time import EnergyTime
 
 
 def start_test_level():

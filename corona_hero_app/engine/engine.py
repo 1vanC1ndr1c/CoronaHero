@@ -7,7 +7,7 @@ from corona_hero_app.sprites.energy_time import EnergyTime
 
 def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, walls, viruses, rects, doors):
     energy_time1 = EnergyTime(0, 0)
-    energy_time2 = EnergyTime(0, 50)
+    energy_time2 = EnergyTime(0, 70)
 
     shootable_objects = []
     shootable_objects.extend(boxes)
@@ -142,7 +142,8 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
 
         if character.has_gloves:
             current_time = time.time()
-            win.blit(energy_time1.image_energy_time, (energy_time1.x_pos, energy_time1.y_pos))
+            win.blit(energy_time1.gloves_icon, (energy_time1.x_pos, energy_time1.y_pos))
+            win.blit(energy_time1.image_energy_time, (energy_time1.x_pos + 70, energy_time1.y_pos + 20))
             if animate_start_gloves:
                 energy_time1.animate_start()
                 animate_start_gloves = False
@@ -156,7 +157,8 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
 
         if character.is_masked:
             current_time = time.time()
-            win.blit(energy_time2.image_energy_time, (energy_time2.x_pos, energy_time2.y_pos))
+            win.blit(energy_time2.mask_icon, (energy_time2.x_pos, energy_time2.y_pos))
+            win.blit(energy_time2.image_energy_time, (energy_time2.x_pos + 70, energy_time2.y_pos + 20))
             if animate_start_mask:
                 energy_time2.animate_start()
                 animate_start_mask = False
