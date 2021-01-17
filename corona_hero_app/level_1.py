@@ -37,9 +37,7 @@ def setPlatform(x, y, size):
     for i in range(size):
         platforms.append(Platform())
         platforms[len(platforms) - 1].set_dimensions(50, 50)
-        platforms[len(platforms) - 1].x_pos = x + i * 50
-        platforms[len(platforms) - 1].y_pos = y
-
+        platforms[len(platforms) - 1].set_position(x + i * 50, y)
 
 def setBox(x, y):
     boxes.append(Box())
