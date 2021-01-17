@@ -46,7 +46,7 @@ class Platform(Sprite):
 
     def set_dimensions(self, w, h):
         self.rect.width = w
-        self.rect.height = h
+        self.rect.height = h + 10
         self.image_grass = smoothscale(self.image_grass, (w, h))
         self.image_soil = smoothscale(self.image_soil, (w, h))
         self.image_concrete = smoothscale(self.image_concrete, (w, h))

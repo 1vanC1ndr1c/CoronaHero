@@ -1,21 +1,16 @@
 import pygame
-import random
-from sprites.main_character import MainCharacter
-from sprites.enemy import Enemy
-from sprites.platform import Platform
-from sprites.box import Box
-from sprites.bullet import Bullet
-from sprites.disinfectant import Disinfectant
-from sprites.gloves import Gloves
-from sprites.infected_person import InfectedPerson
-from sprites.mask import Mask
-from sprites.sink import Sink
-from sprites.wall import Wall
-from sprites.door import Door
-from sprites.background import Background
-from sprites.virus import Virus
 from engine.engine import start_game
-
+from sprites.background import Background
+from sprites.box import Box
+from sprites.disinfectant import Disinfectant
+from sprites.door import Door
+from sprites.gloves import Gloves
+from sprites.main_character import MainCharacter
+from sprites.mask import Mask
+from sprites.platform import Platform
+from sprites.sink import Sink
+from sprites.virus import Virus
+from sprites.wall import Wall
 
 floors = []
 platforms = []
@@ -46,16 +41,14 @@ def setWall(x,y):
 def setPlatform(x,y,size, image):
     for i in range(size):
         platforms.append( Platform())
-        platforms[len(platforms)-1].set_dimensions(50, 50) 
-        platforms[len(platforms)-1].x_pos = x+i*50
-        platforms[len(platforms)-1].y_pos = y
+        platforms[len(platforms)-1].set_dimensions(50, 50)
+        platforms[len(platforms) - 1].set_position(x + i * 50, y)
         platformImages.append(image)
 
 def setBox(x,y):
     boxes.append( Box())
-    boxes[len(boxes) -1].set_dimensions(50,50) 
-    boxes[len(boxes) -1].y_pos = y
-    boxes[len(boxes) -1].x_pos = x
+    boxes[len(boxes) - 1].set_dimensions(50, 50)
+    boxes[len(boxes) - 1].set_position(x, y)
 
 def setSink(x,y):
     sinks.append( Sink())
@@ -90,6 +83,7 @@ def setDoors(x,y):
 
 def start_level_4():
     character = MainCharacter()  # Check the main character animation
+    character.set_position(130, 570)
 
     virus = Virus()  # ... or check the virus animation.
 
@@ -104,6 +98,7 @@ def start_level_4():
                walls=floors,
                viruses=viruses,
                rects= platforms + boxes + floors,
+               doors=doors,
                backgrounds = backgrounds
                )
 
@@ -194,8 +189,8 @@ def level_4(test):
     for i in range (len(boxes)):
         level.blit(boxes[i].image_box, (boxes[i].x_pos,boxes[i].y_pos ))
 
-    level.blit(doors[0].image_entrance, (doors[0].x_pos,doors[0].y_pos ))
-    level.blit(doors[1].image_exit, (doors[1].x_pos,doors[1].y_pos ))
+    level.blit(doors[0].door_exit, (doors[0].x_pos,doors[0].y_pos ))
+    level.blit(doors[1].door_exit, (doors[1].x_pos,doors[1].y_pos ))
 
 
 
