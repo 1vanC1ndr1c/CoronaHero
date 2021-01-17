@@ -1,19 +1,16 @@
 import pygame
-import random
-from sprites.main_character import MainCharacter
-from sprites.platform import Platform
-from sprites.box import Box
-from sprites.bullet import Bullet
-from sprites.disinfectant import Disinfectant
-from sprites.gloves import Gloves
-from sprites.infected_person import InfectedPerson
-from sprites.mask import Mask
-from sprites.sink import Sink
-from sprites.wall import Wall
-from sprites.door import Door
-from sprites.background import Background
-from sprites.virus import Virus
 from engine.engine import start_game
+from sprites.background import Background
+from sprites.box import Box
+from sprites.disinfectant import Disinfectant
+from sprites.door import Door
+from sprites.gloves import Gloves
+from sprites.main_character import MainCharacter
+from sprites.mask import Mask
+from sprites.platform import Platform
+from sprites.sink import Sink
+from sprites.virus import Virus
+from sprites.wall import Wall
 
 floors = []
 platforms = []
@@ -44,9 +41,7 @@ def setPlatform(x, y, size):
 def setBox(x, y):
     boxes.append(Box())
     boxes[len(boxes) - 1].set_dimensions(50, 50)
-    boxes[len(boxes) - 1].y_pos = y
-    boxes[len(boxes) - 1].x_pos = x
-
+    boxes[len(boxes) - 1].set_position(x, y)
 
 def setSink(x, y):
     sinks.append(Sink())
@@ -98,7 +93,8 @@ def start_level_3():
                sinks=sinks,
                walls=floors,
                viruses=viruses,
-               rects=platforms + boxes + floors
+               rects=platforms + boxes + floors,
+               doors=doors
                )
 
 
@@ -162,8 +158,8 @@ def level_3(test):
     for i in range(len(boxes)):
         level.blit(boxes[i].image_box, (boxes[i].x_pos, boxes[i].y_pos))
 
-    level.blit(doors[0].image_entrance, (doors[0].x_pos, doors[0].y_pos))
-    level.blit(doors[1].image_exit, (doors[1].x_pos, doors[1].y_pos))
+    level.blit(doors[0].door_entrance, (doors[0].x_pos, doors[0].y_pos))
+    level.blit(doors[1].door_exit, (doors[1].x_pos, doors[1].y_pos))
 
     # ---for testing only
     if test:
