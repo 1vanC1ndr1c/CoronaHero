@@ -14,7 +14,7 @@ from corona_hero_app.sprites.infected_person import InfectedPerson
 import time
 
 
-def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, walls, viruses, rects):
+def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, walls, viruses, rects, backgrounds):
     shootable_objects = []
     shootable_objects.extend(boxes)
     shootable_objects.extend(inf_per)

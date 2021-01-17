@@ -19,6 +19,7 @@ from engine.engine import start_game
 
 floors = []
 platforms = []
+platformImages = []
 boxes = []
 sinks = []
 masks = []
@@ -28,8 +29,13 @@ doors = []
 ##dodaj set
 inf_pers = []
 viruses = []
+backgrounds = []
 
-
+def setBackground(x,y):
+    backgrounds.append(Background())
+    backgrounds[len(backgrounds) -1].set_dimensions(1280, 720)
+    backgrounds[len(backgrounds) -1].y_pos = y
+    backgrounds[len(backgrounds) -1].x_pos = x
 
 def setWall(x,y):
     floors.append( Wall())
@@ -37,12 +43,13 @@ def setWall(x,y):
     floors[len(floors) -1].y_pos = y
     floors[len(floors) -1].x_pos = x
 
-def setPlatform(x,y,size):
+def setPlatform(x,y,size, image):
     for i in range(size):
         platforms.append( Platform())
         platforms[len(platforms)-1].set_dimensions(50, 50) 
         platforms[len(platforms)-1].x_pos = x+i*50
         platforms[len(platforms)-1].y_pos = y
+        platformImages.append(image)
 
 def setBox(x,y):
     boxes.append( Box())
@@ -97,22 +104,26 @@ def start_level_1():
                sinks=sinks,
                walls=floors,
                viruses=viruses,
-               rects= platforms + boxes + floors
+               rects= platforms + boxes + floors,
+               backgrounds = backgrounds
                )
 
 def level_1(test):
 
     for i in range(26):
        #set floors
-       setPlatform(i*50,670,1)
+       if i == 11 or i == 10:
+           setPlatform(i*50,670,1, 1)
+       else : 
+           setPlatform(i*50,670,1, 0)
 
     #border
     for i in range(12):
         setWall(0, 720-100-50*i)
         setWall(1230, 720-100-50*i)
 
-    setPlatform(630, 470, 5)
-    setPlatform(500,620,2)
+    setPlatform(630, 470, 5,0)
+    setPlatform(500,620,2,0)
     setDoors(60,570)
     setDoors(1140,570)
 
@@ -123,15 +134,16 @@ def level_1(test):
     background = Background()
     background.set_dimensions(1280, 720)
     level.blit(background.image_cave, (0,0))
+    setBackground(0,0)
 
     for i in range (len(floors)):
         level.blit(floors[i].image_wall_darker, (floors[i].x_pos,floors[i].y_pos ))
 
     for i in range (len(platforms)):
-        if i == 11 or i == 10:
+        if platformImages[i] == 1:
             level.blit(platforms[i].image_soil, (platforms[i].x_pos,platforms[i].y_pos ))
-            continue
-        level.blit(platforms[i].image_grass, (platforms[i].x_pos,platforms[i].y_pos ))
+        else : 
+            level.blit(platforms[i].image_grass, (platforms[i].x_pos,platforms[i].y_pos ))
 
 
     for i in range (len(sinks)):

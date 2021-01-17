@@ -19,6 +19,7 @@ from engine.engine import start_game
 
 floors = []
 platforms = []
+platformImages = []
 boxes = []
 sinks = []
 masks = []
@@ -27,6 +28,14 @@ gloves = []
 doors = []
 inf_pers = []
 viruses = []
+backgrounds = []
+
+
+def setBackground(x,y):
+    backgrounds.append(Background())
+    backgrounds[len(backgrounds) -1].set_dimensions(1280, 720)
+    backgrounds[len(backgrounds) -1].y_pos = y
+    backgrounds[len(backgrounds) -1].x_pos = x
 
 
 def setWall(x,y):
@@ -35,12 +44,13 @@ def setWall(x,y):
     floors[len(floors) -1].y_pos = y
     floors[len(floors) -1].x_pos = x
 
-def setPlatform(x,y,size):
+def setPlatform(x,y,size, image):
     for i in range(size):
         platforms.append( Platform())
         platforms[len(platforms)-1].set_dimensions(50, 50) 
         platforms[len(platforms)-1].x_pos = x+i*50
         platforms[len(platforms)-1].y_pos = y
+        platformImages.append(image)
 
 def setBox(x,y):
     boxes.append( Box())
@@ -95,7 +105,8 @@ def start_level_3():
                sinks=sinks,
                walls=floors,
                viruses=viruses,
-               rects= platforms + boxes + floors
+               rects= platforms + boxes + floors,
+               backgrounds = backgrounds
                )
 
 
@@ -103,7 +114,7 @@ def level_3(test):
 
     for i in range(26):
        #set floors
-       setPlatform(i*50,670,1)
+       setPlatform(i*50,670,1, 0)
 
     #border
     for i in range(12):
@@ -112,19 +123,19 @@ def level_3(test):
 
     #set middle wall
     for i in range(10):
-       setPlatform(600,620-50*i,1)
-    setPlatform(350,120,6)   
+       setPlatform(600,620-50*i,1,1)
+    setPlatform(350,120,6,0)   
 
     #set door wall
     for i in range(6):
-       setPlatform(1050,620-50*i,1)
+       setPlatform(1050,620-50*i,1,1)
 
-    setPlatform(70,470,3)
-    setPlatform(550,530,1)
-    setPlatform(360,370,4)
-    setPlatform(120,250,2)
-    setPlatform(720,550,5)
-    setPlatform(500,70,1)
+    setPlatform(70,470,3,1)
+    setPlatform(550,530,1,1)
+    setPlatform(360,370,4,1)
+    setPlatform(120,250,2,1)
+    setPlatform(720,550,5,0)
+    setPlatform(500,70,1,1)
 
     setSink(550, 70)
     setBox(450, 620)
@@ -145,16 +156,17 @@ def level_3(test):
     background = Background()
     background.set_dimensions(1280, 720)
     level.blit(background.image_cave, (0,0))
+    setBackground(0,0)
 
     for i in range (len(floors)):
         
         level.blit(floors[i].image_wall_darker, (floors[i].x_pos,floors[i].y_pos ))
 
     for i in range (len(platforms)):
-        if (i >25 and i < 36) or i == 39 or i == 12 or(i >41 and i < 47) or i == 21:
+        if platformImages[i] == 1:
             level.blit(platforms[i].image_soil, (platforms[i].x_pos,platforms[i].y_pos ))
-            continue
-        level.blit(platforms[i].image_grass, (platforms[i].x_pos,platforms[i].y_pos ))
+        else : 
+            level.blit(platforms[i].image_grass, (platforms[i].x_pos,platforms[i].y_pos ))
 
 
     for i in range (len(sinks)):

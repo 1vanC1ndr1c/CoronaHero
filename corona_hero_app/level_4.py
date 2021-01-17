@@ -28,6 +28,13 @@ gloves = []
 doors = []
 inf_pers = []
 viruses = []
+backgrounds = []
+
+def setBackground(x,y):
+    backgrounds.append(Background())
+    backgrounds[len(backgrounds) -1].set_dimensions(1280, 720)
+    backgrounds[len(backgrounds) -1].y_pos = y
+    backgrounds[len(backgrounds) -1].x_pos = x
 
 
 def setWall(x,y):
@@ -96,7 +103,8 @@ def start_level_4():
                sinks=sinks,
                walls=floors,
                viruses=viruses,
-               rects= platforms + boxes + floors
+               rects= platforms + boxes + floors,
+               backgrounds = backgrounds
                )
 
 
@@ -164,6 +172,7 @@ def level_4(test):
     background = Background()
     background.set_dimensions(1280, 720)
     level.blit(background.image_cave, (0,0))
+    setBackground(0,0)
 
     for i in range (len(floors)):
         
