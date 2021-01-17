@@ -2,7 +2,8 @@ import time
 
 import pygame
 
-import numpy as np
+import os
+from pathlib import Path
 
 from corona_hero_app.sprites.energy_time import EnergyTime
 from corona_hero_app.sprites.platform import Platform
@@ -37,6 +38,10 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
     glove_counter_start = glove_counter_end = -1
     freefall_count = 1
     falling = False
+    death = False
+
+    pygame.mixer.music.load(os.path.join(Path(__file__).parent.parent.parent, "resources", "sounds","MainMusic.mp3"))
+    pygame.mixer.music.play()
 
     while run:
 
@@ -72,6 +77,7 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
                     character.is_dead = True
             else:
                 falling = False
+                pos_change = 5
                 pass
                 # print('Collision: ', collision.y_pos)
                 # print('Character: ', character.y_pos)
@@ -80,6 +86,7 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
                 if keys[pygame.K_SPACE]:
                     character.jump()
             if character.isJump:
+                pos_change = 10
                 if jump_count >= 0:
                     character.y_pos -= 30
                     character.rect.y = character.y_pos
@@ -177,6 +184,10 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
             if character.check_if_near_box(box):
                 if character.has_gloves is False:
                     character.start_death_countdown()
+                    if(not death):
+                        pygame.mixer.music.load(os.path.join(Path(__file__).parent.parent.parent, "resources", "sounds","Corona_hero-WashYourHands3.mp3"))
+                        pygame.mixer.music.play()
+                        death = True
                 box.move(pos_change, character)
                 character.is_moving_box = True
 
@@ -221,6 +232,10 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
         for sink in sinks:
             if character.check_if_collided(sink):
                 character.wash_hands()
+                if(death):
+                    pygame.mixer.music.load(os.path.join(Path(__file__).parent.parent.parent, "resources", "sounds","MainMusic.mp3"))
+                    pygame.mixer.music.play()
+                    death = False
 
             win.blit(sink.image_sink, (sink.x_pos, sink.y_pos))
 
