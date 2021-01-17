@@ -103,6 +103,7 @@ def start_level_4():
                walls=floors,
                viruses=viruses,
                rects= platforms + boxes + floors,
+               doors=doors,
                backgrounds = backgrounds
                )
 
@@ -193,8 +194,8 @@ def level_4(test):
     for i in range (len(boxes)):
         level.blit(boxes[i].image_box, (boxes[i].x_pos,boxes[i].y_pos ))
 
-    level.blit(doors[0].image_entrance, (doors[0].x_pos,doors[0].y_pos ))
-    level.blit(doors[1].image_exit, (doors[1].x_pos,doors[1].y_pos ))
+    level.blit(doors[0].door_entrance, (doors[0].x_pos,doors[0].y_pos ))
+    level.blit(doors[1].door_exit, (doors[1].x_pos,doors[1].y_pos ))
 
 
 

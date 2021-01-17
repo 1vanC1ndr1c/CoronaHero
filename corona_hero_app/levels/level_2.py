@@ -23,6 +23,7 @@ gloves = []
 doors = []
 inf_pers = []
 viruses = []
+backgrounds = []
 
 
 def setWall(x, y):
@@ -95,7 +96,8 @@ def start_level_2():
                walls=floors,
                viruses=viruses,
                rects=platforms + boxes + floors,
-               doors=doors
+               doors=doors,
+               backgrounds=backgrounds
                )
 
 
