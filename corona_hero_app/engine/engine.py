@@ -2,24 +2,23 @@ import time
 
 import pygame
 
+from corona_hero_app.sprites.energy_time import EnergyTime
+from corona_hero_app.sprites.platform import Platform
 
-def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, walls, viruses, rects, backgrounds):
+
+def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, walls, viruses, rects, doors,
+               backgrounds):
+    energy_time1 = EnergyTime(0, 0)
+    energy_time2 = EnergyTime(0, 70)
+    r = pygame.sprite.Group(rects)
+
     shootable_objects = []
     shootable_objects.extend(boxes)
-    shootable_objects.extend(inf_per)
     shootable_objects.extend(platforms)
     shootable_objects.extend(viruses)
 
-    spritesGroup = pygame.sprite.Group()
-
-    for box in boxes:
-        spritesGroup.add(box)
-
-    for platform in platforms:
-        spritesGroup.add(platform)
-
-    window_x_size = 960
-    window_y_size = 640
+    window_x_size = 1280
+    window_y_size = 720
     pygame.init()
     win = pygame.display.set_mode((window_x_size, window_y_size))
     pygame.display.set_caption("Testing environment.")
@@ -28,14 +27,19 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
     jump_count = 10
     last_shoot = current_shoot = time.time()
     mask_timer_start = mask_timer_end = -1
+    energy_time_start_gloves = -1
+    energy_time_start_masks = -1
+    animate_start_gloves = True
+    animate_start_mask = True
     death_timer_end = 0
     glove_counter_start = glove_counter_end = -1
-
-    for rect in rects:
-        print(rect)
+    freefall_count = 1
 
     while run:
-        pygame.time.delay(50)
+
+        for bg in backgrounds:
+            win.blit(bg.image_cave, (bg.x_pos, bg.y_pos))
+        pygame.time.delay(20)
 
         for event in pygame.event.get():
 
@@ -49,59 +53,44 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
                 character.is_dead = True
 
         if character.is_dead is False:
-            if not character.isJump:
 
-                if keys[pygame.K_SPACE] and character.y_pos < window_y_size - character.height:
-                    character.jump()
+            collision = pygame.sprite.spritecollideany(character, r)
+
+            if collision is None or collision.y_pos < character.y_pos or (
+                    collision.y_pos - character.y_pos) < character.height:
+                character.y_pos += 10
+                character.rect.y = character.y_pos
+                freefall_count += 1
+                if character.y_pos == 3000:
+                    character.is_dead = True
             else:
-                check_collide = pygame.sprite.spritecollide(character, spritesGroup, False)
-                print(check_collide)
-                if len(check_collide) == 0:
-                    neg = 1
-                    if jump_count < 0:
-                        neg = -1
+                pass
+                # print('Collision: ', collision.y_pos)
+                # print('Character: ', character.y_pos)
 
-                    character.y_pos -= int((jump_count ** 2) * 0.5 * neg)
-                    character.set_rect_y(-int((jump_count ** 2) * 0.5 * neg))
-                    print('X: ', character.x_pos)
-                    print('Rect X: ', character.rect.x)
-                    print('Y: ', character.y_pos)
-                    print('Rect Y: ', character.rect.y)
+            if not character.isJump:
+                if keys[pygame.K_SPACE] and collision is not None:
+                    character.jump()
+            if character.isJump is True:
+                if jump_count >= 0:
+                    character.y_pos -= 30
+                    character.rect.y = character.y_pos
                     jump_count -= 1
                 else:
-                    print(check_collide[0].rect.y)
-                    character.y_pos -= int(((jump_count + 1) ** 2) * 0.5)
-                    character.set_rect_y(-int(((jump_count + 1) ** 2) * 0.5))
                     character.isJump = False
-                    print('X: ', character.x_pos)
-                    print('Rect X: ', character.rect.x)
-                    print('Y: ', character.y_pos)
-                    print('Rect Y: ', character.rect.y)
                     jump_count = 10
 
             if keys[pygame.K_LEFT] and character.x_pos > 0:
                 character.move_left(-pos_change)
-                print('X: ', character.x_pos)
-                print('Rect X: ', character.rect.x)
-                hit = pygame.sprite.spritecollide(character, spritesGroup, False)
-                if len(hit) > 0:
-                    character.move_left(pos_change)
 
             if keys[pygame.K_RIGHT] and character.x_pos < window_x_size - character.width:
                 character.move_right(pos_change)
-                hit = pygame.sprite.spritecollide(character, spritesGroup, False)
-                print('X: ', character.x_pos)
-                print('Rect X: ', character.rect.x)
-                if len(hit) > 0:
-                    character.move_right(-pos_change)
 
             if pygame.mouse.get_pressed(3)[0] is True:
                 current_shoot = time.time()
                 if current_shoot - last_shoot > 0.1:
                     character.shoot()
                 last_shoot = current_shoot
-
-        win.fill((0, 0, 0))
 
         for wall in walls:  # First draw this (background)
             win.blit(wall.image_wall_brighter, (wall.x_pos, wall.y_pos))
@@ -124,8 +113,54 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
         shootable_objects = [s for s in shootable_objects if s.is_dead is False]
 
         for platform in platforms:
+            # TODO OVO
+            # if character.isJump is False:
+            #     char_range_x = range(character.x_pos, character.x_pos + character.width)
+            #     char_range_y = range(character.y_pos, character.y_pos + character.height)
+            #
+            #     platform_range_x = range(platform.x_pos, platform.x_pos + platform.width)
+            #     platform_range_y = range(platform.y_pos, platform.y_pos + platform.height + 30)
+            #
+            #     if bool(set(platform_range_x) & set(char_range_x)) is True:
+            #         if bool(set(char_range_y) & set(platform_range_y)) is True:
+            #             if character.x_pos < platform.x_pos:
+            #                 character.x_pos = platform.x_pos - character.width
+            #             elif character.x_pos
+
+
             win.blit(platform.image_grass, (platform.x_pos, platform.y_pos))
 
+        if character.has_gloves:
+            current_time = time.time()
+            win.blit(energy_time1.gloves_icon, (energy_time1.x_pos, energy_time1.y_pos))
+            win.blit(energy_time1.image_energy_time, (energy_time1.x_pos + 70, energy_time1.y_pos + 20))
+            if animate_start_gloves:
+                energy_time1.animate_start()
+                animate_start_gloves = False
+            if (current_time - energy_time_start_gloves) >= 1:
+                energy_time_start_gloves = time.time()
+                energy_time1.animate()
+        else:
+            energy_time1._frame_counter = 0
+            energy_time1.animate_start()
+            animate_start_gloves = True
+
+        if character.is_masked:
+            current_time = time.time()
+            win.blit(energy_time2.mask_icon, (energy_time2.x_pos, energy_time2.y_pos))
+            win.blit(energy_time2.image_energy_time, (energy_time2.x_pos + 70, energy_time2.y_pos + 20))
+            if animate_start_mask:
+                energy_time2.animate_start()
+                animate_start_mask = False
+            if (current_time - energy_time_start_masks) >= 1:
+                energy_time_start_masks = time.time()
+                energy_time2.animate()
+        else:
+            energy_time2._frame_counter = 0
+            energy_time2.animate_start()
+            animate_start_mask = True
+
+        character.is_moving_box = False
         for box in boxes:
             win.blit(box.image_box, box.get_rect())
             if character.check_if_near_box(box):
@@ -133,8 +168,6 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
                     character.start_death_countdown()
                 box.move(pos_change, character)
                 character.is_moving_box = True
-            else:
-                character.is_moving_box = False
 
         for d in dis:
             d.animate()
@@ -150,10 +183,8 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
                 if g.check_if_collected(character) is True:
                     character.gloves_pick_up()
                     glove_counter_start = time.time()
-        #gloves = [g for g in gloves if g.collected is False]
-
-        for i in inf_per:
-            win.blit(i.image_infected_person, (i.x_pos, i.y_pos))
+                    energy_time_start_gloves = time.time()
+        # gloves = [g for g in gloves if g.collected is False]
 
         for mask in masks:
             mask.animate()
@@ -161,6 +192,7 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
             if mask.check_if_collected(character) is True:
                 character.mask_pick_up()
                 mask_timer_start = time.time()
+                energy_time_start_masks = time.time()
         masks = [m for m in masks if m.collected is False]
 
         if mask_timer_start != -1:
@@ -180,6 +212,12 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
                 character.wash_hands()
 
             win.blit(sink.image_sink, (sink.x_pos, sink.y_pos))
+
+        for door in doors:
+            win.blit(door.door_entrance, (door.x_pos, door.y_pos))
+            if door.check_if_hit(character) is True:
+                pygame.quit()
+                return True
 
         for virus in viruses:
             if virus.dead_animation_done is False:

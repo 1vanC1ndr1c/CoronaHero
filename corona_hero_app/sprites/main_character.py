@@ -177,16 +177,11 @@ class MainCharacter(Sprite):
         self.rect.x = x
         self.rect.y = y
 
-        print('Character X: ', self.x_pos)
-        print('Character Y: ', self.y_pos)
-        print('Character rect X: ', self.rect.x)
-        print('Character rect Y: ', self.rect.y)
-
     def set_dimensions(self, w, h):
         self.width = w
         self.height = h
         self.rect.width = w
-        self.rect.height = h
+        self.rect.height = h + 10
         self._images_still = [smoothscale(self._images_still[i], (w, h)) for i in range(len(self._images_still))]
         self._images_move_L = [smoothscale(self._images_move_L[i], (w, h)) for i in range(len(self._images_move_L))]
         self._images_move_R = [smoothscale(self._images_move_R[i], (w, h)) for i in range(len(self._images_move_R))]

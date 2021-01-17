@@ -5,7 +5,7 @@ from PIL import Image
 from pygame.sprite import Sprite
 from pygame.transform import smoothscale
 
-from image_handler import transform_into_surface
+from corona_hero_app.image_handler import transform_into_surface
 
 
 class Background(Sprite):
@@ -28,4 +28,5 @@ class Background(Sprite):
 
     def set_dimensions(self, w, h):
         self.image_cave = smoothscale(self.image_cave, (w, h))
-       
+        self.width = w
+        self.height = h
