@@ -53,12 +53,15 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
 
             collision = pygame.sprite.spritecollideany(character, r)
 
-            if collision is None or collision.y_pos < character.y_pos:
+            if collision is None or collision.y_pos < character.y_pos or (collision.y_pos - character.y_pos) < character.height:
                 character.y_pos += 10
                 character.rect.y = character.y_pos
                 freefall_count += 1
                 if character.y_pos == 3000:
                     character.is_dead = True
+            else:
+                print('Collision: ', collision.y_pos)
+                print('Character: ', character.y_pos)
 
             if collision is not None:
                 print("coll")
