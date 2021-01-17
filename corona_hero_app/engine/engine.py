@@ -60,8 +60,9 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
                 if character.y_pos == 3000:
                     character.is_dead = True
             else:
-                print('Collision: ', collision.y_pos)
-                print('Character: ', character.y_pos)
+                pass
+                # print('Collision: ', collision.y_pos)
+                # print('Character: ', character.y_pos)
 
             if not character.isJump:
                 if keys[pygame.K_SPACE] and collision is not None:
@@ -142,6 +143,7 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
             energy_time2.animate_start()
             animate_start_mask = True
 
+        character.is_moving_box = False
         for box in boxes:
             win.blit(box.image_box, box.get_rect())
             if character.check_if_near_box(box):
@@ -149,8 +151,6 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
                     character.start_death_countdown()
                 box.move(pos_change, character)
                 character.is_moving_box = True
-            else:
-                character.is_moving_box = False
 
         for d in dis:
             d.animate()
