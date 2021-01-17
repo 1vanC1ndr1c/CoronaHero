@@ -64,7 +64,7 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
                 print("coll")
 
             if not character.isJump:
-                if keys[pygame.K_SPACE] and character.y_pos < window_y_size - character.height:
+                if keys[pygame.K_SPACE] and collision is not None:
                     character.jump()
             if character.isJump is True:
                 if jump_count >= 0:
