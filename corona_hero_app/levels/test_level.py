@@ -24,15 +24,15 @@ def start_test_level():
     virus.get_rect().y = 500
 
     platform1 = Platform()
-    platform1.set_dimensions(100, 10)
+    platform1.set_dimensions(100, 100)
     platform1.set_position(0, 600)
 
     platform2 = Platform()
-    platform2.set_dimensions(100, 10)
+    platform2.set_dimensions(100, 100)
     platform2.set_position(100, 600)
 
     platform3 = Platform()
-    platform3.set_dimensions(100, 10)
+    platform3.set_dimensions(100, 100)
     platform3.set_position(200, 600)
 
     box1 = Box()
@@ -69,6 +69,8 @@ def start_test_level():
     door.y_pos = 570
     door.x_pos = 260
 
+    rects = [platform1, platform2, platform3, box1]
+
     start_game(character=character,
                platforms=[platform1, platform2, platform3],
                boxes=[box1],
@@ -79,5 +81,5 @@ def start_test_level():
                sinks=[sink],
                walls=[wall1],
                viruses=[virus],
-               rects=[platform1, platform2, platform3, box1],
+               rects=rects,
                doors=[door])

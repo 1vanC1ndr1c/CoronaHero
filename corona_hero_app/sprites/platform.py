@@ -45,7 +45,7 @@ class Platform(Sprite):
         self.is_dead = False
 
     def set_dimensions(self, w, h):
-        self.rect.width = w + 10
+        self.rect.width = w
         self.rect.height = h + 10
         self.image_grass = smoothscale(self.image_grass, (w, h))
         self.image_soil = smoothscale(self.image_soil, (w, h))

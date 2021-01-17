@@ -3,19 +3,22 @@ import time
 import pygame
 
 from corona_hero_app.sprites.energy_time import EnergyTime
+from corona_hero_app.sprites.platform import Platform
 
 
 def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, walls, viruses, rects, doors):
     energy_time1 = EnergyTime(0, 0)
     energy_time2 = EnergyTime(0, 50)
 
+    r = pygame.sprite.Group(rects)
+
     shootable_objects = []
     shootable_objects.extend(boxes)
     shootable_objects.extend(platforms)
     shootable_objects.extend(viruses)
 
-    window_x_size = 960
-    window_y_size = 640
+    window_x_size = 1280
+    window_y_size = 720
     pygame.init()
     win = pygame.display.set_mode((window_x_size, window_y_size))
     pygame.display.set_caption("Testing environment.")
@@ -32,8 +35,9 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
     glove_counter_start = glove_counter_end = -1
     freefall_count = 1
 
+
     while run:
-        floor_found = False
+
         pygame.time.delay(50)
 
         for event in pygame.event.get():
@@ -49,56 +53,28 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
 
         if character.is_dead is False:
 
-            for el in boxes:
-                el_range_x = range(el.x_pos, el.x_pos + el.width)
-                el_range_y = range(el.y_pos - el.height, el.y_pos)
+            collision = pygame.sprite.spritecollideany(character, r)
+            print(collision)
 
-                character_range_x = range(character.x_pos, character.x_pos + character.width)
-                character_range_y = range(character.y_pos - character.height - 5, character.y_pos + 5)
-
-                if bool(set(el_range_x) & set(character_range_x)) is True:
-                    if bool(set(el_range_y) & set(character_range_y)) is True:
-                        floor_found = True
-                        character.y_pos = el.y_pos - el.height
-                        character.rect.y = character.y_pos
-                        break
-
-            for el in platforms:
-                el_range_x = range(el.x_pos, el.x_pos + el.width)
-                el_range_y = range(el.y_pos - el.height, el.y_pos)
-
-                character_range_x = range(character.x_pos, character.x_pos + character.width)
-                character_range_y = range(character.y_pos - character.height - 5, character.y_pos + 5)
-
-                if bool(set(el_range_x) & set(character_range_x)) is True:
-                    if bool(set(el_range_y) & set(character_range_y)) is True:
-                        floor_found = True
-                        character.y_pos = el.y_pos - el.height
-                        character.rect.y = character.y_pos
-                        break
-
-            if floor_found is False and character.isJump is False:
-                character.y_pos -= int((freefall_count ** 2) * 0.5 * -1)
+            if collision is None:
+                character.y_pos += 10
                 character.rect.y = character.y_pos
                 freefall_count += 1
                 if character.y_pos == 3000:
-                    character.is_dead
-
-            if floor_found is True:
-                freefall_count = 1
+                    character.is_dead = True
+            #
+            # if collision is not None and floor_found is False:
+            #     floor_found = True
+            #     character.y_pos = collision.y_pos - collision.rect.height
 
             if not character.isJump:
                 if keys[pygame.K_SPACE] and character.y_pos < window_y_size - character.height:
                     character.jump()
             if character.isJump is True:
-                if jump_count >= -10:
-                    neg = 1
-                    if jump_count < 0:
-                        neg = -1
-                    character.y_pos -= int((jump_count ** 2) * 0.5 * neg)
-                    character.set_rect_y(-int((jump_count ** 2) * 0.5 * neg))
+                if jump_count >= 0:
+                    character.y_pos -= 20
+                    character.rect.y = character.y_pos
                     jump_count -= 1
-                    floor_found = False
                 else:
                     character.isJump = False
                     jump_count = 10
