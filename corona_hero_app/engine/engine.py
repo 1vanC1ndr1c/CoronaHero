@@ -9,7 +9,6 @@ from corona_hero_app.sprites.platform import Platform
 def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, walls, viruses, rects, doors):
     energy_time1 = EnergyTime(0, 0)
     energy_time2 = EnergyTime(0, 70)
-
     r = pygame.sprite.Group(rects)
 
     shootable_objects = []
@@ -35,7 +34,6 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
     glove_counter_start = glove_counter_end = -1
     freefall_count = 1
 
-
     while run:
 
         pygame.time.delay(50)
@@ -54,7 +52,6 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
         if character.is_dead is False:
 
             collision = pygame.sprite.spritecollideany(character, r)
-            print(collision)
 
             if collision is None:
                 character.y_pos += 10
@@ -62,10 +59,9 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
                 freefall_count += 1
                 if character.y_pos == 3000:
                     character.is_dead = True
-            #
-            # if collision is not None and floor_found is False:
-            #     floor_found = True
-            #     character.y_pos = collision.y_pos - collision.rect.height
+
+            if collision is not None:
+                print("coll")
 
             if not character.isJump:
                 if keys[pygame.K_SPACE] and character.y_pos < window_y_size - character.height:
