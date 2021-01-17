@@ -87,7 +87,7 @@ def setDoors(x, y):
 
 def start_level_1():
     character = MainCharacter()  # Check the main character animation
-    character.set_position(400, 429)
+    character.set_position(130, 570)
 
     virus = Virus()  # ... or check the virus animation.
 
@@ -143,8 +143,8 @@ def level_1(test):
     for i in range(len(disinfectants)):
         level.blit(disinfectants[i].image_disinfectant, (disinfectants[i].x_pos, disinfectants[i].y_pos))
 
-    level.blit(doors[0].door_entrance_1, (doors[0].x_pos, doors[0].y_pos))
-    level.blit(doors[1].door_exit_1, (doors[1].x_pos, doors[1].y_pos))
+    level.blit(doors[0].door_entrance, (doors[0].x_pos, doors[0].y_pos))
+    level.blit(doors[1].door_exit, (doors[1].x_pos, doors[1].y_pos))
 
     # ---for testing only
     if test:

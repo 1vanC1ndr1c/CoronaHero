@@ -83,6 +83,7 @@ def setDoors(x, y):
 
 def start_level_5():
     character = MainCharacter()  # Check the main character animation
+    character.set_position(130, 570)
 
     virus = Virus()  # ... or check the virus animation.
 
