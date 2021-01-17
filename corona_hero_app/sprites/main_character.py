@@ -181,7 +181,7 @@ class MainCharacter(Sprite):
         self.width = w
         self.height = h
         self.rect.width = w
-        self.rect.height = h
+        self.rect.height = h + 10
         self._images_still = [smoothscale(self._images_still[i], (w, h)) for i in range(len(self._images_still))]
         self._images_move_L = [smoothscale(self._images_move_L[i], (w, h)) for i in range(len(self._images_move_L))]
         self._images_move_R = [smoothscale(self._images_move_R[i], (w, h)) for i in range(len(self._images_move_R))]
