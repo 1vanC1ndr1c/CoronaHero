@@ -33,6 +33,7 @@ def setWall(x, y):
     floors[len(floors) - 1].set_dimensions(50, 50)
     floors[len(floors) - 1].y_pos = y
     floors[len(floors) - 1].x_pos = x
+    floors[len(floors) - 1].set_position(x, y)
 
 
 def setPlatform(x, y, size):
@@ -44,12 +45,12 @@ def setPlatform(x, y, size):
         platforms[len(platforms) - 1].set_position(x + i * 50, y)
 
 
-
 def setBox(x, y):
     boxes.append(Box())
     boxes[len(boxes) - 1].set_dimensions(50, 50)
     boxes[len(boxes) - 1].y_pos = y
     boxes[len(boxes) - 1].x_pos = x
+    boxes[len(boxes) - 1].set_position(x, y)
 
 
 def setSink(x, y):
@@ -89,7 +90,7 @@ def setDoors(x, y):
 
 def start_level_1():
     character = MainCharacter()  # Check the main character animation
-    character.set_position(200, 429)
+    character.set_position(400, 429)
 
     virus = Virus()  # ... or check the virus animation.
 
