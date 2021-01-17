@@ -5,7 +5,7 @@ from PIL import Image
 from pygame.sprite import Sprite
 from pygame.transform import smoothscale
 
-from corona_hero_app.image_handler import split_animated_gif
+from corona_hero_app.image_handler import split_animated_gif, transform_into_surface
 
 
 class EnergyTime(Sprite):
@@ -19,6 +19,8 @@ class EnergyTime(Sprite):
         self._image_energy_time_gif = Image.open(str(os.path.join(self._resources_path, 'Energy-Time-1.gif')))
         self._image_energy_time_gif = split_animated_gif(self._image_energy_time_gif)
         self.image_energy_time = self._image_energy_time_gif[0]
+        self.mask_icon = transform_into_surface(Image.open(str(os.path.join(self._resources_path, 'Mask-collected.png'))))
+        self.gloves_icon = transform_into_surface(Image.open(str(os.path.join(self._resources_path, 'Gloves-collected.png'))))
 
         self.width = 30
         self.height = 30
