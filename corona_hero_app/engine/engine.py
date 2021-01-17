@@ -63,9 +63,6 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
                 print('Collision: ', collision.y_pos)
                 print('Character: ', character.y_pos)
 
-            if collision is not None:
-                print("coll")
-
             if not character.isJump:
                 if keys[pygame.K_SPACE] and collision is not None:
                     character.jump()
@@ -201,6 +198,9 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
 
         for door in doors:
             win.blit(door.door_entrance, (door.x_pos, door.y_pos))
+            if door.check_if_hit(character) is True:
+                pygame.quit()
+                return True
 
         for virus in viruses:
             if virus.dead_animation_done is False:
