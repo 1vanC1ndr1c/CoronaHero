@@ -32,3 +32,12 @@ class Door(Sprite):
     def set_dimensions(self, w, h):
         self.door_entrance = smoothscale(self.door_entrance, (w, h))
         self.door_exit = smoothscale(self.door_exit, (w, h))
+    def check_if_hit(self, el):
+        el_range_x = range(el.x_pos, el.x_pos + el.width)
+        el_range_y = range(el.y_pos, el.y_pos + el.height)
+
+        self_range_x = range(self.x_pos, self.x_pos + self.width)
+        self_range_y = range(self.y_pos, self.y_pos + self.height)
+
+        if bool(set(el_range_x) & set(self_range_x)) is True:
+            return bool(set(el_range_y) & set(self_range_y))
