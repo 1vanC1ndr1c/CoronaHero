@@ -44,9 +44,7 @@ def setPlatform(x, y, size, image):
 def setBox(x, y):
     boxes.append(Box())
     boxes[len(boxes) - 1].set_dimensions(50, 50)
-    boxes[len(boxes) - 1].y_pos = y
-    boxes[len(boxes) - 1].x_pos = x
-
+    boxes[len(boxes) - 1].set_position(x, y)
 
 def setSink(x, y):
     sinks.append(Sink())

@@ -17,22 +17,11 @@ class Box(Sprite):
         self._resources_path = os.path.join(self._resources_path, "resources", "sprites")
         self.image_box = Image.open(str(os.path.join(self._resources_path, 'Box.png')))
         self.image_box = transform_into_surface(self.image_box)
-
+        self.width = 0
+        self.height = 0
+        self.x_pos = 0
+        self.y_pos = 0
         self.rect = self.image_box.get_rect()
-
-        self.width = 30
-        self.height = 30
-        self.set_dimensions(self.width, self.height)
-
-        self.rect.x = 150
-        self.rect.y = 150
-
-        self.x_pos = self.rect.x
-        self.y_pos = self.rect.y
-
-        self.rect.width = 30
-        self.rect.height = 30
-
         self.is_dead = False
 
     def set_dimensions(self, w, h):
