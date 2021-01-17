@@ -122,18 +122,6 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
         shootable_objects = [s for s in shootable_objects if s.is_dead is False]
 
         for platform in platforms:
-            if character.isJump is False:
-                char_range_y = range(character.y_pos, character.y_pos + character.height)
-                platform_range_y = range(platform.y_pos, platform.y_pos + platform.height - 5)
-
-                # plz work
-                if bool(set(char_range_y) & set(platform_range_y)) is True:
-                    if character.x_pos + character.width in range(platform.x_pos, platform.x_pos + 10):
-                        character.set_position(platform.x_pos - character.width, character.y_pos)
-                    elif character.x_pos in range(platform.x_pos + platform.width - 10,
-                                                  platform.x_pos + platform.width):
-                        character.set_position(platform.x_pos + platform.width, character.y_pos)
-
             da = False
             if(character.y_pos+character.height - 10 >= platform.y_pos and character.y_pos+character.height - 10 <= platform.y_pos+platform.height):
                 if(character.x_pos+character.width >= platform.x_pos and character.x_pos+character.width <= platform.x_pos + platform.width/2):
@@ -143,6 +131,9 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
                 elif(character.x_pos <= platform.x_pos+platform.width and character.x_pos >= platform.x_pos + platform.width/2):
                     character.x_pos = platform.x_pos + platform.width
                     da = True
+
+            if(character.isJump and da and (character.y_pos <= platform.y_pos+platform.height+20 and character.y_pos >= platform.y_pos)):
+                jump_count = -1
 
             if(character.isJump and da and (character.y_pos <= platform.y_pos+platform.height+20 and character.y_pos >= platform.y_pos)):
                 jump_count = -1
