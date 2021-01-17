@@ -14,8 +14,8 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
     shootable_objects.extend(platforms)
     shootable_objects.extend(viruses)
 
-    window_x_size = 960
-    window_y_size = 640
+    window_x_size = 1280
+    window_y_size = 720
     pygame.init()
     win = pygame.display.set_mode((window_x_size, window_y_size))
     pygame.display.set_caption("Testing environment.")
