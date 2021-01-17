@@ -2,6 +2,8 @@ import time
 
 import pygame
 
+import numpy as np
+
 from corona_hero_app.sprites.energy_time import EnergyTime
 from corona_hero_app.sprites.platform import Platform
 
@@ -34,6 +36,7 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
     death_timer_end = 0
     glove_counter_start = glove_counter_end = -1
     freefall_count = 1
+    falling = False
 
     while run:
 
@@ -64,9 +67,11 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
                 character.y_pos += 10
                 character.rect.y = character.y_pos
                 freefall_count += 1
+                falling = True
                 if character.y_pos == 3000:
                     character.is_dead = True
             else:
+                falling = False
                 pass
                 # print('Collision: ', collision.y_pos)
                 # print('Character: ', character.y_pos)
@@ -74,11 +79,12 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
             if not character.isJump:
                 if keys[pygame.K_SPACE] and collision is not None and character.isJump is False:
                     character.jump()
-            if character.isJump is True:
+            if character.isJump:
                 if jump_count >= 0:
                     character.y_pos -= 30
                     character.rect.y = character.y_pos
                     jump_count -= 1
+                    
                 else:
                     character.isJump = False
                     jump_count = 8
@@ -108,7 +114,7 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
                 if o.check_if_hit(bullet):
                     character.bullet_hit(index)
                     bullet_collided = True
-            if bullet_collided is False:
+            if not bullet_collided:
                 win.blit(bullet.image_bullet, (bullet.x_pos, bullet.y_pos))
             else:
                 bullet.kill()
@@ -128,6 +134,18 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
                                                   platform.x_pos + platform.width):
                         character.set_position(platform.x_pos + platform.width, character.y_pos)
 
+            da = False
+            if(character.y_pos+character.height - 10 >= platform.y_pos and character.y_pos+character.height - 10 <= platform.y_pos+platform.height):
+                if(character.x_pos+character.width >= platform.x_pos and character.x_pos+character.width <= platform.x_pos + platform.width/2):
+                    character.x_pos = platform.x_pos - character.width
+                    da = True
+
+                elif(character.x_pos <= platform.x_pos+platform.width and character.x_pos >= platform.x_pos + platform.width/2):
+                    character.x_pos = platform.x_pos + platform.width
+                    da = True
+
+            if(character.isJump and da and (character.y_pos <= platform.y_pos+platform.height+20 and character.y_pos >= platform.y_pos)):
+                jump_count = -1
 
         for platform in platforms:
             win.blit(platform.image_grass, (platform.x_pos, platform.y_pos))

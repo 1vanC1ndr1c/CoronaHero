@@ -1,5 +1,7 @@
 import sys
 
+sys.path.insert(1, '..')
+
 from corona_hero_app.levels.level_1 import level_1
 from corona_hero_app.levels.level_2 import level_2
 from corona_hero_app.levels.level_3 import level_3
