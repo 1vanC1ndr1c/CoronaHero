@@ -76,8 +76,8 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
                 # print('Collision: ', collision.y_pos)
                 # print('Character: ', character.y_pos)
 
-            if not character.isJump:
-                if keys[pygame.K_SPACE] and collision is not None and character.isJump is False:
+            if not character.isJump and not falling:
+                if keys[pygame.K_SPACE]:
                     character.jump()
             if character.isJump:
                 if jump_count >= 0:
@@ -87,7 +87,7 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
                     
                 else:
                     character.isJump = False
-                    jump_count = 8
+                    jump_count = 10
 
             if keys[pygame.K_LEFT] and character.x_pos > 0:
                 character.move_left(-pos_change)
