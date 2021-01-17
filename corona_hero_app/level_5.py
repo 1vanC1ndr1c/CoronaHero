@@ -88,7 +88,8 @@ def setDoors(x,y):
     doors[len(doors) -1].y_pos = y
     doors[len(doors) -1].x_pos = x
 
-def start_level_4():
+
+def start_level_5():
     character = MainCharacter()  # Check the main character animation
 
     virus = Virus()  # ... or check the virus animation.
@@ -107,72 +108,98 @@ def start_level_4():
                backgrounds = backgrounds
                )
 
+def level_5(test):
 
-def level_4(test):
-
-    for i in range(26):
+    for i in range(103):
        #set floors
-       if i > 3 and i < 22:
+       if (i>22 and i < 25) or i == 60:
            setPlatform(i*50,670,1, 1)
-       else : 
+       else:
            setPlatform(i*50,670,1, 0)
+       
 
-    for i in range(18):
-       if i > 0 and i <17:
-           setPlatform(200 + i*50,620,1, 1)
-       else : 
-           setPlatform(200 + i*50,620,1, 0)
 
-    for i in range(16):
-       if i > 1 and i <14:
-           setPlatform(250 + i*50,570,1, 1)
-       else : 
-           setPlatform(250 + i*50,570,1, 0)
+    setPlatform(250, 520, 4, 0)
+    setBox(280, 470)
 
-    for i in range(12):
-       if i > 0 and i <11:
-           setPlatform(350 + i*50,520,1, 1)
-       else : 
-           setPlatform(350 + i*50,520,1, 0)
+    setPlatform(170, 300,2,0)
+    setDisinfect(170, 250)
 
-    for i in range(10):
-       if i > 1 and i <8:
-           setPlatform(400 + i*50,470,1, 1)
-       else : 
-           setPlatform(400 + i*50,470,1, 0)
+    setPlatform(650, 470,3,0)
 
-    for i in range(6):
-       if i > 0 and i <5:
-           setPlatform(500 + i*50,420,1, 1)
-       else : 
-           setPlatform(500 + i*50,420,1, 0)
+    setPlatform(950, 370, 10, 0)
+    setPlatform(1000, 420,8,1)
+    setPlatform(1100,470, 4, 1)
+    setPlatform(1150, 520, 2 ,1)
+    setPlatform(1150, 570, 2 ,1)
+    setPlatform(1150, 620, 2 ,1)
+    setBox(1140, 320)
+    setSink(1250, 620)
+    
+
+    setPlatform(1600, 200,1,0)
+    setDisinfect(1600,150)
 
     for i in range(4):
-       setPlatform(550 + i*50,370,1, 0)
-    
-    setPlatform(100,400,3, 0)
+        setPlatform(1800+i*70, 50+150*i, 7, 0)      
+        if i != 0:
+            setBox(1870+i*80, 150*i)
+            setBox(2030+i*80, 150*i)
+        for y in range(3):
+            setBox(1870+i*250, 620)
 
+    setPlatform(2500, 350, 4, 0)
+    setBox(2550, 300)
+
+    for i in range(9):
+        setPlatform(3000, 620-i*50, 1 ,1)
+
+    setPlatform(2900, 170, 8, 0 )
+    setBox(3050, 120)
+
+    setPlatform(3050, 350, 5, 0)
+    setSink(3050, 300)
+
+    for i in range(11):
+        if i == 0:
+            setPlatform(3500, 10, 1 ,0)
+            setPlatform(4100, 170, 1, 0)
+        else:
+            setPlatform(3500, 10+i*50, 1 ,1)
+            setPlatform(4100, 170+i*50, 1, 1)
+
+    setPlatform(3550, 510, 9, 0)
+    setPlatform(3550, 150, 9, 0)
+    setPlatform(3700, 350, 8,0)
+    setPlatform(3450, 280,1,0)
+    setSink(3550, 100)
+    setBox(3950, 620)
+    setBox(3800, 300)
+ 
     #border
     for i in range(12):
         setWall(0, 720-100-50*i)
-        setWall(1230, 720-100-50*i)
-
-
-    setDisinfect(110, 355)
-
+        setWall(1230+1280*2+640, 720-100-50*i)
   
     setDoors(60,570)
-    setDoors(1140,570)
+    setDoors(1140+1280*2+640,570)
     
 
     #fill level surface
-    level = pygame.Surface((1280, 720))#960, 640
+    level = pygame.Surface((1280*3+640, 720))#960, 640
     count = 0
 
     background = Background()
     background.set_dimensions(1280, 720)
     level.blit(background.image_cave, (0,0))
     setBackground(0,0)
+    level.blit(background.image_cave, (1280,0))
+    setBackground(1280,0)
+    level.blit(background.image_cave, (1280*2,0))
+    setBackground(1280*2,0)
+    level.blit(background.image_cave, (1280*3,0))
+    setBackground(1280*3,0)
+
 
     for i in range (len(floors)):
         
@@ -210,11 +237,11 @@ def level_4(test):
          pygame.display.set_caption("Testing environment.")
          count = 0
          while True:
-             pygame.time.delay(40)
+             pygame.time.delay(6)
         
              win.fill((0, 0, 0))
              win.blit(level, (0-(count*5),0))
-             #count += 1
+             count += 1
              pygame.display.update()
 
         
@@ -223,9 +250,9 @@ def level_4(test):
 
     #if not for testing return level surface
     else : 
-         start_level_4()
+         start_level_5()
 
 
 
 if __name__ == '__main__':
-    level_4(True)
+    level_5(True)

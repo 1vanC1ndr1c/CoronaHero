@@ -30,12 +30,12 @@ inf_pers = []
 viruses = []
 backgrounds = []
 
+
 def setBackground(x,y):
     backgrounds.append(Background())
     backgrounds[len(backgrounds) -1].set_dimensions(1280, 720)
     backgrounds[len(backgrounds) -1].y_pos = y
     backgrounds[len(backgrounds) -1].x_pos = x
-
 
 def setWall(x,y):
     floors.append( Wall())
@@ -88,8 +88,9 @@ def setDoors(x,y):
     doors[len(doors) -1].y_pos = y
     doors[len(doors) -1].x_pos = x
 
-def start_level_4():
-    character = MainCharacter()  # Check the main character animation
+
+def start_level_2():
+    #character = MainCharacter()  # Check the main character animation
 
     virus = Virus()  # ... or check the virus animation.
 
@@ -108,59 +109,31 @@ def start_level_4():
                )
 
 
-def level_4(test):
+
+
+def level_2(test):
 
     for i in range(26):
        #set floors
-       if i > 3 and i < 22:
-           setPlatform(i*50,670,1, 1)
+       if (i >5 and i < 14):
+           setPlatform(i*50,670,1,1)
        else : 
-           setPlatform(i*50,670,1, 0)
-
-    for i in range(18):
-       if i > 0 and i <17:
-           setPlatform(200 + i*50,620,1, 1)
-       else : 
-           setPlatform(200 + i*50,620,1, 0)
-
-    for i in range(16):
-       if i > 1 and i <14:
-           setPlatform(250 + i*50,570,1, 1)
-       else : 
-           setPlatform(250 + i*50,570,1, 0)
-
-    for i in range(12):
-       if i > 0 and i <11:
-           setPlatform(350 + i*50,520,1, 1)
-       else : 
-           setPlatform(350 + i*50,520,1, 0)
-
-    for i in range(10):
-       if i > 1 and i <8:
-           setPlatform(400 + i*50,470,1, 1)
-       else : 
-           setPlatform(400 + i*50,470,1, 0)
-
-    for i in range(6):
-       if i > 0 and i <5:
-           setPlatform(500 + i*50,420,1, 1)
-       else : 
-           setPlatform(500 + i*50,420,1, 0)
-
-    for i in range(4):
-       setPlatform(550 + i*50,370,1, 0)
-    
-    setPlatform(100,400,3, 0)
+           setPlatform(i*50,670,1,0)
 
     #border
     for i in range(12):
         setWall(0, 720-100-50*i)
         setWall(1230, 720-100-50*i)
 
-
-    setDisinfect(110, 355)
-
-  
+    setPlatform(680, 420,2,0)
+    setPlatform(200, 300, 6,0)
+    setPlatform(200,250,1,1)
+    setBox(340, 570)
+    setBox(930, 620)
+    setPlatform(300,620,8,0)
+    setSink(250, 250)
+    #setMask(310, 70)
+    #setDisinfect(180, 405)
     setDoors(60,570)
     setDoors(1140,570)
     
@@ -175,7 +148,6 @@ def level_4(test):
     setBackground(0,0)
 
     for i in range (len(floors)):
-        
         level.blit(floors[i].image_wall_darker, (floors[i].x_pos,floors[i].y_pos ))
 
     for i in range (len(platforms)):
@@ -223,9 +195,9 @@ def level_4(test):
 
     #if not for testing return level surface
     else : 
-         start_level_4()
+         start_level_2()
 
 
 
 if __name__ == '__main__':
-    level_4(True)
+    level_2(True)
