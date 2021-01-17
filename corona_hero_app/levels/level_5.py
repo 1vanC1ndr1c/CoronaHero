@@ -22,9 +22,17 @@ masks = []
 disinfectants = []
 gloves = []
 doors = []
+##dodaj set
 inf_pers = []
 viruses = []
 backgrounds = []
+
+
+def setBackground(x, y):
+    backgrounds.append(Background())
+    backgrounds[len(backgrounds) - 1].set_dimensions(1280, 720)
+    backgrounds[len(backgrounds) - 1].y_pos = y
+    backgrounds[len(backgrounds) - 1].x_pos = x
 
 
 def setWall(x, y):
@@ -39,6 +47,7 @@ def setPlatform(x, y, size, image):
         platforms.append(Platform())
         platforms[len(platforms) - 1].set_dimensions(50, 50)
         platforms[len(platforms) - 1].set_position(x + i * 50, y)
+        platforms[len(platforms) - 1].set_position(x + i * 50, y)
         platformImages.append(image)
 
 
@@ -46,6 +55,7 @@ def setBox(x, y):
     boxes.append(Box())
     boxes[len(boxes) - 1].set_dimensions(50, 50)
     boxes[len(boxes) - 1].set_position(x, y)
+
 
 def setSink(x, y):
     sinks.append(Sink())
@@ -100,7 +110,7 @@ def start_level_5():
                viruses=viruses,
                rects=platforms + boxes + floors,
                doors=doors,
-               backgrounds = backgrounds
+               backgrounds=backgrounds
                )
 
 
