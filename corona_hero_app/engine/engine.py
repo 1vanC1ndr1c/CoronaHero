@@ -6,7 +6,8 @@ from corona_hero_app.sprites.energy_time import EnergyTime
 from corona_hero_app.sprites.platform import Platform
 
 
-def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, walls, viruses, rects, doors):
+def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, walls, viruses, rects, doors,
+               backgrounds):
     energy_time1 = EnergyTime(0, 0)
     energy_time2 = EnergyTime(0, 70)
     r = pygame.sprite.Group(rects)
@@ -36,7 +37,9 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
 
     while run:
 
-        pygame.time.delay(50)
+        for bg in backgrounds:
+            win.blit(bg.image_cave, (bg.x_pos, bg.y_pos))
+        pygame.time.delay(20)
 
         for event in pygame.event.get():
 
@@ -53,7 +56,8 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
 
             collision = pygame.sprite.spritecollideany(character, r)
 
-            if collision is None or collision.y_pos < character.y_pos or (collision.y_pos - character.y_pos) < character.height:
+            if collision is None or collision.y_pos < character.y_pos or (
+                    collision.y_pos - character.y_pos) < character.height:
                 character.y_pos += 10
                 character.rect.y = character.y_pos
                 freefall_count += 1
@@ -69,7 +73,7 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
                     character.jump()
             if character.isJump is True:
                 if jump_count >= 0:
-                    character.y_pos -= 20
+                    character.y_pos -= 30
                     character.rect.y = character.y_pos
                     jump_count -= 1
                 else:
@@ -87,8 +91,6 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
                 if current_shoot - last_shoot > 0.1:
                     character.shoot()
                 last_shoot = current_shoot
-
-        win.fill((0, 0, 0))
 
         for wall in walls:  # First draw this (background)
             win.blit(wall.image_wall_brighter, (wall.x_pos, wall.y_pos))
@@ -111,6 +113,21 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
         shootable_objects = [s for s in shootable_objects if s.is_dead is False]
 
         for platform in platforms:
+            # TODO OVO
+            # if character.isJump is False:
+            #     char_range_x = range(character.x_pos, character.x_pos + character.width)
+            #     char_range_y = range(character.y_pos, character.y_pos + character.height)
+            #
+            #     platform_range_x = range(platform.x_pos, platform.x_pos + platform.width)
+            #     platform_range_y = range(platform.y_pos, platform.y_pos + platform.height + 30)
+            #
+            #     if bool(set(platform_range_x) & set(char_range_x)) is True:
+            #         if bool(set(char_range_y) & set(platform_range_y)) is True:
+            #             if character.x_pos < platform.x_pos:
+            #                 character.x_pos = platform.x_pos - character.width
+            #             elif character.x_pos
+
+
             win.blit(platform.image_grass, (platform.x_pos, platform.y_pos))
 
         if character.has_gloves:

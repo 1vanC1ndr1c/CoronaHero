@@ -17,6 +17,7 @@ from corona_hero_app.engine.engine import start_game
 
 floors = []
 platforms = []
+platformImages = []
 boxes = []
 sinks = []
 masks = []
@@ -26,6 +27,14 @@ doors = []
 ##dodaj set
 inf_pers = []
 viruses = []
+backgrounds = []
+
+
+def setBackground(x,y):
+    backgrounds.append(Background())
+    backgrounds[len(backgrounds) -1].set_dimensions(1280, 720)
+    backgrounds[len(backgrounds) -1].y_pos = y
+    backgrounds[len(backgrounds) -1].x_pos = x
 
 
 def setWall(x, y):
@@ -102,7 +111,9 @@ def start_level_1():
                walls=floors,
                viruses=viruses,
                rects=platforms + boxes + floors,
-               doors=doors)
+               doors=doors,
+               backgrounds=backgrounds
+               )
 
 
 def level_1(test):
@@ -127,6 +138,7 @@ def level_1(test):
     background = Background()
     background.set_dimensions(1280, 720)
     level.blit(background.image_cave, (0, 0))
+    setBackground(0, 0)
 
     for i in range(len(floors)):
         level.blit(floors[i].image_wall_darker, (floors[i].x_pos, floors[i].y_pos))

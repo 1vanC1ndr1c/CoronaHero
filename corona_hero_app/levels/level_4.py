@@ -1,7 +1,6 @@
 import pygame
 import random
 from sprites.main_character import MainCharacter
-from sprites.enemy import Enemy
 from sprites.platform import Platform
 from sprites.box import Box
 from sprites.bullet import Bullet
