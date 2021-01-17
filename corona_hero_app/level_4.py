@@ -13,6 +13,8 @@ from sprites.sink import Sink
 from sprites.wall import Wall
 from sprites.door import Door
 from sprites.background import Background
+from sprites.virus import Virus
+from engine.engine import start_game
 
 
 floors = []
@@ -24,6 +26,8 @@ masks = []
 disinfectants = []
 gloves = []
 doors = []
+inf_pers = []
+viruses = []
 
 
 def setWall(x,y):
@@ -77,7 +81,23 @@ def setDoors(x,y):
     doors[len(doors) -1].y_pos = y
     doors[len(doors) -1].x_pos = x
 
+def start_level_4():
+    character = MainCharacter()  # Check the main character animation
 
+    virus = Virus()  # ... or check the virus animation.
+
+    start_game(character=character,
+               platforms=platforms,
+               boxes=boxes,
+               dis=disinfectants,
+               gloves=gloves,
+               inf_per=inf_pers,
+               masks=masks,
+               sinks=sinks,
+               walls=floors,
+               viruses=viruses,
+               rects= platforms + boxes + floors
+               )
 
 
 def level_4(test):
@@ -194,7 +214,7 @@ def level_4(test):
 
     #if not for testing return level surface
     else : 
-         return level
+         start_level_4()
 
 
 
