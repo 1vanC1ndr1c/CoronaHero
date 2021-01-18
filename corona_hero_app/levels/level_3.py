@@ -27,6 +27,14 @@ viruses = []
 backgrounds = []
 
 
+def setVirus(x,y):
+    viruses.append(Virus())
+    viruses[len(viruses)-1].set_dimensions(50,50)
+    viruses[len(viruses)-1].y_pos = y
+    viruses[len(viruses)-1].x_pos = x
+    viruses[len(viruses)-1].set_position(x,y)
+
+
 def setBackground(x, y):
     backgrounds.append(Background())
     backgrounds[len(backgrounds) - 1].set_dimensions(1280, 720)
@@ -136,10 +144,16 @@ def level_3(test,win):
 
     setPlatform(70, 470, 3)
     setPlatform(550, 530, 1)
-    setPlatform(360, 370, 4)
-    setPlatform(120, 250, 2)
+    setPlatform(320, 370, 4)
+    setPlatform(120, 220, 2)
     setPlatform(720, 550, 5)
     setPlatform(500, 70, 1)
+
+    setVirus(250,620)
+    setVirus(410,70)
+    setVirus(670,620)
+    setVirus(950,620)
+    setVirus(820,500)
 
     setSink(550, 70)
     setBox(450, 620)
