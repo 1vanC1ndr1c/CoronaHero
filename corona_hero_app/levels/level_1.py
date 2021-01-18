@@ -94,7 +94,7 @@ def setDoors(x, y):
     doors[len(doors) - 1].x_pos = x
 
 
-def start_level_1():
+def start_level_1(win):
     character = MainCharacter()  # Check the main character animation
     character.set_position(130, 570)
 
@@ -112,11 +112,12 @@ def start_level_1():
                viruses=viruses,
                rects=platforms + boxes + floors,
                doors=doors,
-               backgrounds=backgrounds
+               backgrounds=backgrounds,
+               win=win
                )
 
 
-def level_1(test):
+def level_1(test,win):
     for i in range(26):
         # set floors
         setPlatform(i * 50, 670, 1)
@@ -181,7 +182,7 @@ def level_1(test):
 
     # if not for testing return level surface
     else:
-        start_level_1()
+        start_level_1(win)
 
 
 if __name__ == '__main__':

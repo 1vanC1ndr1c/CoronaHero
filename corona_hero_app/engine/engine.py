@@ -10,7 +10,7 @@ from corona_hero_app.sprites.platform import Platform
 
 
 def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, walls, viruses, rects, doors,
-               backgrounds):
+               backgrounds,win):
     energy_time1 = EnergyTime(0, 0)
     energy_time2 = EnergyTime(0, 70)
     r = pygame.sprite.Group(rects)
@@ -20,11 +20,6 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
     shootable_objects.extend(platforms)
     shootable_objects.extend(viruses)
 
-    window_x_size = 1280
-    window_y_size = 720
-    pygame.init()
-    win = pygame.display.set_mode((window_x_size, window_y_size))
-    pygame.display.set_caption("Testing environment.")
     pos_change = 5
     run = True
     jump_count = 8
@@ -41,9 +36,8 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
     death = False
     lblsze = 55
     lblplus = True
-
-    pygame.mixer.music.load(os.path.join(Path(__file__).parent.parent.parent, "resources", "sounds","MainMusic.mp3"))
-    pygame.mixer.music.play()
+    window_x_size = 1280
+    window_y_size = 720
 
     while run:
 
@@ -55,6 +49,7 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
 
             if event.type == pygame.QUIT:
                 run = False
+                exit(0)
         keys = pygame.key.get_pressed()
 
         if character.death_countdown is True:
@@ -263,7 +258,6 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
         for door in doors:
             win.blit(door.door_entrance, (door.x_pos, door.y_pos))
             if door.check_if_hit(character) is True:
-                pygame.quit()
                 return True
 
         for virus in viruses:
@@ -276,4 +270,4 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
 
         pygame.display.update()
 
-    pygame.quit()
+    #pygame.quit()
