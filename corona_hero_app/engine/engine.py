@@ -39,6 +39,8 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
     freefall_count = 1
     falling = False
     death = False
+    lblsze = 55
+    lblplus = True
 
     pygame.mixer.music.load(os.path.join(Path(__file__).parent.parent.parent, "resources", "sounds","MainMusic.mp3"))
     pygame.mixer.music.play()
@@ -56,9 +58,27 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
         keys = pygame.key.get_pressed()
 
         if character.death_countdown is True:
+            winw, winh = pygame.display.get_surface().get_size()
             death_timer_end = time.time()
+            myfont = pygame.font.SysFont("Arial Black", lblsze)
+            label = myfont.render("WASH YOUR HANDS!", 1, (255,50,0))
+            twidth,theight = myfont.size("WASH YOUR HANDS!")
+            win.blit(label,(int(winw/2-twidth/2),10))
+            label = myfont.render(str(int(10-(death_timer_end - character.death_timer_start))),1,(255,50,0))
+            twidth,theight = myfont.size(str(int(10-(death_timer_end - character.death_timer_start))))
+            win.blit(label,(int(winw/2-twidth/2),70))
             if death_timer_end - character.death_timer_start >= 10:
                 character.is_dead = True
+            if(lblplus):
+                if(lblsze<59):
+                    lblsze+=1
+                else:
+                    lblplus = False
+            else:
+                if(lblsze>55):
+                    lblsze-=1
+                else:
+                    lblplus = True
 
         if character.is_dead is True:
             return False
@@ -184,6 +204,7 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
             if character.check_if_near_box(box):
                 if character.has_gloves is False:
                     character.start_death_countdown()
+                    
                     if(not death):
                         pygame.mixer.music.load(os.path.join(Path(__file__).parent.parent.parent, "resources", "sounds","Corona_hero-WashYourHands3.mp3"))
                         pygame.mixer.music.play()
