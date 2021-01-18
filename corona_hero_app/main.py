@@ -30,20 +30,25 @@ def main():
 
         level_done = False
         lvl+=1
-        while not level_done:
             
-            if(lvl==1):
-                level_done = level_1(False,win)
-            elif(lvl==2):
-                level_done = level_2(False,win)
-            elif(lvl==3):
-                level_done = level_3(False,win)
-            elif(lvl==4):
-                level_done = level_4(False,win)
-            elif(lvl==5):
-                level_done = level_5(False,win)
-            else:
-                pygame.quit()
+        if(lvl==0):
+            #TODO: Main menu
+            pygame.quit()
+            exit(0)
+        elif(lvl==1):
+            level_done = level_1(False,win)
+        elif(lvl==2):
+            level_done = level_2(False,win)
+        elif(lvl==3):
+            level_done = level_3(False,win)
+        elif(lvl==4):
+            level_done = level_4(False,win)
+        elif(lvl==5):
+            level_done = level_5(False,win)
+        else:
+            pygame.quit()
+        if not level_done:
+            lvl = -1
             
     
     pygame.quit()
