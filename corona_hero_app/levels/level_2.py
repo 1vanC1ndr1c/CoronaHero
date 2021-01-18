@@ -1,5 +1,4 @@
 import pygame
-
 from engine.engine import start_game
 from sprites.background import Background
 from sprites.box import Box
@@ -25,6 +24,14 @@ doors = []
 inf_pers = []
 viruses = []
 backgrounds = []
+
+
+def setVirus(x,y):
+    viruses.append(Virus())
+    viruses[len(viruses)-1].set_dimensions(50,50)
+    viruses[len(viruses)-1].y_pos = y
+    viruses[len(viruses)-1].x_pos = x
+    viruses[len(viruses)-1].set_position(x,y)
 
 
 def setBackground(x, y):
@@ -131,11 +138,18 @@ def level_2(test,win):
     setBox(340, 570)
     setBox(930, 620)
     setPlatform(300, 620, 8)
-    setSink(250, 250)
-    # setMask(310, 70)
-    # setDisinfect(180, 405)
+
+    setGloves(680, 370)
+
+    setVirus(250,620)
+    setVirus(1050,620)
+    setVirus(370,250)
+    setVirus(850,620)
+    setVirus(550,570)
+
     setDoors(60, 570)
-    setDoors(1140, 570)
+    setDoors(250, 200)
+    setSink(1180, 620)
 
     # fill level surface
     level = pygame.Surface((1280, 720))  # 960, 640

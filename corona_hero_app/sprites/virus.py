@@ -110,3 +110,9 @@ class Virus(Sprite):
 
     def get_rect(self):
         return self.rect
+
+    def set_position(self, x, y):
+        self.rect.x = x
+        self.rect.y = y
+        self.x_pos = x
+        self.y_pos = y
