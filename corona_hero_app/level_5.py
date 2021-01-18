@@ -1,20 +1,20 @@
 import pygame
 import random
-from sprites.main_character import MainCharacter
-from sprites.enemy import Enemy
-from sprites.platform import Platform
-from sprites.box import Box
-from sprites.bullet import Bullet
-from sprites.disinfectant import Disinfectant
-from sprites.gloves import Gloves
-from sprites.infected_person import InfectedPerson
-from sprites.mask import Mask
-from sprites.sink import Sink
-from sprites.wall import Wall
-from sprites.door import Door
-from sprites.background import Background
-from sprites.virus import Virus
-from engine.engine import start_game
+from main_character import MainCharacter
+from enemy import Enemy
+from platform import Platform
+from box import Box
+from bullet import Bullet
+from disinfectant import Disinfectant
+from gloves import Gloves
+from infected_person import InfectedPerson
+from mask import Mask
+from sink import Sink
+from wall import Wall
+from door import Door
+from background import Background
+from virus import Virus
+from engine import start_game
 
 
 floors = []
