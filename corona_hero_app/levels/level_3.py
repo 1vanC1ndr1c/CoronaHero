@@ -22,6 +22,16 @@ gloves = []
 doors = []
 inf_pers = []
 viruses = []
+##dodaj set
+
+backgrounds = []
+
+
+def setBackground(x, y):
+    backgrounds.append(Background())
+    backgrounds[len(backgrounds) - 1].set_dimensions(1280, 720)
+    backgrounds[len(backgrounds) - 1].y_pos = y
+    backgrounds[len(backgrounds) - 1].x_pos = x
 
 
 def setWall(x, y):
@@ -29,12 +39,15 @@ def setWall(x, y):
     floors[len(floors) - 1].set_dimensions(50, 50)
     floors[len(floors) - 1].y_pos = y
     floors[len(floors) - 1].x_pos = x
+    floors[len(floors) - 1].set_position(x, y)
 
 
 def setPlatform(x, y, size):
     for i in range(size):
         platforms.append(Platform())
         platforms[len(platforms) - 1].set_dimensions(50, 50)
+        platforms[len(platforms) - 1].x_pos = x + i * 50
+        platforms[len(platforms) - 1].y_pos = y
         platforms[len(platforms) - 1].set_position(x + i * 50, y)
 
 
@@ -42,6 +55,7 @@ def setBox(x, y):
     boxes.append(Box())
     boxes[len(boxes) - 1].set_dimensions(50, 50)
     boxes[len(boxes) - 1].set_position(x, y)
+
 
 def setSink(x, y):
     sinks.append(Sink())
@@ -78,13 +92,13 @@ def setDoors(x, y):
     doors[len(doors) - 1].x_pos = x
 
 
-def start_level_3():
+def start_level_3(win):
     character = MainCharacter()  # Check the main character animation
     character.set_position(130, 570)
 
     virus = Virus()  # ... or check the virus animation.
 
-    start_game(character=character,
+    return start_game(character=character,
                platforms=platforms,
                boxes=boxes,
                dis=disinfectants,
@@ -95,11 +109,13 @@ def start_level_3():
                walls=floors,
                viruses=viruses,
                rects=platforms + boxes + floors,
-               doors=doors
+               doors=doors,
+               backgrounds=backgrounds,
+               win=win
                )
 
 
-def level_3(test):
+def level_3(test,win):
     for i in range(26):
         # set floors
         setPlatform(i * 50, 670, 1)
@@ -140,6 +156,7 @@ def level_3(test):
     background = Background()
     background.set_dimensions(1280, 720)
     level.blit(background.image_cave, (0, 0))
+    setBackground(0, 0)
 
     for i in range(len(floors)):
         level.blit(floors[i].image_wall_darker, (floors[i].x_pos, floors[i].y_pos))
@@ -185,7 +202,7 @@ def level_3(test):
 
     # if not for testing return level surface
     else:
-        start_level_3()
+        return start_level_3(win)
 
 
 if __name__ == '__main__':

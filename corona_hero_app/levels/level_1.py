@@ -17,6 +17,7 @@ from corona_hero_app.engine.engine import start_game
 
 floors = []
 platforms = []
+platformImages = []
 boxes = []
 sinks = []
 masks = []
@@ -26,6 +27,14 @@ doors = []
 ##dodaj set
 inf_pers = []
 viruses = []
+backgrounds = []
+
+
+def setBackground(x,y):
+    backgrounds.append(Background())
+    backgrounds[len(backgrounds) -1].set_dimensions(1280, 720)
+    backgrounds[len(backgrounds) -1].y_pos = y
+    backgrounds[len(backgrounds) -1].x_pos = x
 
 
 def setWall(x, y):
@@ -85,13 +94,13 @@ def setDoors(x, y):
     doors[len(doors) - 1].x_pos = x
 
 
-def start_level_1():
+def start_level_1(win):
     character = MainCharacter()  # Check the main character animation
     character.set_position(130, 570)
 
     virus = Virus()  # ... or check the virus animation.
 
-    start_game(character=character,
+    return start_game(character=character,
                platforms=platforms,
                boxes=boxes,
                dis=disinfectants,
@@ -102,10 +111,13 @@ def start_level_1():
                walls=floors,
                viruses=viruses,
                rects=platforms + boxes + floors,
-               doors=doors)
+               doors=doors,
+               backgrounds=backgrounds,
+               win=win
+               )
 
 
-def level_1(test):
+def level_1(test,win):
     for i in range(26):
         # set floors
         setPlatform(i * 50, 670, 1)
@@ -127,6 +139,7 @@ def level_1(test):
     background = Background()
     background.set_dimensions(1280, 720)
     level.blit(background.image_cave, (0, 0))
+    setBackground(0, 0)
 
     for i in range(len(floors)):
         level.blit(floors[i].image_wall_darker, (floors[i].x_pos, floors[i].y_pos))
@@ -169,7 +182,7 @@ def level_1(test):
 
     # if not for testing return level surface
     else:
-        start_level_1()
+        return start_level_1(win)
 
 
 if __name__ == '__main__':

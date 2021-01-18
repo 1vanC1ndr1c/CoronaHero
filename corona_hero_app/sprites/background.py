@@ -28,4 +28,5 @@ class Background(Sprite):
 
     def set_dimensions(self, w, h):
         self.image_cave = smoothscale(self.image_cave, (w, h))
-       
+        self.width = w
+        self.height = h
