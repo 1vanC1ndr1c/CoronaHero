@@ -294,6 +294,7 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
             win.blit(label,(int(winw/2-twidth/2),190))
             
             if keys[pygame.K_y]:
+                pygame.mixer.music.stop()
                 return False
 			
             elif keys[pygame.K_n]:
