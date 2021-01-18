@@ -139,6 +139,8 @@ def level_2(test,win):
     setBox(930, 620)
     setPlatform(300, 620, 8)
 
+    setGloves(680, 370)
+
     setVirus(250,620)
     setVirus(1050,620)
     setVirus(370,250)

@@ -155,6 +155,9 @@ def level_3(test,win):
     setVirus(950,620)
     setVirus(820,500)
 
+    setGloves(350, 620)
+    setGloves(1000,620)
+
     setSink(550, 70)
     setBox(450, 620)
     setBox(410, 320)

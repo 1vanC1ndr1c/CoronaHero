@@ -140,6 +140,7 @@ def level_1(test,win):
 
     setPlatform(630, 470, 5)
     setPlatform(500, 620, 2)
+    setDisinfect(770, 420)
     setVirus(660,420)
     setVirus(420, 620)
     setDoors(60, 570)
