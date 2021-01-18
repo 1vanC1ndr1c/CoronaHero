@@ -84,7 +84,7 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
                     # print('Character: ', character.y_pos)
 
                 if not character.isJump and not falling:
-                    if keys[pygame.K_SPACE]:
+                    if keys[pygame.K_UP]:
                         character.jump()
                 if character.isJump:
                     pos_change = 10
@@ -103,7 +103,7 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
                 if keys[pygame.K_RIGHT] and character.x_pos < window_x_size - character.width:
                     character.move_right(pos_change)
 
-                if pygame.mouse.get_pressed(3)[0] is True:
+                if keys[pygame.K_SPACE]:
                     current_shoot = time.time()
                     if current_shoot - last_shoot > 0.1:
                         character.shoot()
@@ -294,6 +294,7 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
             win.blit(label,(int(winw/2-twidth/2),190))
             
             if keys[pygame.K_y]:
+                pygame.mixer.music.stop()
                 return False
 			
             elif keys[pygame.K_n]:

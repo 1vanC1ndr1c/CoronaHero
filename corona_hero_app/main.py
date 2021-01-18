@@ -3,6 +3,7 @@ import pygame
 
 sys.path.insert(1, '..')
 
+from corona_hero_app.levels.MainMenu import *
 from corona_hero_app.levels.level_1 import level_1
 from corona_hero_app.levels.level_2 import level_2
 from corona_hero_app.levels.level_3 import level_3
@@ -15,26 +16,44 @@ def main():
     pygame.init()
     win = pygame.display.set_mode((window_x_size, window_y_size))
     pygame.display.set_caption("Testing environment.")
-    pygame.mixer.music.load("../resources/sounds/MainMusic.mp3")
-    pygame.mixer.music.play(loops=-1)
     # start_test_level()  # Start the testing environment.
+    mmenu = MainMenu()
+    mmenu.add_button(window_x_size/2-125,200,"new game")
+    mmenu.add_button(window_x_size/2-125,280,"help")
+    mmenu.add_button(window_x_size/2-125,360,"about")
+    mmenu.add_button(window_x_size/2-125,440,"exit")
 
-    lvl = 0
+    lvl = -1
     carryOn = True
 
     while carryOn:
+        pos = None
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 carryOn = False
-
+            if event.type == pygame.MOUSEBUTTONUP:
+                pos = pygame.mouse.get_pos()
 
         level_done = False
         lvl+=1
             
         if(lvl==0):
-            #TODO: Main menu
-            pygame.quit()
-            exit(0)
+            bckgrnd = pygame.transform.scale(pygame.image.load(mmenu.background),(window_x_size,window_y_size))
+            win.blit(bckgrnd,(0,0))
+            
+            retval = mmenu.make_menu(win,0,pos)
+
+            if(retval == 1):
+                level_done = True
+                pygame.mixer.music.load("../resources/sounds/MainMusic.mp3")
+                pygame.mixer.music.play(loops=-1)
+                continue
+            elif(retval==4):
+                pygame.quit()
+                exit(0)
+            level_done = False
+            pygame.display.update()
+        
         elif(lvl==1):
             level_done = level_1(False,win)
         elif(lvl==2):
