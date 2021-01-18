@@ -19,21 +19,32 @@ def main():
     pygame.mixer.music.play()
     # start_test_level()  # Start the testing environment.
 
-    level_done = False
-    while level_done is False:
-        level_done = level_1(False,win)
-    level_done = False
-    while level_done is False:
-        level_done = level_2(False,win)
-    level_done = False
-    while level_done is False:
-        level_done = level_3(False,win)
-    level_done = False
-    while level_done is False:
-        level_done = level_4(False,win)
-    level_done = False
-    while level_done is False:
-        level_done = level_5(False,win)
+    lvl = 0
+    carryOn = True
+
+    while carryOn:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                carryOn = False
+
+
+        level_done = False
+        lvl+=1
+        while not level_done:
+            
+            if(lvl==1):
+                level_done = level_1(False,win)
+            elif(lvl==2):
+                level_done = level_2(False,win)
+            elif(lvl==3):
+                level_done = level_3(False,win)
+            elif(lvl==4):
+                level_done = level_4(False,win)
+            elif(lvl==5):
+                level_done = level_5(False,win)
+            else:
+                pygame.quit()
+            
     
     pygame.quit()
 

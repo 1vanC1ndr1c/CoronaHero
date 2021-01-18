@@ -98,7 +98,7 @@ def start_level_5(win):
 
     virus = Virus()  # ... or check the virus animation.
 
-    start_game(character=character,
+    return start_game(character=character,
                platforms=platforms,
                boxes=boxes,
                dis=disinfectants,
@@ -242,7 +242,7 @@ def level_5(test,win):
 
     # if not for testing return level surface
     else:
-        start_level_5(win)
+        return start_level_5(win)
 
 
 if __name__ == '__main__':
