@@ -1,5 +1,10 @@
 import pygame
 import random
+
+
+import sys
+sys.path.insert(0, "C:/Users/MISLAV/Desktop/korona projekt/projekt")
+
 from corona_hero_app.sprites.main_character import MainCharacter
 from corona_hero_app.sprites.platform import Platform
 from corona_hero_app.sprites.box import Box
@@ -29,6 +34,12 @@ inf_pers = []
 viruses = []
 backgrounds = []
 
+def setVirus(x,y):
+    viruses.append(Virus())
+    viruses[len(viruses)-1].set_dimensions(50,50)
+    viruses[len(viruses)-1].y_pos = y
+    viruses[len(viruses)-1].x_pos = x
+    viruses[len(viruses)-1].set_position(x,y)
 
 def setBackground(x,y):
     backgrounds.append(Background())
@@ -129,6 +140,9 @@ def level_1(test,win):
 
     setPlatform(630, 470, 5)
     setPlatform(500, 620, 2)
+    setDisinfect(770, 420)
+    setVirus(660,420)
+    setVirus(420, 620)
     setDoors(60, 570)
     setDoors(1140, 570)
 
@@ -155,6 +169,9 @@ def level_1(test,win):
 
     for i in range(len(disinfectants)):
         level.blit(disinfectants[i].image_disinfectant, (disinfectants[i].x_pos, disinfectants[i].y_pos))
+
+    for i in range(len(viruses)):
+        level.blit(viruses[i].image, (viruses[i].x_pos, viruses[i].y_pos))
 
     level.blit(doors[0].door_entrance, (doors[0].x_pos, doors[0].y_pos))
     level.blit(doors[1].door_exit, (doors[1].x_pos, doors[1].y_pos))
@@ -186,4 +203,4 @@ def level_1(test,win):
 
 
 if __name__ == '__main__':
-    level_1(True)
+    level_1(True, False)

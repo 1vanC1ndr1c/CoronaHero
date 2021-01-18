@@ -124,6 +124,7 @@ def level_1(test):
 
     setPlatform(630, 470, 5,0)
     setPlatform(500,620,2,0)
+    setDisinfect(770,470)
     setDoors(60,570)
     setDoors(1140,570)
 
