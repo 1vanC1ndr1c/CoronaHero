@@ -4,14 +4,11 @@ import pygame
 sys.path.insert(1, '..')
 
 
-import sys
-sys.path.insert(0, "C:/Users/MISLAV/Desktop/korona projekt/projekt")
-
 from corona_hero_app.levels.MainMenu import *
 from corona_hero_app.levels.level_1 import level_1
 from corona_hero_app.levels.level_2 import level_2
-from corona_hero_app.levels.level_3 import level_3
-from corona_hero_app.levels.level_4 import level_4
+from corona_hero_app.levels.level_3 import level_3 as level_4
+from corona_hero_app.levels.level_4 import level_4 as level_3
 from corona_hero_app.levels.level_5 import level_5    
 
 def main():

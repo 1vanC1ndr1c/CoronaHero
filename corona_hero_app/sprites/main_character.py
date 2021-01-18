@@ -276,7 +276,8 @@ class MainCharacter(Sprite):
     def shoot(self):
 
         if self.bullet_count > 0:
-            self.bullet_list.append(Bullet(self.current_movement_direction, self.x_pos, self.y_pos))
+            self.bullet_list.append(
+                Bullet(self.current_movement_direction, self.x_pos, (int(self.y_pos + self.height / 2))))
             if self.current_movement_direction == "Left.":
                 self.set_current_animation(self._image_shoot_left)
             else:
