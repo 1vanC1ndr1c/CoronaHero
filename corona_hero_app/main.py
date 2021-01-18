@@ -51,8 +51,9 @@ def main():
 
             if(retval == 1):
                 level_done = True
-                pygame.mixer.music.load("resources/sounds/MainMusic.mp3")
+                pygame.mixer.music.load("../resources/sounds/MainMusic.mp3")
                 pygame.mixer.music.play(loops=-1)
+                retval = 0
                 continue
             elif(retval==4):
                 pygame.quit()

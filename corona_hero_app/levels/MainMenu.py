@@ -76,6 +76,9 @@ class MainMenu:
                 
                 elif img4_rect.collidepoint(pos):
                     return 4
+
+                else:
+                    return which_menu
             else:
                 return 0
         
@@ -108,6 +111,9 @@ class MainMenu:
                 
                 if img1_rect.collidepoint(pos):
                     return 0
+                
+                else:
+                    return which_menu
 
             else:
                 return which_menu
