@@ -61,29 +61,6 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
             if keys[pygame.K_ESCAPE]:
                 exitGameMenu = True
 
-            if character.death_countdown:
-                death_timer_end = time.time()
-                myfont = pygame.font.SysFont("Arial Black", lblsze)
-                label = myfont.render("WASH YOUR HANDS!", 1, (255,50,0))
-                twidth,theight = myfont.size("WASH YOUR HANDS!")
-                win.blit(label,(int(winw/2-twidth/2),10))
-                label = myfont.render(str(int(10-(death_timer_end - character.death_timer_start))),1,(255,50,0))
-                twidth,theight = myfont.size(str(int(10-(death_timer_end - character.death_timer_start))))
-                win.blit(label,(int(winw/2-twidth/2),70))
-                if death_timer_end - character.death_timer_start >= 10:
-                    character.is_dead = True
-                    character.death_countdown = False
-                if(lblplus):
-                    if(lblsze<59):
-                        lblsze+=1
-                    else:
-                        lblplus = False
-                else:
-                    if(lblsze>55):
-                        lblsze-=1
-                    else:
-                        lblplus = True
-
             if character.is_dead and not dying_animation:
                 game_over = True
 
@@ -276,6 +253,29 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
                     win.blit(virus.image, (virus.x_pos, virus.y_pos))
                 else:
                     virus.kill()
+            
+            if character.death_countdown:
+                death_timer_end = time.time()
+                myfont = pygame.font.SysFont("Arial Black", lblsze)
+                label = myfont.render("WASH YOUR HANDS!", 1, (255,50,0))
+                twidth,theight = myfont.size("WASH YOUR HANDS!")
+                win.blit(label,(int(winw/2-twidth/2),10))
+                label = myfont.render(str(int(10-(death_timer_end - character.death_timer_start))),1,(255,50,0))
+                twidth,theight = myfont.size(str(int(10-(death_timer_end - character.death_timer_start))))
+                win.blit(label,(int(winw/2-twidth/2),70))
+                if death_timer_end - character.death_timer_start >= 10:
+                    character.is_dead = True
+                    character.death_countdown = False
+                if(lblplus):
+                    if(lblsze<59):
+                        lblsze+=1
+                    else:
+                        lblplus = False
+                else:
+                    if(lblsze>55):
+                        lblsze-=1
+                    else:
+                        lblplus = True
 
         elif(game_over):
             pygame.mixer.music.stop()
