@@ -300,10 +300,9 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
                 exitGameMenu = False
         
         if(dying_animation):
-            myfont = pygame.font.SysFont("Arial Black", 77)
-            label = myfont.render("GAME OVER", 1, (120,120,120))
-            twidth,theight = myfont.size("GAME OVER")
-            win.blit(label,(int(winw/2-twidth/2),110))
+            im = pygame.image.load(os.path.join(Path(__file__).parent.parent.parent, "resources", "sprites","GameOver.png"))
+            twidth,theight = im.get_rect().size
+            win.blit(im,(int(winw/2-twidth/2),110))
             dying_countdown-=1
             if(dying_countdown == 0):
                 pygame.mixer.music.stop()
