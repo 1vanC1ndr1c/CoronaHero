@@ -34,6 +34,7 @@ class MainMenu:
 
         if(which_menu == 0):
 
+            self.background = os.path.join(self.spritesPath, "resources","sprites","MainMenu-Background.png")
             button_img1 = pygame.image.load(os.path.join(self.spritesPath, "resources","sprites","Button.png"))
             img1_rect = pygame.Rect(self.buttons["new game"][0],self.buttons["new game"][1],250,77)
             win.blit(button_img1, self.buttons["new game"])
@@ -77,3 +78,38 @@ class MainMenu:
                     return 4
             else:
                 return 0
+        
+        elif(which_menu == 2 or which_menu == 3):
+            self.background = os.path.join(self.spritesPath, "resources","sprites","Background-CaveBetter.png")
+            button_img1 = pygame.image.load(os.path.join(self.spritesPath, "resources","sprites","Button.png"))
+            img1_rect = pygame.Rect(self.buttons["back"][0],self.buttons["back"][1],250,77)
+            win.blit(button_img1, self.buttons["back"])
+            label = myfont.render("Back", 1, (0,0,0))
+            twidth,theight = myfont.size("Back")
+            win.blit(label,(self.buttons["back"][0]+(125-twidth/2),self.buttons["back"][1]+(77/2-theight/2)))
+
+            if(which_menu == 2):
+                sz = 0
+                for h in self.hlp.split("\n"):
+                    label = myfont.render(h, 1, (170,170,170))
+                    twidth,theight = myfont.size(h)
+                    win.blit(label,(0,sz))
+                    sz+=34
+            
+            elif(which_menu == 3):
+                sz = 0
+                for h in self.about.split("\n"):
+                    label = myfont.render(h, 1, (170,170,170))
+                    twidth,theight = myfont.size(h)
+                    win.blit(label,(0,sz))
+                    sz+=34
+
+            if(pos is not None):
+                
+                if img1_rect.collidepoint(pos):
+                    return 0
+
+            else:
+                return which_menu
+                
+            
