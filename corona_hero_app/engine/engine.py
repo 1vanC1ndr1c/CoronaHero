@@ -66,23 +66,6 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
 
             if character.is_dead is False:
 
-                collision = pygame.sprite.spritecollideany(character, r)
-
-                if collision is None or collision.y_pos < character.y_pos or (
-                        collision.y_pos - character.y_pos) < character.height:
-                    character.y_pos += 10
-                    character.rect.y = character.y_pos
-                    freefall_count += 1
-                    falling = True
-                    if character.y_pos == 3000:
-                        character.is_dead = True
-                else:
-                    falling = False
-                    pos_change = 5
-                    pass
-                    # print('Collision: ', collision.y_pos)
-                    # print('Character: ', character.y_pos)
-
                 if not character.isJump and not falling:
                     if keys[pygame.K_UP]:
                         character.jump()
@@ -108,6 +91,23 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
                     if current_shoot - last_shoot > 0.1:
                         character.shoot()
                     last_shoot = current_shoot
+
+                collision = pygame.sprite.spritecollideany(character, r)
+
+                if collision is None or collision.y_pos < character.y_pos or (
+                        collision.y_pos - character.y_pos) < character.height:
+                    character.y_pos += 10
+                    character.rect.y = character.y_pos
+                    freefall_count += 1
+                    falling = True
+                    if character.y_pos == 3000:
+                        character.is_dead = True
+                else:
+                    falling = False
+                    pos_change = 5
+                    pass
+                    # print('Collision: ', collision.y_pos)
+                    # print('Character: ', character.y_pos)
 
             for wall in walls:  # First draw this (background)
                 win.blit(wall.image_wall_brighter, (wall.x_pos, wall.y_pos))
