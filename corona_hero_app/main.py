@@ -16,7 +16,7 @@ def main():
     win = pygame.display.set_mode((window_x_size, window_y_size))
     pygame.display.set_caption("Testing environment.")
     pygame.mixer.music.load("../resources/sounds/MainMusic.mp3")
-    pygame.mixer.music.play()
+    pygame.mixer.music.play(loops=-1)
     # start_test_level()  # Start the testing environment.
 
     lvl = 0

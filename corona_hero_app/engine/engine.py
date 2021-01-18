@@ -40,6 +40,9 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
     window_y_size = 720
     exitGameMenu = False
     winw, winh = pygame.display.get_surface().get_size()
+    game_over = False
+    dying_animation = False
+    dying_countdown = 100
 
     while run:
 
@@ -50,7 +53,7 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
                 exit(0)
         keys = pygame.key.get_pressed()
 
-        if(not exitGameMenu):
+        if(not exitGameMenu and not game_over):
             for bg in backgrounds:
                 win.blit(bg.image_cave, (bg.x_pos, bg.y_pos))
             pygame.time.delay(20)
@@ -58,7 +61,7 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
             if keys[pygame.K_ESCAPE]:
                 exitGameMenu = True
 
-            if character.death_countdown is True:
+            if character.death_countdown:
                 death_timer_end = time.time()
                 myfont = pygame.font.SysFont("Arial Black", lblsze)
                 label = myfont.render("WASH YOUR HANDS!", 1, (255,50,0))
@@ -69,6 +72,7 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
                 win.blit(label,(int(winw/2-twidth/2),70))
                 if death_timer_end - character.death_timer_start >= 10:
                     character.is_dead = True
+                    character.death_countdown = False
                 if(lblplus):
                     if(lblsze<59):
                         lblsze+=1
@@ -80,8 +84,8 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
                     else:
                         lblplus = True
 
-            if character.is_dead is True:
-                return False
+            if character.is_dead and not dying_animation:
+                game_over = True
 
             if character.is_dead is False:
 
@@ -207,7 +211,7 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
                         
                         if(not death):
                             pygame.mixer.music.load(os.path.join(Path(__file__).parent.parent.parent, "resources", "sounds","Corona_hero-WashYourHands3.mp3"))
-                            pygame.mixer.music.play()
+                            pygame.mixer.music.play(loops=-1)
                             death = True
                     box.move(pos_change, character)
                     character.is_moving_box = True
@@ -255,7 +259,7 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
                     character.wash_hands()
                     if(death):
                         pygame.mixer.music.load(os.path.join(Path(__file__).parent.parent.parent, "resources", "sounds","MainMusic.mp3"))
-                        pygame.mixer.music.play()
+                        pygame.mixer.music.play(loops=-1)
                         death = False
 
                 win.blit(sink.image_sink, (sink.x_pos, sink.y_pos))
@@ -272,6 +276,13 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
                     win.blit(virus.image, (virus.x_pos, virus.y_pos))
                 else:
                     virus.kill()
+
+        elif(game_over):
+            pygame.mixer.music.stop()
+            pygame.mixer.music.load(os.path.join(Path(__file__).parent.parent.parent, "resources", "sounds","Corona_hero-game_over.mp3"))
+            pygame.mixer.music.play()
+            dying_animation = True
+            game_over = False
         
         else:
             myfont = pygame.font.SysFont("Arial Black", 77)
@@ -287,6 +298,16 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
 			
             elif keys[pygame.K_n]:
                 exitGameMenu = False
+        
+        if(dying_animation):
+            myfont = pygame.font.SysFont("Arial Black", 77)
+            label = myfont.render("GAME OVER", 1, (120,120,120))
+            twidth,theight = myfont.size("GAME OVER")
+            win.blit(label,(int(winw/2-twidth/2),110))
+            dying_countdown-=1
+            if(dying_countdown == 0):
+                pygame.mixer.music.stop()
+                return False
             
 
         pygame.display.update()
