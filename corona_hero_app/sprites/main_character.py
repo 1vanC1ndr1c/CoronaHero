@@ -20,6 +20,7 @@ class MainCharacter(Sprite):
         Sprite.__init__(self)
 
         self._resources_path = os.path.abspath(os.path.join(str(Path(__file__).parent.parent.parent)))
+        self._sounds_path = os.path.join(self._resources_path, "resources", "sounds")
         self._resources_path = os.path.join(self._resources_path, "resources", "sprites")
 
         # Get the player animation for standing still.
@@ -170,6 +171,9 @@ class MainCharacter(Sprite):
         # Current player position.
         self.x_pos = 0
         self.y_pos = 0
+
+        #Glove counter
+        self.glove_counter_start = -1
 
     def set_position(self, x, y):
         self.x_pos = x
@@ -417,10 +421,12 @@ class MainCharacter(Sprite):
             self_range_x = range(self.x_pos, self.x_pos + self.width)
             self_range_y = range(self.y_pos, self.y_pos + self.height)
 
-            if bool(set(virus_range_x) & set(self_range_x)) is True:
+            if bool(set(virus_range_x) & set(self_range_x)):
                 if bool(set(virus_range_y) & set(self_range_y)):
-                    self.death_timer_start = time.time()
-                    self.death_countdown = True
+                    if(not virus.is_dead):
+                        self.death_timer_start = time.time()
+                        self.death_countdown = True
+                        return True
 
     def check_if_collided(self, collided_object):
         collided_object_range_x = range(collided_object.x_pos, collided_object.x_pos + collided_object.width)

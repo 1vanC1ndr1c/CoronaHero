@@ -4,6 +4,7 @@ import pygame
 sys.path.insert(1, '..')
 
 
+from corona_hero_app.sprites.energy_time import EnergyTime
 from corona_hero_app.levels.MainMenu import *
 from corona_hero_app.levels.level_1 import level_1
 from corona_hero_app.levels.level_2 import level_2
@@ -24,10 +25,13 @@ def main():
     mmenu.add_button(window_x_size/2-125,400,"about")
     mmenu.add_button(window_x_size/2-125,500,"exit")
     mmenu.add_button(window_x_size/2-125,610,"back")
+    energy_time1 = EnergyTime(0, 0)
+    energy_time2 = EnergyTime(0, 70)
 
     lvl = -1
     carryOn = True
     retval = 0
+    character = None
 
     while carryOn:
         pos = None
@@ -51,6 +55,7 @@ def main():
                 pygame.mixer.music.load("../resources/sounds/MainMusic.mp3")
                 pygame.mixer.music.play(loops=-1)
                 retval = 0
+                character = MainCharacter()
                 continue
             elif(retval==4):
                 pygame.quit()
@@ -59,15 +64,15 @@ def main():
             pygame.display.update()
         
         elif(lvl==1):
-            level_done = level_1(False,win)
+            level_done = level_1(False,win,character,energy_time1,energy_time2)
         elif(lvl==2):
-            level_done = level_2(False,win)
+            level_done = level_2(False,win,character,energy_time1,energy_time2)
         elif(lvl==3):
-            level_done = level_3(False,win)
+            level_done = level_3(False,win,character,energy_time1,energy_time2)
         elif(lvl==4):
-            level_done = level_4(False,win)
+            level_done = level_4(False,win,character,energy_time1,energy_time2)
         elif(lvl==5):
-            level_done = level_5(False,win)
+            level_done = level_5(False,win,character,energy_time1,energy_time2)
         else:
             pygame.quit()
         if not level_done:

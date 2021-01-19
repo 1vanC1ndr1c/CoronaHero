@@ -105,8 +105,7 @@ def setDoors(x, y):
     doors[len(doors) - 1].x_pos = x
 
 
-def start_level_1(win):
-    character = MainCharacter()  # Check the main character animation
+def start_level_1(win, character,energy_time1,energy_time2):
     character.set_position(130, 570)
 
     virus = Virus()  # ... or check the virus animation.
@@ -124,11 +123,13 @@ def start_level_1(win):
                rects=platforms + boxes + floors,
                doors=doors,
                backgrounds=backgrounds,
-               win=win
+               win=win,
+               energy_time1=energy_time1,
+               energy_time2=energy_time2
                )
 
 
-def level_1(test,win):
+def level_1(test,win,character,energy_time1,energy_time2):
     for i in range(26):
         # set floors
         setPlatform(i * 50, 670, 1)
@@ -140,9 +141,9 @@ def level_1(test,win):
 
     setPlatform(630, 470, 5)
     setPlatform(500, 620, 2)
-    setDisinfect(770, 420)
+    setDisinfect(660, 420)
     setSink(600, 620)
-    setVirus(660,420)
+    setVirus(770,420)
     setVirus(420, 620)
     setDoors(60, 570)
     setDoors(1140, 570)
@@ -200,7 +201,7 @@ def level_1(test,win):
 
     # if not for testing return level surface
     else:
-        return start_level_1(win)
+        return start_level_1(win,character,energy_time1,energy_time2)
 
 
 if __name__ == '__main__':

@@ -10,9 +10,7 @@ from corona_hero_app.sprites.platform import Platform
 
 
 def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, walls, viruses, rects, doors,
-               backgrounds,win):
-    energy_time1 = EnergyTime(0, 0)
-    energy_time2 = EnergyTime(0, 70)
+               backgrounds,win,energy_time1,energy_time2):
     r = pygame.sprite.Group(rects)
 
     shootable_objects = []
@@ -28,9 +26,10 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
     energy_time_start_gloves = -1
     energy_time_start_masks = -1
     animate_start_gloves = True
+    if(character.has_gloves):
+        animate_start_gloves = False
     animate_start_mask = True
     death_timer_end = 0
-    glove_counter_start = glove_counter_end = -1
     freefall_count = 1
     falling = False
     death = False
@@ -149,7 +148,7 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
             for platform in platforms:
                 win.blit(platform.image_grass, (platform.x_pos, platform.y_pos))
 
-            if character.has_gloves:
+            if character.glove_counter_start > -1:
                 current_time = time.time()
                 win.blit(energy_time1.gloves_icon, (energy_time1.x_pos, energy_time1.y_pos))
                 win.blit(energy_time1.image_energy_time, (energy_time1.x_pos + 70, energy_time1.y_pos + 20))
@@ -206,7 +205,7 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
                     win.blit(g.image_gloves, (g.x_pos, g.y_pos))
                     if g.check_if_collected(character) is True:
                         character.gloves_pick_up()
-                        glove_counter_start = time.time()
+                        character.glove_counter_start = time.time()
                         energy_time_start_gloves = time.time()
             # gloves = [g for g in gloves if g.collected is False]
 
@@ -225,11 +224,12 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
                     mask_timer_end = mask_timer_start = -1
                     character.mask_depleted()
 
-            if glove_counter_start != -1:
+            if character.glove_counter_start != -1:
                 glove_counter_end = time.time()
-                if glove_counter_end - glove_counter_start > 30:
-                    glove_counter_end = glove_counter_start = -1
+                if glove_counter_end - character.glove_counter_start > 30:
+                    glove_counter_end = character.glove_counter_start = -1
                     character.has_gloves = False
+                    character.glove_counter_start = -1
 
             for sink in sinks:
                 if character.check_if_collided(sink):
@@ -248,7 +248,11 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
 
             for virus in viruses:
                 if virus.dead_animation_done is False:
-                    character.check_if_hit(virus)
+                    ht = character.check_if_hit(virus)
+                    if(ht):
+                        pygame.mixer.music.load(os.path.join(Path(__file__).parent.parent.parent, "resources", "sounds","Corona_hero-WashYourHands3.mp3"))
+                        pygame.mixer.music.play(loops=-1)
+                        death = True
                     virus.animate()
                     win.blit(virus.image, (virus.x_pos, virus.y_pos))
                 else:

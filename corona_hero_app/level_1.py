@@ -105,7 +105,9 @@ def start_level_1():
                walls=floors,
                viruses=viruses,
                rects= platforms + boxes + floors,
-               backgrounds = backgrounds
+               backgrounds = backgrounds,
+               energy_time1,
+               energy_time2
                )
 
 def level_1(test):

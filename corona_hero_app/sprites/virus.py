@@ -26,6 +26,7 @@ class Virus(Sprite):
         self._death_animation = split_animated_gif(self._death_animation)
 
         self.rect = self.image.get_rect()
+        self.is_dead = False
 
         # Virus dimensions.
         self.width = 50
