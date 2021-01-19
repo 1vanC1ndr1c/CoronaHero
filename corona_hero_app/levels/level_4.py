@@ -124,7 +124,9 @@ def start_level_4(win,character,energy_time1,energy_time2):
                backgrounds=backgrounds,
                win = win,
                energy_time1=energy_time1,
-               energy_time2=energy_time2
+               energy_time2=energy_time2,
+               platformImages=platformImages,
+               sinkImage = 1
                )
 
 
@@ -166,8 +168,8 @@ def level_4(test,win,character,energy_time1,energy_time2):
         else:
             setPlatform(500 + i * 50, 420, 1, 0)
 
-    for i in range(4):
-        setPlatform(550 + i * 50, 370, 1, 0)
+    setPlatform(550, 370, 3, 0)
+    setPlatform(700, 370, 1, 1)
 
     setPlatform(100, 400, 3, 0)
 

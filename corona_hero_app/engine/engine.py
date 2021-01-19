@@ -10,7 +10,7 @@ from corona_hero_app.sprites.platform import Platform
 
 
 def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, walls, viruses, rects, doors,
-               backgrounds,win,energy_time1,energy_time2):
+               backgrounds,win,energy_time1,energy_time2,platformImages, sinkImage):
     r = pygame.sprite.Group(rects)
 
     shootable_objects = []
@@ -148,6 +148,13 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
             for platform in platforms:
                 win.blit(platform.image_grass, (platform.x_pos, platform.y_pos))
 
+            for i in range(len(platforms)):
+                if platformImages[i] == 1:
+                    win.blit(platforms[i].image_soil, (platforms[i].x_pos, platforms[i].y_pos))
+                else:
+                    win.blit(platforms[i].image_grass, (platforms[i].x_pos, platforms[i].y_pos))
+
+
             if character.glove_counter_start > -1:
                 current_time = time.time()
                 win.blit(energy_time1.gloves_icon, (energy_time1.x_pos, energy_time1.y_pos))
@@ -239,12 +246,23 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
                         pygame.mixer.music.play(loops=-1)
                         death = False
 
-                win.blit(sink.image_sink, (sink.x_pos, sink.y_pos))
+                if sinkImage == 0:
+                    win.blit(sink.image_sink, (sink.x_pos, sink.y_pos))
+                else : 
+                    win.blit(sink.image_sink2, (sink.x_pos, sink.y_pos))
 
+            flagg = True
             for door in doors:
-                win.blit(door.door_entrance, (door.x_pos, door.y_pos))
-                if door.check_if_hit(character) is True:
-                    return True
+                if flagg:
+                    win.blit(door.door_entrance, (door.x_pos, door.y_pos))
+                    flagg = False
+                    
+                else: 
+                    win.blit(door.door_exit, (door.x_pos, door.y_pos))
+                    if door.check_if_hit(character) is True:
+                        return True
+
+                
 
             for virus in viruses:
                 if virus.dead_animation_done is False:
