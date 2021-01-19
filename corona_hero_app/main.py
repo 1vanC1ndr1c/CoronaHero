@@ -1,5 +1,6 @@
 import sys
 import pygame
+import random
 
 sys.path.insert(1, '..')
 
@@ -27,6 +28,10 @@ def main():
     mmenu.add_button(window_x_size/2-125,610,"back")
     energy_time1 = EnergyTime(0, 0)
     energy_time2 = EnergyTime(0, 70)
+    first_lesson = False
+    lesson = 0
+    lessonName = ""
+    outro = 0
 
     lvl = -2
     carryOn = True
@@ -42,6 +47,13 @@ def main():
             if event.type == pygame.MOUSEBUTTONUP:
                 pos = pygame.mouse.get_pos()
 
+        if(lesson>0):
+            imtoblt = pygame.transform.scale(pygame.image.load("../resources/sprites/"+lessonName+".png"),(window_x_size,window_y_size))
+            lesson-=1
+            win.blit(imtoblt,(0,0))
+            pygame.display.update()
+            continue
+        
         level_done = False
         lvl+=1
 
@@ -82,6 +94,7 @@ def main():
             pygame.display.update()
         
         elif(lvl==1):
+            first_lesson = True
             level_done = level_1(False,win,character,energy_time1,energy_time2)
         elif(lvl==2):
             level_done = level_2(False,win,character,energy_time1,energy_time2)
@@ -91,6 +104,18 @@ def main():
             level_done = level_4(False,win,character,energy_time1,energy_time2)
         elif(lvl==5):
             level_done = level_5(False,win,character,energy_time1,energy_time2)
+            outro = 100
+            first_lesson = False
+        elif(lvl==6):
+            outro-=1
+            imtoblt = pygame.transform.scale(pygame.image.load("../resources/sprites/ThankYouForPlaying.png"),(window_x_size,window_y_size))
+            win.blit(imtoblt,(0,0))
+            pygame.display.update()
+            
+            if(outro==0):
+                level_done = False
+            else:
+                continue
         else:
             pygame.quit()
 
@@ -99,6 +124,10 @@ def main():
                 lvl = -1
             else:
                 lvl = -2
+        else:
+            if(first_lesson):
+                lesson = 100
+                lessonName = "DYN"+str(random.randint(1,8))
     
     pygame.quit()
 

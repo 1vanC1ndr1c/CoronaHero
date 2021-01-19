@@ -19,11 +19,16 @@ class MainMenu:
         self.about = "This game was made as project on University in zagreb, Faculty of\n electrical engineering and computing, on course “Digital education.”\n Game is made to learn players about safety measures with COVID19\n and is sprite-based and retro-style. All the graphics, sounds and\n music are made from scratch with GIMP and the engine is PyGame.\n"
         self.about+="Members of the team who made this game are:\n\n"
         self.about+="Ivan Mihaljević “Fuzz Mihi” - story, graphics, artwork, UI design,\n" 
-        self.about+="music, sounds, aditional programming\n\n"
+        self.about+="music, sounds, aditional level design, aditional programming\n\n"
+        self.about+="Zvonimir Zovak - Programming\n\n"
         self.about+="Mislav Bajan - level design, level coding, aditional programming\n\n"
         self.about+="Ivan Cindrić - Programming\n\n"
-        self.about+="Zvonimir Zovak - Programming\n\n"
-        self.hlp = "Controls:\n\nMove left/right - Left/Right arrow\nJump - Up arrow\nShoot - Space\n\n if you do something wrong, or touch covid, you have to wash your hands by reaching sink!"
+        self.hlp = "Controls:\n\nMove left/right - Left/Right arrow\nJump - Up arrow\nShoot - Space\n\n"
+        self.hlp += "-You have to collect gloves before pushing the boxes!\n"
+        self.hlp += "-To shoot, you have to collect sanitizer in little bottle.\n"
+        self.hlp += "-Those little green things are covid viruses; Shoot them in order to \nkill them!\n"
+        self.hlp += "-If you do something wrong, or touch covid, you have to wash your hands\n by reaching sink! "
+        self.hlp += "Do it before time runs out, or else, it's GAME OVER!"
         
     def add_button(self,x,y,label):
         self.buttons[label] = (x,y)

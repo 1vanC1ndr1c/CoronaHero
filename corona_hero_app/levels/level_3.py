@@ -154,15 +154,15 @@ def level_3(test,win,character,energy_time1,energy_time2):
     setVirus(410,70)
     setVirus(670,620)
     setVirus(950,620)
-    setVirus(820,500)
+    setVirus(750,500)
 
     setGloves(350, 620)
-    setGloves(1000,620)
+    setGloves(1000, 620)
 
     setSink(550, 70)
     setBox(450, 620)
     setBox(410, 320)
-    setBox(750, 500)
+    setBox(820, 500)
 
     setDoors(60, 570)
     setDoors(1140, 570)

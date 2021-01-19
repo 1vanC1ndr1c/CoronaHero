@@ -173,7 +173,8 @@ def level_4(test,win,character,energy_time1,energy_time2):
 
     setVirus(200,570)
     setVirus(500,370)
-    setVirus(640,320)
+    setSink(640,320)
+    setPlatform(700,320,1,0)
     
 
     # border
