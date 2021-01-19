@@ -14,6 +14,7 @@ from sprites.wall import Wall
 
 floors = []
 platforms = []
+platformImages = []
 boxes = []
 sinks = []
 masks = []
@@ -50,13 +51,14 @@ def setWall(x, y):
     floors[len(floors) - 1].set_position(x, y)
 
 
-def setPlatform(x, y, size):
+def setPlatform(x, y, size,image):
     for i in range(size):
         platforms.append(Platform())
         platforms[len(platforms) - 1].set_dimensions(50, 50)
         platforms[len(platforms) - 1].x_pos = x + i * 50
         platforms[len(platforms) - 1].y_pos = y
         platforms[len(platforms) - 1].set_position(x + i * 50, y)
+        platformImages.append(image)
 
 
 def setBox(x, y):
@@ -120,14 +122,20 @@ def start_level_3(win,character,energy_time1,energy_time2):
                backgrounds=backgrounds,
                win=win,
                energy_time1=energy_time1,
-               energy_time2=energy_time2
+               energy_time2=energy_time2,
+               platformImages=platformImages,
+               sinkImage = 0
+
                )
 
 
 def level_3(test,win,character,energy_time1,energy_time2):
     for i in range(26):
         # set floors
-        setPlatform(i * 50, 670, 1)
+        if i == 12 or  i == 21:
+            setPlatform(i * 50, 670, 1, 1)
+        else: 
+            setPlatform(i * 50, 670, 1, 0)
 
     # border
     for i in range(12):
@@ -136,19 +144,24 @@ def level_3(test,win,character,energy_time1,energy_time2):
 
     # set middle wall
     for i in range(10):
-        setPlatform(600, 620 - 50 * i, 1)
-    setPlatform(350, 120, 6)
+        setPlatform(600, 620 - 50 * i, 1, 1)
+    setPlatform(350, 120, 3, 0)
+    setPlatform(500, 120, 1, 1)
+    setPlatform(550, 120, 2, 0)
 
     # set door wall
     for i in range(6):
-        setPlatform(1050, 620 - 50 * i, 1)
+        if i == 5:
+            setPlatform(1050, 620 - 50 * i, 1, 0)
+        else: 
+            setPlatform(1050, 620 - 50 * i, 1, 1)
 
-    setPlatform(70, 470, 3)
-    setPlatform(550, 530, 1)
-    setPlatform(320, 370, 4)
-    setPlatform(120, 220, 2)
-    setPlatform(720, 550, 5)
-    setPlatform(500, 70, 1)
+    setPlatform(70, 470, 3,0)
+    setPlatform(550, 530, 1,0)
+    setPlatform(320, 370, 4,0)
+    setPlatform(120, 220, 2,0)
+    setPlatform(720, 550, 5,0)
+    setPlatform(500, 70, 1,0)
 
     setVirus(250,620)
     setVirus(410,70)

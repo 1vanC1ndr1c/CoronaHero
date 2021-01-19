@@ -5,12 +5,13 @@ import random
 sys.path.insert(1, '..')
 
 
+
 from corona_hero_app.sprites.energy_time import EnergyTime
 from corona_hero_app.levels.MainMenu import *
 from corona_hero_app.levels.level_1 import level_1
-from corona_hero_app.levels.level_2 import level_2
+from corona_hero_app.levels.level_2 import level_2 as level_3
 from corona_hero_app.levels.level_3 import level_3 as level_4
-from corona_hero_app.levels.level_4 import level_4 as level_3
+from corona_hero_app.levels.level_4 import level_4 as level_2
 from corona_hero_app.levels.level_5 import level_5    
 
 def main():

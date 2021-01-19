@@ -14,6 +14,7 @@ from sprites.wall import Wall
 
 floors = []
 platforms = []
+platformImages =[]
 boxes = []
 sinks = []
 masks = []
@@ -49,13 +50,14 @@ def setWall(x, y):
     floors[len(floors) - 1].set_position(x, y)
 
 
-def setPlatform(x, y, size):
+def setPlatform(x, y, size,image):
     for i in range(size):
         platforms.append(Platform())
         platforms[len(platforms) - 1].set_dimensions(50, 50)
         platforms[len(platforms) - 1].x_pos = x + i * 50
         platforms[len(platforms) - 1].y_pos = y
         platforms[len(platforms) - 1].set_position(x + i * 50, y)
+        platformImages.append(image)
 
 
 def setBox(x, y):
@@ -119,26 +121,32 @@ def start_level_2(win,character,energy_time1,energy_time2): # Check the main cha
                backgrounds=backgrounds,
                win=win,
                energy_time1=energy_time1,
-               energy_time2=energy_time2
+               energy_time2=energy_time2,
+               platformImages=platformImages,
+               sinkImage = 1
                )
 
 
 def level_2(test,win,character,energy_time1,energy_time2):
     for i in range(26):
         # set floors
-        setPlatform(i * 50, 670, 1)
+        if (i > 5 and i < 14):
+            setPlatform(i * 50, 670, 1,1)
+        else:
+            setPlatform(i * 50, 670, 1,0)
 
     # border
     for i in range(12):
         setWall(0, 720 - 100 - 50 * i)
         setWall(1230, 720 - 100 - 50 * i)
 
-    setPlatform(680, 420, 2)
-    setPlatform(200, 300, 6)
-    setPlatform(200, 250, 1)
+    setPlatform(680, 420, 2,0)
+    setPlatform(200,300,1,1)
+    setPlatform(250, 300, 5,0)
+    setPlatform(200, 250, 1,0)
     setBox(440, 570)
     setBox(930, 620)
-    setPlatform(300, 620, 8)
+    setPlatform(300, 620, 8,0)
 
     setGloves(340,570)
 

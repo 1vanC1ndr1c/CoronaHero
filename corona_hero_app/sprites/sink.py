@@ -18,6 +18,10 @@ class Sink(Sprite):
         self.image_sink = Image.open(str(os.path.join(self._resources_path, 'Sink.png')))
         self.image_sink = transform_into_surface(self.image_sink)
 
+        self.image_sink2 = Image.open(str(os.path.join(self._resources_path, 'Sink_mirror.png')))
+        self.image_sink2 = transform_into_surface(self.image_sink2)
+
+
         self.rect = self.image_sink.get_rect()
 
         self.width = 30

@@ -56,13 +56,14 @@ def setWall(x, y):
     floors[len(floors) - 1].set_position(x, y)
 
 
-def setPlatform(x, y, size):
+def setPlatform(x, y, size,image):
     for i in range(size):
         platforms.append(Platform())
         platforms[len(platforms) - 1].set_dimensions(50, 50)
         platforms[len(platforms) - 1].x_pos = x + i * 50
         platforms[len(platforms) - 1].y_pos = y
         platforms[len(platforms) - 1].set_position(x + i * 50, y)
+        platformImages.append(image)
 
 
 def setBox(x, y):
@@ -125,22 +126,27 @@ def start_level_1(win, character,energy_time1,energy_time2):
                backgrounds=backgrounds,
                win=win,
                energy_time1=energy_time1,
-               energy_time2=energy_time2
+               energy_time2=energy_time2,
+               platformImages=platformImages,
+               sinkImage = 0
                )
 
 
 def level_1(test,win,character,energy_time1,energy_time2):
     for i in range(26):
         # set floors
-        setPlatform(i * 50, 670, 1)
+        if i == 11 or i == 10:
+            setPlatform(i * 50, 670, 1, 1)
+        else:
+            setPlatform(i * 50, 670, 1, 0)
 
     # border
     for i in range(12):
         setWall(0, 720 - 100 - 50 * i)
         setWall(1230, 720 - 100 - 50 * i)
 
-    setPlatform(630, 470, 5)
-    setPlatform(500, 620, 2)
+    setPlatform(630, 470, 5,0)
+    setPlatform(500, 620, 2,0)
     setDisinfect(660, 420)
     setSink(600, 620)
     setVirus(770,420)

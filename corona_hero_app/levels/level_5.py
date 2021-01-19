@@ -120,7 +120,8 @@ def start_level_5(win,character,energy_time1,energy_time2):
                backgrounds=backgrounds,
                win = win,
                energy_time1=energy_time1,
-               energy_time2=energy_time2
+               energy_time2=energy_time2,
+               platformImages=platformImages
                )
 
 
