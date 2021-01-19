@@ -111,9 +111,11 @@ def main():
             imtoblt = pygame.transform.scale(pygame.image.load("../resources/sprites/ThankYouForPlaying.png"),(window_x_size,window_y_size))
             win.blit(imtoblt,(0,0))
             pygame.display.update()
+            lvl-=1
             
             if(outro==0):
                 level_done = False
+                pygame.mixer.music.stop()
             else:
                 continue
         else:
