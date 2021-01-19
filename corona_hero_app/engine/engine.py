@@ -283,7 +283,7 @@ def start_game(character, platforms, boxes, dis, gloves, inf_per, masks, sinks, 
 
         elif(game_over):
             pygame.mixer.music.stop()
-            pygame.mixer.music.load(os.path.join(Path(__file__).parent.parent.parent, "resources", "sounds","Corona_hero-game_over.mp3"))
+            pygame.mixer.music.load(os.path.join(Path(__file__).parent.parent.parent, "resources", "sounds","Corona hero-game over.mp3"))
             pygame.mixer.music.play()
             dying_animation = True
             game_over = False
