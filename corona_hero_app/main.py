@@ -28,10 +28,11 @@ def main():
     energy_time1 = EnergyTime(0, 0)
     energy_time2 = EnergyTime(0, 70)
 
-    lvl = -1
+    lvl = -2
     carryOn = True
     retval = 0
     character = None
+    intro = 110
 
     while carryOn:
         pos = None
@@ -43,8 +44,25 @@ def main():
 
         level_done = False
         lvl+=1
+
+        if(lvl == -1):
+            imtoblt = None
+            if(intro>=100):
+                imtoblt = pygame.transform.scale(pygame.image.load("../resources/sprites/TeamLogo.png"),(window_x_size,window_y_size))
+            elif(intro>50 and intro<100):
+                imtoblt = pygame.transform.scale(pygame.image.load("../resources/sprites/Presents.png"),(window_x_size,window_y_size))
+            else:
+                imtoblt = pygame.transform.scale(pygame.image.load("../resources/sprites/Title page artwork-Main.png"),(window_x_size,window_y_size))
+            win.blit(imtoblt,(0,0))
+
+            intro-=1
+            if(intro==0):
+                level_done = True
             
-        if(lvl==0):
+            pygame.display.update()
+            pygame.time.delay(20)
+            
+        elif(lvl==0):
             bckgrnd = pygame.transform.scale(pygame.image.load(mmenu.background),(window_x_size,window_y_size))
             win.blit(bckgrnd,(0,0))
             
@@ -75,9 +93,12 @@ def main():
             level_done = level_5(False,win,character,energy_time1,energy_time2)
         else:
             pygame.quit()
-        if not level_done:
-            lvl = -1
 
+        if not level_done:
+            if(lvl>=0):
+                lvl = -1
+            else:
+                lvl = -2
     
     pygame.quit()
 
